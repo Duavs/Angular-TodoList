@@ -1,7 +1,7 @@
 <main class="todo-container">
   <div class="add-task">
     <input [(ngModel)]="newTask" placeholder="Enter new task here"/>
-    <button (click)="addTask()">Add</button>
+    <button (click)="addTask()">{{ editingTaskId === null ? 'Add' : 'Update' }}</button>
   </div>
 
   <ul class="task-list">
@@ -12,7 +12,8 @@
         type="checkbox"
       />
       <span [class.completed]="todoItem.completed">{{ todoItem.task }}</span>
-      <button (click)="deleteTask(todoItem.id)">Delete</button>
+      <button (click)="editTask(todoItem)" class="edit-btn">Edit</button>
+      <button (click)="deleteTask(todoItem.id)" class="delete-btn">Delete</button>
     </li>
   </ul>
 </main>

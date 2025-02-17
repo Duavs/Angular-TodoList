@@ -20,16 +20,24 @@ export class AppComponent {
   title = 'angular-todo';
   todoList: TodoItem[] = [];
   newTask: string = '';
-
+  editingTaskId: number | null = null;
 
   addTask(): void {
     if (this.newTask.trim() !== '') {
-      const newTaskItem: TodoItem = {
-        id: Date.now(),
-        task: this.newTask,
-        completed: false
+      if (this.editingTaskId === null) {
+        const newTaskItem: TodoItem = {
+          id: Date.now(),
+          task: this.newTask,
+          completed: false
+        }
+        this.todoList.push(newTaskItem);
+      } else {
+        const taskIndex = this.todoList.findIndex(item => item.id === this.editingTaskId);
+        if (taskIndex !== -1) {
+          this.todoList[taskIndex].task = this.newTask;
+        }
+        this.editingTaskId = null;
       }
-      this.todoList.push(newTaskItem);
       this.newTask = '';
     }
   }
@@ -41,4 +49,11 @@ export class AppComponent {
   deleteTask(id: number): void {
     this.todoList = this.todoList.filter(item => item.id !== id)
   }
+
+  editTask(todoItem: TodoItem): void {
+    this.newTask = todoItem.task; // ✅ Populate input field
+    this.editingTaskId = todoItem.id; // ✅ Track the task being edited
+  }
+
+
 }

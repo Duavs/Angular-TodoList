@@ -31,6 +31,7 @@
   cursor: pointer;
 }
 
+/* Updated Task List Styling */
 .task-list {
   list-style-type: none;
   padding: 0;
@@ -44,17 +45,49 @@
   margin-bottom: 10px;
   border-radius: 4px;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  background: white;
 }
 
+/* Ensure Task Text and Buttons are Aligned */
+.task-content {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* Adjust Task Text Spacing */
+.task-content span {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Adjust Button Grouping */
+.task-actions {
+  display: flex;
+  gap: 5px;
+}
+
+/* Updated Button Styling */
 .task-list button {
   padding: 5px 10px;
-  background-color: #dc3545;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
+/* Edit Button - Facebook Blue */
+.task-list .edit-btn {
+  background-color: #1877F2; /* Facebook Blue */
+}
+
+/* Delete Button - Red */
+.task-list .delete-btn {
+  background-color: #dc3545;
+}
+
+/* Completed Task Styling */
 .task-list li.completed span {
   text-decoration: line-through;
   color: maroon;
