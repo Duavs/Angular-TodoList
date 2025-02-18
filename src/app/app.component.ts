@@ -27,7 +27,7 @@ export class AppComponent {
       if (this.editingTaskId === null) {
         const newTaskItem: TodoItem = {
           id: Date.now(),
-          task: this.newTask,
+          task: this.newTask.toUpperCase(),
           completed: false
         }
         this.todoList.push(newTaskItem);
@@ -55,5 +55,8 @@ export class AppComponent {
     this.editingTaskId = todoItem.id; // ✅ Track the task being edited
   }
 
+  trackById(index: number, todoItem: TodoItem): number {
+    return todoItem.id;
+  }
 
 }
