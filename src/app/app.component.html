@@ -12,7 +12,7 @@
           [ngClass]="{'completed': todoItem.completed}">
         <div class="task-grid">
           <input
-            (change)="toggleCompleted(i)"
+            (click)="toggleCompleted(i)"
             [(ngModel)]="todoItem.completed"
             type="checkbox"
           />

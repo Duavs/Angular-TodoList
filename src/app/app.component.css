@@ -125,7 +125,7 @@
 /* Completed Task Styling */
 .task-list li.completed span {
   text-decoration: line-through;
-  color: #dca8ab;
+  color: #938b8b;
 }
 
 .task-list-container {
@@ -147,10 +147,12 @@
 /* Apply grid layout to each task */
 .task-grid {
   display: grid;
-  grid-template-columns: 40px 1fr auto; /* Checkbox, Task, Buttons */
+  grid-template-columns: 40px 2fr 1fr; /* Checkbox, Task, Buttons */
   align-items: center;
   gap: 10px;
 }
 
-
+.swal2-popup {
+  font-family: 'Arial', sans-serif !important;
+}
 
