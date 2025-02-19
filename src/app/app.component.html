@@ -17,6 +17,7 @@
             type="checkbox"
           />
           <span [class.completed]="todoItem.completed">{{ todoItem.task }}</span>
+          <small class="task-timestamp">{{ todoItem.timestamp }}</small>
           <div class="task-actions">
             <button (click)="editTask(todoItem)" class="edit-btn">Edit</button>
             <button (click)="deleteTask(todoItem.id)" class="delete-btn">Delete</button>

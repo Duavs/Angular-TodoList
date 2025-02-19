@@ -147,12 +147,19 @@
 /* Apply grid layout to each task */
 .task-grid {
   display: grid;
-  grid-template-columns: 40px 2fr 1fr; /* Checkbox, Task, Buttons */
+  grid-template-columns: 30px 1.2fr 1fr 1fr; /* Checkbox, Task, Buttons */
   align-items: center;
   gap: 10px;
 }
 
 .swal2-popup {
   font-family: 'Arial', sans-serif !important;
+}
+
+.task-timestamp {
+  display: block;
+  font-size: 12px;
+  color: gray;
+  margin-top: 3px;
 }
 

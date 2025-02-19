@@ -4,10 +4,12 @@ import {FormsModule} from '@angular/forms';
 import {NgClass, NgFor} from '@angular/common';
 import Swal from 'sweetalert2';
 
+
 export interface TodoItem {
   id: number;
   task: string;
   completed: boolean;
+  timestamp: string;
 }
 
 let timerInterval: number = 1000;
@@ -26,11 +28,13 @@ export class AppComponent {
 
   addTask(): void {
     if (this.newTask.trim() !== '') {
+      const currentDateTime = new Date().toLocaleDateString('en-US');
       if (this.editingTaskId === null) {
         const newTaskItem: TodoItem = {
           id: Date.now(),
           task: this.newTask.toUpperCase(),
-          completed: false
+          completed: false,
+          timestamp: currentDateTime
         };
         this.todoList.push(newTaskItem);
 
@@ -50,7 +54,8 @@ export class AppComponent {
       } else {
         const taskIndex = this.todoList.findIndex(item => item.id === this.editingTaskId);
         if (taskIndex !== -1) {
-          this.todoList[taskIndex].task = this.newTask;
+          this.todoList[taskIndex].task = this.newTask.toUpperCase();
+          this.todoList[taskIndex].timestamp = currentDateTime;
           Swal.fire({
             title: 'Task Update',
             html: 'Successfully Updated!',
@@ -103,5 +108,4 @@ export class AppComponent {
   trackById(index: number, todoItem: TodoItem): number {
     return todoItem.id;
   }
-
 }
