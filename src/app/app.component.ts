@@ -1,15 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgFor} from '@angular/common';
 import Swal from 'sweetalert2';
+import {TodoService} from './services/todo.service';
 
 
 export interface TodoItem {
   id: number;
   task: string;
   completed: boolean;
-  timestamp: string;
+  //timestamp: string;
 }
 
 let timerInterval: number = 1000;
@@ -25,7 +26,17 @@ export class AppComponent {
   todoList: TodoItem[] = [];
   newTask: string = '';
   editingTaskId: number | null = null;
+  constructor(private todoService: TodoService) {}
 
+  ngOnInit() {
+    this.fetchTodos();
+  }
+
+  fetchTodos(){
+    this.todoService.getTodos().subscribe((todos) =>{
+      this.todoList = todos;
+    });
+  }
   addTask(): void {
     if (this.newTask.trim() !== '') {
       const currentDateTime = new Date().toLocaleDateString('en-US');
@@ -33,8 +44,8 @@ export class AppComponent {
         const newTaskItem: TodoItem = {
           id: Date.now(),
           task: this.newTask.toUpperCase(),
-          completed: false,
-          timestamp: currentDateTime
+          completed: false
+          //timestamp: currentDateTime
         };
         this.todoList.push(newTaskItem);
 
@@ -55,7 +66,7 @@ export class AppComponent {
         const taskIndex = this.todoList.findIndex(item => item.id === this.editingTaskId);
         if (taskIndex !== -1) {
           this.todoList[taskIndex].task = this.newTask.toUpperCase();
-          this.todoList[taskIndex].timestamp = currentDateTime;
+          //this.todoList[taskIndex].timestamp = currentDateTime;
           Swal.fire({
             title: 'Task Update',
             html: 'Successfully Updated!',
@@ -101,8 +112,8 @@ export class AppComponent {
   }
 
   editTask(todoItem: TodoItem): void {
-    this.newTask = todoItem.task; // ✅ Populate input field
-    this.editingTaskId = todoItem.id; // ✅ Track the task being edited
+    this.newTask = todoItem.task; // Populate input field
+    this.editingTaskId = todoItem.id; // Track the task being edited
   }
 
   trackById(index: number, todoItem: TodoItem): number {
