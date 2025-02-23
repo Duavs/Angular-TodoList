@@ -1,33 +1,40 @@
 <header class="task-list-header">
-  <span>Today's Todo List</span>
+  <h1>Today's Todo List</h1>
 </header>
+
 <main class="todo-container">
+  <!-- Task Input -->
   <div class="add-task">
     <input [(ngModel)]="newTask" placeholder="Enter new task here"/>
-    <button (click)="addTask()">{{ editingTaskId === null ? 'Add' : 'Update' }}</button>
+    <button (click)="addTask()">
+      {{ editingTaskId === null ? 'Add' : 'Update' }}
+    </button>
   </div>
+
+  <!-- Task List -->
   <div class="task-list-container">
     <ul class="task-list">
-      <li *ngFor="let todoItem of todoList; let i = index; trackBy: trackById"
+      <li *ngFor="let todoItem of todoList; let i = index"
           [ngClass]="{'completed': todoItem.completed}">
         <div class="task-grid">
-          <input
-            (click)="toggleCompleted(i)"
-            [(ngModel)]="todoItem.completed"
-            type="checkbox"
-          />
+          <!-- Checkbox -->
+          <input [checked]="todoItem.completed" type="checkbox"/>
+
+          <!-- Task Text -->
           <span [class.completed]="todoItem.completed">{{ todoItem.task }}</span>
-          <small class="task-timestamp">{{ todoItem.timestamp }}</small>
+
+          <!-- Timestamp (if needed) -->
+          <!-- <small class="task-timestamp">{{ todoItem.timestamp }}</small> -->
+
+          <!-- Action Buttons -->
           <div class="task-actions">
-            <button (click)="editTask(todoItem)" class="edit-btn">Edit</button>
-            <button (click)="deleteTask(todoItem.id)" class="delete-btn">Delete</button>
+            <!--            <button (click)="editTask(todoItem)" class="edit-btn">Edit</button>-->
+            <!--            <button (click)="deleteTask(todoItem.id)" class="delete-btn">Delete</button>-->
           </div>
         </div>
       </li>
     </ul>
   </div>
-
 </main>
 
-
-<router-outlet/>
+<router-outlet></router-outlet>
