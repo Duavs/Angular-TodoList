@@ -12,7 +12,6 @@
   </div>
 
   <!-- Task List -->
-  <!-- Task List -->
   <div class="task-list-container">
     <ul class="task-list">
       <li *ngFor="let todoItem of todoList; let i = index" [ngClass]="{'completed': todoItem.completed}">
@@ -44,11 +43,17 @@
             <button (click)="cancelEditing()" *ngIf="editingTaskId === todoItem.id" class="cancel-btn">
               Cancel
             </button>
+            <button (click)="deleteTask(todoItem)"
+                    *ngIf="!todoItem.isDeleted"
+                    class="delete-btn">
+              Delete
+            </button>
           </div>
         </div>
       </li>
     </ul>
   </div>
+
 </main>
 
 <router-outlet></router-outlet>

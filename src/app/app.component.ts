@@ -9,6 +9,7 @@ export interface TodoItem {
   id: number;
   task: string;
   completed: boolean;
+  isDeleted: boolean;
 }
 
 let timerInterval: number = 1000;
@@ -37,7 +38,7 @@ export class AppComponent {
   fetchTodos() {
     this.todoService.getTodos().subscribe({
       next: (todos) => {
-        this.todoList = [...todos];
+        this.todoList = todos.filter(todo => !todo.isDeleted); // ✅ Filter out deleted items
       },
       error: (err) => {
         console.error('Error fetching todos:', err);
@@ -51,7 +52,8 @@ export class AppComponent {
       const newTaskItem: TodoItem = {
         id: 0,
         task: this.newTask.toUpperCase(),
-        completed: false
+        completed: false,
+        isDeleted: false
       };
 
       this.todoService.addTodo(newTaskItem).subscribe({
@@ -117,6 +119,43 @@ export class AppComponent {
       error: (err) => {
         console.error('Error updating task status:', err);
         Swal.fire({title: 'Error', text: 'Failed to update task status', icon: 'error'});
+      }
+    });
+  }
+
+  deleteTask(todoItem: TodoItem) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This task will remove the selected task.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        todoItem.isDeleted = true;
+
+        this.todoService.softDeleteTodo(todoItem.id).subscribe({
+          next: () => {
+            this.todoList = this.todoList.filter(t => t.id !== todoItem.id);
+            Swal.fire({title: 'Task Deleted', text: 'Successfully deleted!', icon: 'success'});
+          }
+        })
+      }
+    })
+  }
+
+  restoreTask(todoItem: TodoItem) {
+    todoItem.isDeleted = false;
+
+    this.todoService.updateTodo(todoItem).subscribe({
+      next: () => {
+        this.fetchTodos(); // ✅ Refresh list
+        Swal.fire({title: 'Restored!', text: 'Task has been restored.', icon: 'success'});
+      },
+      error: (err) => {
+        console.error('Error restoring task:', err);
+        Swal.fire({title: 'Error', text: 'Failed to restore task', icon: 'error'});
       }
     });
   }
