@@ -7,29 +7,43 @@
   <div class="add-task">
     <input [(ngModel)]="newTask" placeholder="Enter new task here"/>
     <button (click)="addTask()">
-      {{ editingTaskId === null ? 'Add' : 'Update' }}
+      Add
     </button>
   </div>
 
   <!-- Task List -->
+  <!-- Task List -->
   <div class="task-list-container">
     <ul class="task-list">
-      <li *ngFor="let todoItem of todoList; let i = index"
-          [ngClass]="{'completed': todoItem.completed}">
+      <li *ngFor="let todoItem of todoList; let i = index" [ngClass]="{'completed': todoItem.completed}">
         <div class="task-grid">
-          <!-- Checkbox -->
-          <input [checked]="todoItem.completed" type="checkbox"/>
+          <!-- Checkbox (Updates `Completed` status in DB) -->
+          <input
+            (change)="toogleCompletion(todoItem)"
+            [checked]="todoItem.completed"
+            type="checkbox"
+          />
 
-          <!-- Task Text -->
-          <span [class.completed]="todoItem.completed">{{ todoItem.task }}</span>
-
-          <!-- Timestamp (if needed) -->
-          <!-- <small class="task-timestamp">{{ todoItem.timestamp }}</small> -->
+          <!-- Task Text (Editing Mode) -->
+          <span *ngIf="editingTaskId !== todoItem.id" [class.completed]="todoItem.completed">
+          {{ todoItem.task }}
+        </span>
+          <input *ngIf="editingTaskId === todoItem.id" [(ngModel)]="editedTask" class="edit-input"/>
 
           <!-- Action Buttons -->
           <div class="task-actions">
-            <!--            <button (click)="editTask(todoItem)" class="edit-btn">Edit</button>-->
-            <!--            <button (click)="deleteTask(todoItem.id)" class="delete-btn">Delete</button>-->
+            <!-- Edit Button -->
+            <button (click)="startEditing(todoItem)" *ngIf="editingTaskId !== todoItem.id" class="edit-btn">
+              Edit
+            </button>
+
+            <!-- Save & Cancel Buttons (Shown in Editing Mode) -->
+            <button (click)="saveTask(todoItem)" *ngIf="editingTaskId === todoItem.id" class="save-btn">
+              Save
+            </button>
+            <button (click)="cancelEditing()" *ngIf="editingTaskId === todoItem.id" class="cancel-btn">
+              Cancel
+            </button>
           </div>
         </div>
       </li>
