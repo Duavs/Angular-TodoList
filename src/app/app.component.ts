@@ -1,9 +1,13 @@
 import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {NgClass, NgFor, NgIf} from '@angular/common';
 import {TodoService} from './services/todo.service';
-import Swal from 'sweetalert2';
+import {CheckboxModule} from 'primeng/checkbox';
+import {InputTextModule} from 'primeng/inputtext';
+import {ButtonModule} from 'primeng/button';
+import {TableModule} from 'primeng/table';
+import {DialogModule} from 'primeng/dialog';
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
 
 export interface TodoItem {
   id: number;
@@ -12,12 +16,13 @@ export interface TodoItem {
   isDeleted: boolean;
 }
 
-let timerInterval: number = 1000;
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, NgFor, NgClass, NgIf],
+  imports: [
+    FormsModule, CheckboxModule, InputTextModule, ButtonModule, TableModule, DialogModule, ToastModule
+  ],
+  providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -28,7 +33,7 @@ export class AppComponent {
   editingTaskId: number | null = null;
   editedTask: string = '';
 
-  constructor(private todoService: TodoService) {
+  constructor(private todoService: TodoService, private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -38,11 +43,11 @@ export class AppComponent {
   fetchTodos() {
     this.todoService.getTodos().subscribe({
       next: (todos) => {
-        this.todoList = todos.filter(todo => !todo.isDeleted); // ✅ Filter out deleted items
+        this.todoList = todos.filter(todo => !todo.isDeleted);
       },
       error: (err) => {
         console.error('Error fetching todos:', err);
-        Swal.fire({title: 'Error', text: 'Failed to load tasks', icon: 'error'});
+        this.showMessage('error', 'Error', 'Failed to load tasks');
       }
     });
   }
@@ -60,24 +65,21 @@ export class AppComponent {
         next: (savedTask) => {
           this.todoList.push(savedTask);
           this.newTask = '';
-          Swal.fire({title: 'Task Added', text: 'Successfully added!', icon: 'success'});
+          this.showMessage('success', 'Task Added', 'Successfully added!');
         },
         error: (err) => {
           console.error('Error adding task:', err);
-          Swal.fire({title: 'Error', text: 'Failed to add task', icon: 'error'});
+          this.showMessage('error', 'Error', 'Failed to add task');
         }
       });
     }
   }
 
-  /** ✅ Start Editing a Task */
   startEditing(todo: TodoItem): void {
     this.editingTaskId = todo.id;
     this.editedTask = todo.task;
-    console.log(this.editingTaskId);
   }
 
-  /** ✅ Save Edited Task */
   saveTask(todo: TodoItem): void {
     if (this.editedTask.trim() !== '') {
       const updatedTask: TodoItem = {...todo, task: this.editedTask};
@@ -90,12 +92,11 @@ export class AppComponent {
           }
           this.editingTaskId = null;
           this.editedTask = '';
-
-          Swal.fire({title: 'Task Updated', text: 'Successfully updated!', icon: 'success'});
+          this.showMessage('success', 'Task Updated', 'Successfully updated!');
         },
         error: (err) => {
           console.error('Error updating task:', err);
-          Swal.fire({title: 'Error', text: 'Failed to update task', icon: 'error'});
+          this.showMessage('error', 'Error', 'Failed to update task');
         }
       });
     }
@@ -107,56 +108,48 @@ export class AppComponent {
   }
 
   toogleCompletion(todoItem: TodoItem) {
-    todoItem.completed = !todoItem.completed; // toggle status
+    todoItem.completed = !todoItem.completed;
     this.todoService.updateTodo(todoItem).subscribe({
       next: () => {
-        Swal.fire({
-          title: 'Updated!',
-          text: `Task marked as ${todoItem.completed ? 'Completed' : 'Incomplete'}`,
-          icon: 'success'
-        });
+        this.showMessage('info', 'Updated', `Task marked as ${todoItem.completed ? 'Completed' : 'Incomplete'}`);
       },
       error: (err) => {
         console.error('Error updating task status:', err);
-        Swal.fire({title: 'Error', text: 'Failed to update task status', icon: 'error'});
+        this.showMessage('error', 'Error', 'Failed to update task status');
       }
     });
   }
 
   deleteTask(todoItem: TodoItem) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This task will remove the selected task.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, delete it!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        todoItem.isDeleted = true;
-
-        this.todoService.softDeleteTodo(todoItem.id).subscribe({
-          next: () => {
-            this.todoList = this.todoList.filter(t => t.id !== todoItem.id);
-            Swal.fire({title: 'Task Deleted', text: 'Successfully deleted!', icon: 'success'});
-          }
-        })
+    todoItem.isDeleted = true;
+    this.todoService.softDeleteTodo(todoItem.id).subscribe({
+      next: () => {
+        this.todoList = this.todoList.filter(t => t.id !== todoItem.id);
+        this.showMessage('warn', 'Task Deleted', 'Successfully deleted!');
+      },
+      error: (err) => {
+        console.error('Error deleting task:', err);
+        this.showMessage('error', 'Error', 'Failed to delete task');
       }
-    })
+    });
   }
 
   restoreTask(todoItem: TodoItem) {
     todoItem.isDeleted = false;
-
     this.todoService.updateTodo(todoItem).subscribe({
       next: () => {
-        this.fetchTodos(); // ✅ Refresh list
-        Swal.fire({title: 'Restored!', text: 'Task has been restored.', icon: 'success'});
+        this.fetchTodos();
+        this.showMessage('success', 'Restored', 'Task has been restored.');
       },
       error: (err) => {
         console.error('Error restoring task:', err);
-        Swal.fire({title: 'Error', text: 'Failed to restore task', icon: 'error'});
+        this.showMessage('error', 'Error', 'Failed to restore task');
       }
     });
+  }
+
+  /** ✅ Show Toast Messages */
+  showMessage(severity: string, summary: string, detail: string) {
+    this.messageService.add({severity, summary, detail});
   }
 }

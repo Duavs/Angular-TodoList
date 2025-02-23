@@ -2,58 +2,36 @@
   <h1>Today's Todo List</h1>
 </header>
 
+<p-toast></p-toast>
+
 <main class="todo-container">
   <!-- Task Input -->
   <div class="add-task">
-    <input [(ngModel)]="newTask" placeholder="Enter new task here"/>
-    <button (click)="addTask()">
-      Add
-    </button>
+    <input [(ngModel)]="newTask" pInputText placeholder="Enter new task here"/>
+    <button (click)="addTask()" class="p-button-success" icon="pi pi-plus" label="Add" pButton></button>
   </div>
 
   <!-- Task List -->
-  <div class="task-list-container">
-    <ul class="task-list">
-      <li *ngFor="let todoItem of todoList; let i = index" [ngClass]="{'completed': todoItem.completed}">
-        <div class="task-grid">
-          <!-- Checkbox (Updates `Completed` status in DB) -->
-          <input
-            (change)="toogleCompletion(todoItem)"
-            [checked]="todoItem.completed"
-            type="checkbox"
-          />
-
-          <!-- Task Text (Editing Mode) -->
-          <span *ngIf="editingTaskId !== todoItem.id" [class.completed]="todoItem.completed">
-          {{ todoItem.task }}
-        </span>
-          <input *ngIf="editingTaskId === todoItem.id" [(ngModel)]="editedTask" class="edit-input"/>
-
-          <!-- Action Buttons -->
-          <div class="task-actions">
-            <!-- Edit Button -->
-            <button (click)="startEditing(todoItem)" *ngIf="editingTaskId !== todoItem.id" class="edit-btn">
-              Edit
-            </button>
-
-            <!-- Save & Cancel Buttons (Shown in Editing Mode) -->
-            <button (click)="saveTask(todoItem)" *ngIf="editingTaskId === todoItem.id" class="save-btn">
-              Save
-            </button>
-            <button (click)="cancelEditing()" *ngIf="editingTaskId === todoItem.id" class="cancel-btn">
-              Cancel
-            </button>
-            <button (click)="deleteTask(todoItem)"
-                    *ngIf="!todoItem.isDeleted"
-                    class="delete-btn">
-              Delete
-            </button>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-
+  <p-table [value]="todoList">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Task</th>
+        <th>Completed</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template let-todoItem pTemplate="body">
+      <tr>
+        <td>{{ todoItem.task }}</td>
+        <td>
+          <p-checkbox (onChange)="toogleCompletion(todoItem)" [(ngModel)]="todoItem.completed"
+                      [binary]="true"></p-checkbox>
+        </td>
+        <td>
+          <p-button (click)="startEditing(todoItem)" label="Edit" severity="info"/>
+          <p-button (click)="deleteTask(todoItem)" label="Delete" severity="danger"/>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </main>
-
-<router-outlet></router-outlet>
