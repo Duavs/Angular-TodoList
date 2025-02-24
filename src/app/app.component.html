@@ -8,7 +8,7 @@
   <!-- Task Input -->
   <div class="add-task">
     <input [(ngModel)]="newTask" pInputText placeholder="Enter new task here"/>
-    <button (click)="addTask()" class="p-button-success" icon="pi pi-plus" label="Add" pButton></button>
+    <p-button (click)="addTask()" class="p-button-success" icon="pi pi-plus" label="Add"></p-button>
   </div>
 
   <!-- Task List -->
@@ -22,14 +22,43 @@
     </ng-template>
     <ng-template let-todoItem pTemplate="body">
       <tr>
-        <td>{{ todoItem.task }}</td>
+        <!-- Editable Task Field -->
+        <td>
+          <input [(ngModel)]="todoItem.task"
+                 [readonly]="editingTaskId !== todoItem.id"
+                 pInputText/>
+        </td>
+
+        <!-- Completion Checkbox -->
         <td>
           <p-checkbox (onChange)="toogleCompletion(todoItem)" [(ngModel)]="todoItem.completed"
-                      [binary]="true"></p-checkbox>
+                      binary="true"></p-checkbox>
         </td>
+
+        <!-- Action Buttons -->
         <td>
-          <p-button (click)="startEditing(todoItem)" label="Edit" severity="info"/>
-          <p-button (click)="deleteTask(todoItem)" label="Delete" severity="danger"/>
+          <!-- Show Save & Cancel buttons ONLY when editing -->
+          <span [hidden]="editingTaskId !== todoItem.id">
+            <p-button (click)="saveTask(todoItem)"
+                      class="p-button p-button-success"
+                      label="Save"></p-button>
+            <p-button (click)="cancelEditing()"
+                      class="p-button p-button-secondary"
+                      label="Cancel"></p-button>
+          </span>
+
+          <!-- Show Edit button ONLY when NOT editing -->
+          <span [hidden]="editingTaskId === todoItem.id">
+            <p-button (click)="startEditing(todoItem)"
+                      class="p-button p-button-info"
+                      label="Edit"></p-button>
+          </span>
+
+          <!-- Delete button (Disabled when editing) -->
+          <p-button (click)="deleteTask(todoItem)"
+                    [disabled]="editingTaskId === todoItem.id"
+                    class="p-button p-button-danger"
+                    label="Delete"></p-button>
         </td>
       </tr>
     </ng-template>

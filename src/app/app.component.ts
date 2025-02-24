@@ -44,6 +44,7 @@ export class AppComponent {
     this.todoService.getTodos().subscribe({
       next: (todos) => {
         this.todoList = todos.filter(todo => !todo.isDeleted);
+        console.log("Fetched Todos:", this.todoList); // Debugging
       },
       error: (err) => {
         console.error('Error fetching todos:', err);
@@ -62,9 +63,9 @@ export class AppComponent {
       };
 
       this.todoService.addTodo(newTaskItem).subscribe({
-        next: (savedTask) => {
-          this.todoList.push(savedTask);
+        next: () => {
           this.newTask = '';
+          this.fetchTodos(); // ⬅ Refresh data after adding
           this.showMessage('success', 'Task Added', 'Successfully added!');
         },
         error: (err) => {
@@ -78,20 +79,21 @@ export class AppComponent {
   startEditing(todo: TodoItem): void {
     this.editingTaskId = todo.id;
     this.editedTask = todo.task;
+    console.log(this.editedTask);
   }
 
   saveTask(todo: TodoItem): void {
     if (this.editedTask.trim() !== '') {
+      this.editingTaskId = todo.id;
+      this.editedTask = todo.task;
       const updatedTask: TodoItem = {...todo, task: this.editedTask};
-
+      console.log(this.editedTask);
       this.todoService.updateTodo(updatedTask).subscribe({
         next: () => {
-          const index = this.todoList.findIndex(t => t.id === todo.id);
-          if (index !== -1) {
-            this.todoList[index] = updatedTask;
-          }
+          console.log('Updated task:', updatedTask);
           this.editingTaskId = null;
           this.editedTask = '';
+          this.fetchTodos(); // ⬅ Ensure UI updates after editing
           this.showMessage('success', 'Task Updated', 'Successfully updated!');
         },
         error: (err) => {
@@ -124,7 +126,7 @@ export class AppComponent {
     todoItem.isDeleted = true;
     this.todoService.softDeleteTodo(todoItem.id).subscribe({
       next: () => {
-        this.todoList = this.todoList.filter(t => t.id !== todoItem.id);
+        this.fetchTodos(); // ⬅ Ensure deleted tasks disappear immediately
         this.showMessage('warn', 'Task Deleted', 'Successfully deleted!');
       },
       error: (err) => {
