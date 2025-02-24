@@ -54,26 +54,50 @@ export class AppComponent {
   }
 
   addTask(): void {
-    if (this.newTask.trim() !== '') {
-      const newTaskItem: TodoItem = {
-        id: 0,
-        task: this.newTask.toUpperCase(),
-        completed: false,
-        isDeleted: false
-      };
+    const lengthRegex = /^.{3,100}$/;
+    const allowdCharsRegex = /^[a-zA-Z0-9\s.,!?'-]+$/;
+    const bannedWords = ['stupid', 'idiot'];
+    const banneWordsRegex = new RegExp(`\\b(${bannedWords.join('|')})\\b`, 'i');
 
-      this.todoService.addTodo(newTaskItem).subscribe({
-        next: () => {
-          this.newTask = '';
-          this.fetchTodos(); // ⬅ Refresh data after adding
-          this.showMessage('success', 'Task Added', 'Successfully added!');
-        },
-        error: (err) => {
-          console.error('Error adding task:', err);
-          this.showMessage('error', 'Error', 'Failed to add task');
-        }
-      });
+    if (!this.newTask.trim()) {
+      this.showMessage('error', 'Invalid Input', 'Task cannot be empty');
+      return;
     }
+
+    if (!lengthRegex.test(this.newTask)) {
+      this.showMessage('error', 'Invalid Input', 'Task must be between 3 and 100 characters');
+      console.log(this.newTask.length);
+      return;
+    }
+
+    if (!allowdCharsRegex.test(this.newTask)) {
+      this.showMessage('error', 'Invalid Characters', 'Task contains invalid characters');
+      return;
+    }
+
+    if (banneWordsRegex.test(this.newTask)) {
+      this.showMessage('error', 'Inappropriate Language', 'Task contains banned words');
+      return;
+    }
+
+    const newTaskItem: TodoItem = {
+      id: 0,
+      task: this.newTask.toUpperCase(),
+      completed: false,
+      isDeleted: false
+    };
+
+    this.todoService.addTodo(newTaskItem).subscribe({
+      next: () => {
+        this.newTask = '';
+        this.fetchTodos(); // ⬅ Refresh data after adding
+        this.showMessage('success', 'Task Added', 'Successfully added!');
+      },
+      error: (err) => {
+        console.error('Error adding task:', err);
+        this.showMessage('error', 'Error', 'Failed to add task');
+      }
+    });
   }
 
   startEditing(todo: TodoItem): void {
