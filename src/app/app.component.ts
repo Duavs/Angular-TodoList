@@ -1,13 +1,8 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TodoService} from './services/todo.service';
-import {CheckboxModule} from 'primeng/checkbox';
-import {InputTextModule} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import {TableModule} from 'primeng/table';
-import {DialogModule} from 'primeng/dialog';
-import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
+import {CommonModule} from '@angular/common';
+import "tailwindcss";
 
 export interface TodoItem {
   id: number;
@@ -19,10 +14,7 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    FormsModule, CheckboxModule, InputTextModule, ButtonModule, TableModule, DialogModule, ToastModule
-  ],
-  providers: [MessageService],
+  imports: [FormsModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -33,7 +25,7 @@ export class AppComponent {
   editingTaskId: number | null = null;
   editedTask: string = '';
 
-  constructor(private todoService: TodoService, private messageService: MessageService) {
+  constructor(private todoService: TodoService) {
   }
 
   ngOnInit() {
@@ -48,7 +40,7 @@ export class AppComponent {
       },
       error: (err) => {
         console.error('Error fetching todos:', err);
-        this.showMessage('error', 'Error', 'Failed to load tasks');
+        //  this.showMessage('error', 'Error', 'Failed to load tasks');
       }
     });
   }
@@ -60,23 +52,23 @@ export class AppComponent {
     const banneWordsRegex = new RegExp(`\\b(${bannedWords.join('|')})\\b`, 'i');
 
     if (!this.newTask.trim()) {
-      this.showMessage('error', 'Invalid Input', 'Task cannot be empty');
+      //this.showMessage('error', 'Invalid Input', 'Task cannot be empty');
       return;
     }
 
     if (!lengthRegex.test(this.newTask)) {
-      this.showMessage('error', 'Invalid Input', 'Task must be between 3 and 100 characters');
+      // this.showMessage('error', 'Invalid Input', 'Task must be between 3 and 100 characters');
       console.log(this.newTask.length);
       return;
     }
 
     if (!allowdCharsRegex.test(this.newTask)) {
-      this.showMessage('error', 'Invalid Characters', 'Task contains invalid characters');
+      //    this.showMessage('error', 'Invalid Characters', 'Task contains invalid characters');
       return;
     }
 
     if (banneWordsRegex.test(this.newTask)) {
-      this.showMessage('error', 'Inappropriate Language', 'Task contains banned words');
+      //    this.showMessage('error', 'Inappropriate Language', 'Task contains banned words');
       return;
     }
 
@@ -91,11 +83,11 @@ export class AppComponent {
       next: () => {
         this.newTask = '';
         this.fetchTodos(); // ⬅ Refresh data after adding
-        this.showMessage('success', 'Task Added', 'Successfully added!');
+        //this.showMessage('success', 'Task Added', 'Successfully added!');
       },
       error: (err) => {
         console.error('Error adding task:', err);
-        this.showMessage('error', 'Error', 'Failed to add task');
+        //  this.showMessage('error', 'Error', 'Failed to add task');
       }
     });
   }
@@ -118,11 +110,11 @@ export class AppComponent {
           this.editingTaskId = null;
           this.editedTask = '';
           this.fetchTodos(); // ⬅ Ensure UI updates after editing
-          this.showMessage('success', 'Task Updated', 'Successfully updated!');
+          // this.showMessage('success', 'Task Updated', 'Successfully updated!');
         },
         error: (err) => {
           console.error('Error updating task:', err);
-          this.showMessage('error', 'Error', 'Failed to update task');
+          //this.showMessage('error', 'Error', 'Failed to update task');
         }
       });
     }
@@ -133,15 +125,16 @@ export class AppComponent {
     this.editedTask = '';
   }
 
-  toogleCompletion(todoItem: TodoItem) {
+  toggleCompletion(todoItem: TodoItem) {
     todoItem.completed = !todoItem.completed;
     this.todoService.updateTodo(todoItem).subscribe({
       next: () => {
-        this.showMessage('info', 'Updated', `Task marked as ${todoItem.completed ? 'Completed' : 'Incomplete'}`);
+        console.log('clicked checkbox');
+        //       this.showMessage('info', 'Updated', `Task marked as ${todoItem.completed ? 'Completed' : 'Incomplete'}`);
       },
       error: (err) => {
         console.error('Error updating task status:', err);
-        this.showMessage('error', 'Error', 'Failed to update task status');
+        //   this.showMessage('error', 'Error', 'Failed to update task status');
       }
     });
   }
@@ -151,11 +144,11 @@ export class AppComponent {
     this.todoService.softDeleteTodo(todoItem.id).subscribe({
       next: () => {
         this.fetchTodos(); // ⬅ Ensure deleted tasks disappear immediately
-        this.showMessage('warn', 'Task Deleted', 'Successfully deleted!');
+        //  this.showMessage('warn', 'Task Deleted', 'Successfully deleted!');
       },
       error: (err) => {
         console.error('Error deleting task:', err);
-        this.showMessage('error', 'Error', 'Failed to delete task');
+        //   this.showMessage('error', 'Error', 'Failed to delete task');
       }
     });
   }
@@ -165,17 +158,12 @@ export class AppComponent {
     this.todoService.updateTodo(todoItem).subscribe({
       next: () => {
         this.fetchTodos();
-        this.showMessage('success', 'Restored', 'Task has been restored.');
+        //    this.showMessage('success', 'Restored', 'Task has been restored.');
       },
       error: (err) => {
         console.error('Error restoring task:', err);
-        this.showMessage('error', 'Error', 'Failed to restore task');
+        //  this.showMessage('error', 'Error', 'Failed to restore task');
       }
     });
-  }
-
-  /** ✅ Show Toast Messages */
-  showMessage(severity: string, summary: string, detail: string) {
-    this.messageService.add({severity, summary, detail});
   }
 }

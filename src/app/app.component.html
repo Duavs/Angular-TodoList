@@ -1,66 +1,76 @@
-<header class="task-list-header">
-  <h1>Today's Todo List</h1>
+<header class="bg-blue-500 text-white py-4 text-center">
+  <h1 class="font-bold text-3xl underline">Today's Todo List</h1>
 </header>
 
-<p-toast></p-toast>
-
-<main class="todo-container">
+<main class="max-w-2xl mx-auto mt-6 p-4 bg-gray-100 shadow-lg rounded-lg">
   <!-- Task Input -->
-  <div class="add-task">
-    <input [(ngModel)]="newTask" pInputText placeholder="Enter new task here"/>
-    <p-button (click)="addTask()" class="p-button-success" icon="pi pi-plus" label="Add"></p-button>
+  <div class="flex gap-2 mb-4">
+    <input [(ngModel)]="newTask"
+           class="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+           placeholder="Enter new task here"/>
+    <button (click)="addTask()"
+            class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+      Add
+    </button>
   </div>
 
   <!-- Task List -->
-  <p-table [value]="todoList">
-    <ng-template pTemplate="header">
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse border border-gray-300 bg-white table-auto">
+      <thead class="bg-gray-200">
       <tr>
-        <th>Task</th>
-        <th>Completed</th>
-        <th>Actions</th>
+        <th class="border border-gray-300 px-4 py-2">Task</th>
+        <th class="border border-gray-300 px-4 py-2">Completed</th>
+        <th class="border border-gray-300 px-4 py-2">Actions</th>
       </tr>
-    </ng-template>
-    <ng-template let-todoItem pTemplate="body">
-      <tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100">
         <!-- Editable Task Field -->
-        <td>
+        <td class="border border-gray-300 px-4 py-2">
           <input [(ngModel)]="todoItem.task"
                  [readonly]="editingTaskId !== todoItem.id"
-                 pInputText/>
+                 class="w-full p-1 border border-gray-300 rounded-md"/>
         </td>
 
         <!-- Completion Checkbox -->
-        <td>
-          <p-checkbox (onChange)="toogleCompletion(todoItem)" [(ngModel)]="todoItem.completed"
-                      binary="true"></p-checkbox>
+        <td class="border border-gray-300 px-4 py-2 text-center">
+          <input (change)="toggleCompletion(todoItem)" [(ngModel)]="todoItem.completed"
+                 class="h-5 w-5"
+                 type="checkbox"/>
         </td>
 
         <!-- Action Buttons -->
-        <td>
+        <td class="border border-gray-300 px-4 py-2 flex gap-2">
           <!-- Show Save & Cancel buttons ONLY when editing -->
-          <span [hidden]="editingTaskId !== todoItem.id">
-            <p-button (click)="saveTask(todoItem)"
-                      class="p-button p-button-success"
-                      label="Save"></p-button>
-            <p-button (click)="cancelEditing()"
-                      class="p-button p-button-secondary"
-                      label="Cancel"></p-button>
-          </span>
+          <div *ngIf="editingTaskId === todoItem.id">
+            <button (click)="saveTask(todoItem)"
+                    class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
+              Save
+            </button>
+            <button (click)="cancelEditing()"
+                    class="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
+              Cancel
+            </button>
+          </div>
 
           <!-- Show Edit button ONLY when NOT editing -->
-          <span [hidden]="editingTaskId === todoItem.id">
-            <p-button (click)="startEditing(todoItem)"
-                      class="p-button p-button-info"
-                      label="Edit"></p-button>
-          </span>
+          <div *ngIf="editingTaskId !== todoItem.id">
+            <button (click)="startEditing(todoItem)"
+                    class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+              Edit
+            </button>
+          </div>
 
           <!-- Delete button (Disabled when editing) -->
-          <p-button (click)="deleteTask(todoItem)"
-                    [disabled]="editingTaskId === todoItem.id"
-                    class="p-button p-button-danger"
-                    label="Delete"></p-button>
+          <button (click)="deleteTask(todoItem)"
+                  [disabled]="editingTaskId === todoItem.id"
+                  class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 disabled:opacity-50">
+            Delete
+          </button>
         </td>
       </tr>
-    </ng-template>
-  </p-table>
+      </tbody>
+    </table>
+  </div>
 </main>

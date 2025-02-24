@@ -1,4 +1,6 @@
-@import "primeicons/primeicons.css";
+@import "tailwindcss";
+
+@tailwind utilities;
 
 * {
   margin: 0;
