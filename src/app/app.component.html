@@ -1,76 +1,74 @@
 <header class="bg-blue-500 text-white py-4 text-center">
   <h1 class="font-bold text-3xl underline">Today's Todo List</h1>
 </header>
+<div class="overflow-x-auto w-full flex justify-center">
+  <main class="max-w-2xl mx-auto mt-6 p-6 bg-gray-100 shadow-lg rounded-lg flex flex-col items-center">
+    <!-- Task Input Centered -->
+    <div class="flex gap-2 mb-4 w-full justify-center">
+      <input [(ngModel)]="newTask"
+             class="w-3/4 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 text-center"
+             placeholder="Enter new task here"/>
+      <button (click)="addTask()"
+              class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+        Add
+      </button>
+    </div>
 
-<main class="max-w-2xl mx-auto mt-6 p-4 bg-gray-100 shadow-lg rounded-lg">
-  <!-- Task Input -->
-  <div class="flex gap-2 mb-4">
-    <input [(ngModel)]="newTask"
-           class="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
-           placeholder="Enter new task here"/>
-    <button (click)="addTask()"
-            class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-      Add
-    </button>
-  </div>
+    <!-- Task List Centered -->
+    <div class="overflow-x-auto w-full flex justify-center">
+      <table class="w-full max-w-xl border-collapse border border-gray-300 bg-white table-auto text-center">
+        <thead class="bg-gray-200">
+        <tr>
+          <th class="border border-gray-300 px-4 py-2">Task</th>
+          <th class="border border-gray-300 px-4 py-2">Completed</th>
+          <th class="border border-gray-300 px-4 py-2">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100">
+          <!-- Editable Task Field -->
+          <td class="border border-gray-300 px-4 py-2">
+            <input [(ngModel)]="todoItem.task"
+                   [readonly]="editingTaskId !== todoItem.id"
+                   class="w-full p-1 border border-gray-300 rounded-md text-center"/>
+          </td>
 
-  <!-- Task List -->
-  <div class="overflow-x-auto">
-    <table class="w-full border-collapse border border-gray-300 bg-white table-auto">
-      <thead class="bg-gray-200">
-      <tr>
-        <th class="border border-gray-300 px-4 py-2">Task</th>
-        <th class="border border-gray-300 px-4 py-2">Completed</th>
-        <th class="border border-gray-300 px-4 py-2">Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100">
-        <!-- Editable Task Field -->
-        <td class="border border-gray-300 px-4 py-2">
-          <input [(ngModel)]="todoItem.task"
-                 [readonly]="editingTaskId !== todoItem.id"
-                 class="w-full p-1 border border-gray-300 rounded-md"/>
-        </td>
+          <!-- Completion Checkbox -->
+          <td class="border border-gray-300 px-4 py-2 text-center">
+            <input (change)="toggleCompletion(todoItem)" [(ngModel)]="todoItem.completed"
+                   class="h-5 w-5"
+                   type="checkbox"/>
+          </td>
 
-        <!-- Completion Checkbox -->
-        <td class="border border-gray-300 px-4 py-2 text-center">
-          <input (change)="toggleCompletion(todoItem)" [(ngModel)]="todoItem.completed"
-                 class="h-5 w-5"
-                 type="checkbox"/>
-        </td>
+          <!-- Action Buttons -->
+          <td class="border border-gray-300 px-4 py-2 flex justify-center gap-2">
+            <div *ngIf="editingTaskId === todoItem.id" class="flex gap-2">
+              <button (click)="saveTask(todoItem)"
+                      class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
+                Save
+              </button>
+              <button (click)="cancelEditing()"
+                      class="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
+                Cancel
+              </button>
+            </div>
 
-        <!-- Action Buttons -->
-        <td class="border border-gray-300 px-4 py-2 flex gap-2">
-          <!-- Show Save & Cancel buttons ONLY when editing -->
-          <div *ngIf="editingTaskId === todoItem.id">
-            <button (click)="saveTask(todoItem)"
-                    class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
-              Save
+            <div *ngIf="editingTaskId !== todoItem.id">
+              <button (click)="startEditing(todoItem)"
+                      class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                Edit
+              </button>
+            </div>
+
+            <button (click)="deleteTask(todoItem)"
+                    [disabled]="editingTaskId === todoItem.id"
+                    class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 disabled:opacity-50">
+              Delete
             </button>
-            <button (click)="cancelEditing()"
-                    class="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
-              Cancel
-            </button>
-          </div>
-
-          <!-- Show Edit button ONLY when NOT editing -->
-          <div *ngIf="editingTaskId !== todoItem.id">
-            <button (click)="startEditing(todoItem)"
-                    class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
-              Edit
-            </button>
-          </div>
-
-          <!-- Delete button (Disabled when editing) -->
-          <button (click)="deleteTask(todoItem)"
-                  [disabled]="editingTaskId === todoItem.id"
-                  class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 disabled:opacity-50">
-            Delete
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</main>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
