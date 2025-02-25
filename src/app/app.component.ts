@@ -92,7 +92,7 @@ export class AppComponent {
     });
   }
 
-  startEditing(todo: TodoItem): void {
+  startEditingCurrentTask(todo: TodoItem): void {
     this.editingTaskId = todo.id;
     this.editedTask = todo.task;
     console.log(this.editedTask);
@@ -125,7 +125,7 @@ export class AppComponent {
     this.editedTask = '';
   }
 
-  toggleCompletion(todoItem: TodoItem) {
+  toggleCompletions(todoItem: TodoItem) {
     todoItem.completed = !todoItem.completed;
     this.todoService.updateTodo(todoItem).subscribe({
       next: () => {
@@ -139,7 +139,7 @@ export class AppComponent {
     });
   }
 
-  deleteTask(todoItem: TodoItem) {
+  softdeleteTask(todoItem: TodoItem) {
     todoItem.isDeleted = true;
     this.todoService.softDeleteTodo(todoItem.id).subscribe({
       next: () => {

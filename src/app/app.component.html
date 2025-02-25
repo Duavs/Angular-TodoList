@@ -35,7 +35,7 @@
 
           <!-- Completion Checkbox -->
           <td class="border border-gray-400 px-4 py-2 text-center">
-            <input (ngModelChange)="toggleCompletion(todoItem)"
+            <input (ngModelChange)="toggleCompletions(todoItem)"
                    [ngModel]="todoItem.completed"
                    class="h-5 w-5"
                    type="checkbox"/>
@@ -49,19 +49,19 @@
                 Save
               </button>
               <button (click)="cancelEditing()"
-                      class="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
+                      class="bg-gray-600 text-white px-3 py-1 rounded-md hover:bg-gray-600">
                 Cancel
               </button>
             </div>
 
             <div *ngIf="editingTaskId !== todoItem.id">
-              <button (click)="startEditing(todoItem)"
+              <button (click)="startEditingCurrentTask(todoItem)"
                       class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                 Edit
               </button>
             </div>
 
-            <button (click)="deleteTask(todoItem)"
+            <button (click)="softdeleteTask(todoItem)"
                     [disabled]="editingTaskId === todoItem.id"
                     class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 disabled:opacity-50">
               Delete
