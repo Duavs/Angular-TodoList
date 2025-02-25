@@ -35,7 +35,8 @@
 
           <!-- Completion Checkbox -->
           <td class="border border-gray-300 px-4 py-2 text-center">
-            <input (change)="toggleCompletion(todoItem)" [(ngModel)]="todoItem.completed"
+            <input (ngModelChange)="toggleCompletion(todoItem)"
+                   [ngModel]="todoItem.completed"
                    class="h-5 w-5"
                    type="checkbox"/>
           </td>
