@@ -25,6 +25,7 @@
         </tr>
         </thead>
         <tbody>
+        <!--        <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100">-->
         <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100">
           <!-- Editable Task Field -->
           <td class="border border-gray-300 px-4 py-2">
@@ -71,5 +72,26 @@
         </tbody>
       </table>
     </div>
+    <!-- Pagination Controls -->
+    <div class="flex justify-center mt-4 space-x-2">
+      <button (click)="prevPage()"
+              [disabled]="currentPage === 1"
+              class="px-3 py-1 bg-gray-300 text-gray-700 rounded-md disabled:opacity-50">
+        Prev
+      </button>
+
+      <span (click)="goToPage(page)" *ngFor="let page of pages"
+            [ngClass]="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-300 text-gray-700': currentPage !== page}"
+            class="cursor-pointer px-3 py-1 rounded-md">
+    {{ page }}
+  </span>
+
+      <button (click)="nextPage()"
+              [disabled]="currentPage === totalPages"
+              class="px-3 py-1 bg-gray-300 text-gray-700 rounded-md disabled:opacity-50">
+        Next
+      </button>
+    </div>
   </main>
+
 </div>

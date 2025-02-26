@@ -21,9 +21,16 @@ export interface TodoItem {
 export class AppComponent {
   title = 'angular-todo';
   todoList: TodoItem[] = [];
+  paginatedTodos: TodoItem[] = [];
   newTask: string = '';
   editingTaskId: number | null = null;
   editedTask: string = '';
+
+  //Pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 5; // Show 5 task per page
+  totalPages: number = 1;
+  pages: number[] = [];
 
   constructor(private todoService: TodoService) {
   }
@@ -32,17 +39,76 @@ export class AppComponent {
     this.fetchTodos();
   }
 
+
   fetchTodos() {
     this.todoService.getTodos().subscribe({
       next: (todos) => {
-        this.todoList = todos.filter(todo => !todo.isDeleted);
-        console.log("Fetched Todos:", this.todoList); // Debugging
+        const activeTodos = todos.filter(todo => !todo.isDeleted);
+
+        // Update total pages
+        this.totalPages = Math.max(1, Math.ceil(activeTodos.length / this.itemsPerPage));
+
+        // Prevent invalid page number
+        if (this.currentPage > this.totalPages) {
+          this.currentPage = this.totalPages;
+        }
+        if (this.currentPage < 1) {
+          this.currentPage = 1;
+        }
+
+        // Slice tasks based on the current page
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        this.todoList = activeTodos.slice(startIndex, endIndex);
+
+        console.log("Current Page:", this.currentPage);
+        console.log("Fetched Todos:", this.todoList);
       },
       error: (err) => {
         console.error('Error fetching todos:', err);
-        //  this.showMessage('error', 'Error', 'Failed to load tasks');
       }
     });
+  }
+
+
+  // updatePagination() {
+  //   this.totalPages = Math.ceil(this.todoList.length / this.itemsPerPage);
+  //   this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
+  //   this.paginate();
+  // }
+  generatePages() {
+    this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
+  }
+
+  paginate() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedTodos = this.todoList.slice(start, end);
+  }
+
+  // Move to the previous page
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.fetchTodos();
+    }
+  }
+
+
+  // Move to the next page
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.fetchTodos();
+    }
+  }
+
+  // Go to a specific page
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.fetchTodos();
+    }
   }
 
   addTask(): void {
