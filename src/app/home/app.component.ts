@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {TodoService} from './services/todo.service';
+import {TodoService} from '../services/todo.service';
 import {CommonModule} from '@angular/common';
 import "tailwindcss";
 
