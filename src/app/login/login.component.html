@@ -1,0 +1,30 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-center mb-6">Sign In</h2>
+
+    <form (submit)="login(); $event.preventDefault()">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+        <input [(ngModel)]="email"
+               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-500" name="email" placeholder="Enter your email" required type="email">
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+        <input [(ngModel)]="password"
+               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-500" name="password" placeholder="Enter your password" required type="password">
+      </div>
+
+      <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+        Login
+      </button>
+    </form>
+
+    <p *ngIf="errorMessage" class="text-red-500 text-sm mt-2 text-center">{{ errorMessage }}</p>
+
+    <p class="mt-4 text-center text-gray-600">
+      Don't have an account?
+      <a class="text-blue-500 hover:underline" routerLink="/signup">Sign Up</a>
+    </p>
+  </div>
+</div>
