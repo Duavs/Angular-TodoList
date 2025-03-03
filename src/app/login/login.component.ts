@@ -24,10 +24,17 @@ export class LoginComponent {
 
     this.loginService.loginUser(loginData).subscribe({
       next: (response) => {
-        console.log('Login successful:', response);
-        localStorage.setItem('user', JSON.stringify(response)); // Store user details
-        console.log(localStorage.getItem('user'));
-        this.router.navigate(['home']); // Redirect to home
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          console.log('Login successfuly', response);
+          this.router.navigate(['/home']);
+        } else {
+          this.errorMessage = response.message;
+        }
+
+        // localStorage.setItem('user', JSON.stringify(response)); // Store user details
+        // console.log(localStorage.getItem('user'));
+        // this.router.navigate(['home']); // Redirect to home
       },
       error: (err) => {
         console.error('Login failed:', err);
