@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TodoService} from '../services/todo.service';
 import {CommonModule} from '@angular/common';
-
+import {Router} from '@angular/router';
 
 export interface TodoItem {
   id: number;
@@ -18,6 +18,8 @@ export interface TodoItem {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
+
 export class HomeComponent {
   title = 'angular-todo';
   todoList: TodoItem[] = [];
@@ -32,13 +34,28 @@ export class HomeComponent {
   totalPages: number = 1;
   pages: number[] = [];
 
-  constructor(private todoService: TodoService) {
+  constructor(private todoService: TodoService, private router: Router) {
   }
 
   ngOnInit() {
     this.fetchTodos();
+    this.checkAuthenticationf();
   }
 
+  checkAuthenticationf() {
+    if (!localStorage.getItem('authToken')) {
+      this.router.navigate(['/home']);
+    }
+  }
+
+  logout() {
+    localStorage.removeItem('authToken');
+    this.router.navigate(['']);
+  }
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('authToken');
+  }
 
   fetchTodos() {
     this.todoService.getTodos().subscribe({
