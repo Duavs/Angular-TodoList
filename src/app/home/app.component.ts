@@ -40,6 +40,7 @@ export class HomeComponent {
   ngOnInit() {
     this.fetchTodos();
     this.checkAuthenticationf();
+    this.isAuthenticated();
   }
 
   checkAuthenticationf() {

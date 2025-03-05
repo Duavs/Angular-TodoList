@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Router, RouterModule} from '@angular/router'; // ✅ Import RouterModule
+import {Router} from '@angular/router'; // ✅ No need to import RouterModule here
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {LoginService} from '../services/login.services';
@@ -7,7 +7,7 @@ import {LoginService} from '../services/login.services';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule], // ✅ Add RouterModule
+  imports: [FormsModule, CommonModule], // ✅ Removed RouterModule (not needed)
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -26,15 +26,11 @@ export class LoginComponent {
       next: (response) => {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
-          console.log('Login successfuly', response);
-          this.router.navigate(['/home']);
+          console.log('Login successful:', response);
+          this.router.navigate(['/home']); // ✅ Navigate to home
         } else {
-          this.errorMessage = response.message;
+          this.errorMessage = response?.message || 'Login failed. Please try again.';
         }
-
-        // localStorage.setItem('user', JSON.stringify(response)); // Store user details
-        // console.log(localStorage.getItem('user'));
-        // this.router.navigate(['home']); // Redirect to home
       },
       error: (err) => {
         console.error('Login failed:', err);
