@@ -4,7 +4,8 @@ import {SignupComponent} from './signup/signup.component';
 import {HomeComponent} from './home/app.component';
 
 export const serverRoutes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', redirectTo: 'login', pathMatch: 'full'}, // Redirects to login
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
+  {path: 'home', component: HomeComponent}  // Ensure correct import
 ];

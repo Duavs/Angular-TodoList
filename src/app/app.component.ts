@@ -14,14 +14,16 @@
 
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
+import {CommonModule} from '@angular/common';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-root',  // Changed from 'app-login' (assuming this is the root)
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   imports: [
-    RouterOutlet
+    RouterOutlet,
+    CommonModule  // Importing CommonModule for basic Angular directives
   ]
 })
 export class AppComponent {
