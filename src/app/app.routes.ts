@@ -24,10 +24,16 @@
 import {Routes} from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {SignupComponent} from './signup/signup.component';
+import {AuthGuard} from './auth/auth.guard';
+import {HomeComponent} from './home/app.component';
 
 export const serverRoutes: Routes = [
-  {path: '', redirectTo: 'login', pathMatch: 'full'}, // Redirects to login
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
-  {path: 'home', loadComponent: () => import('./home/app.component').then(m => m.HomeComponent)}
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard] // ✅ Ensures only authenticated users can access home
+  }
 ];
