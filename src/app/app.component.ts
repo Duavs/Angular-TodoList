@@ -14,17 +14,13 @@
 
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {CommonModule} from '@angular/common';
 
 @Component({
-  selector: 'app-root',  // Changed from 'app-login' (assuming this is the root)
+  selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [
-    RouterOutlet,
-    CommonModule  // Importing CommonModule for basic Angular directives
-  ]
+  imports: [RouterOutlet]  // ✅ Required for routing
 })
 export class AppComponent {
   title = 'aij-f';
