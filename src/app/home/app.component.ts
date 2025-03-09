@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {TodoService} from '../services/todo.service';
 import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
+import {AuthService} from '../auth/auth.services';
 
 export interface TodoItem {
   id: number;
@@ -12,7 +13,7 @@ export interface TodoItem {
 }
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-root',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './app.component.html',
@@ -34,12 +35,11 @@ export class HomeComponent {
   totalPages: number = 1;
   pages: number[] = [];
 
-  constructor(private todoService: TodoService, private router: Router) {
+  constructor(private todoService: TodoService, private router: Router, private authService: AuthService) {
   }
 
   ngOnInit() {
     console.log('HomeComponent Loaded');
-
     this.checkAuthenticationf();
     this.isAuthenticated();
     this.fetchTodos();
@@ -52,12 +52,12 @@ export class HomeComponent {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['']);
+    this.authService.logout(); // Clear login state
+    this.router.navigate(['/login']); // Redirect to login page
   }
 
   isAuthenticated(): boolean {
-    return !localStorage.getItem('token');
+    return this.authService.isAuthenticated();
   }
 
   fetchTodos() {
