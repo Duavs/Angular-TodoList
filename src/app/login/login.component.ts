@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {LoginService} from '../services/login.services';
+import {AuthService} from '../services/auth.services';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class LoginComponent {
   password = '';
   errorMessage = '';
 
-  constructor(private loginService: LoginService, private router: Router) {
+  constructor(private loginService: AuthService, private router: Router) {
   }
 
   login() {
@@ -53,67 +53,4 @@ export class LoginComponent {
   }
 }
 
-// import {Component} from '@angular/core';
-// import {Router} from '@angular/router';
-// import {AuthService} from '../auth/auth.services';
-//
-// @Component({
-//   selector: 'app-login',
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css']
-// })
-// export class LoginComponent {
-//   constructor(private router: Router, private authService: AuthService) {
-//   }
-//
-//   login() {
-//     if (this.authService.login()) { // Ensure login logic is correct
-//       this.router.navigate(['/home']); // ✅ Redirect to home after login
-//     } else {
-//       alert('Login failed!');
-//     }
-//   }
-// }
-// import {Injectable} from '@angular/core';
-// import {CanActivate, Router} from '@angular/router';
-// import {AuthService} from '../auth/auth.services';
-//
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthGuard implements CanActivate {
-//   constructor(private authService: AuthService, private router: Router) {
-//   }
-//
-//   canActivate(): boolean {
-//     if (this.authService.isAuthenticated()) {
-//       return true; // Allow access if authenticated
-//     } else {
-//       this.router.navigate(['/login']); // Redirect to login if not authenticated
-//       return false;
-//     }
-//   }
-// }
-// import { Component } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { AuthService } from '../auth/auth.services';
-//
-// @Component({
-//   selector: 'app-login',
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css']
-// })
-// export class LoginComponent {
-//   email: string = '';  // ✅ Define email
-//   password: string = '';  // ✅ Define password
-//
-//   constructor(private router: Router, private authService: AuthService) {}
-//
-//   login() {
-//     if (this.authService.login(this.email, this.password)) {  // ✅ Pass credentials
-//       this.router.navigate(['/home']); // ✅ Redirect to home
-//     } else {
-//       alert('Login failed!'); // ❌ Use `errorMessage` instead of alert
-//     }
-//   }
-// }
+
