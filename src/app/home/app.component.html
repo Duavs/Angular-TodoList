@@ -1,103 +1,114 @@
-<p *ngIf="isAuthenticated()">Welcome to your Todo List!</p>
-<header class="bg-blue-500 text-white py-4 text-center">
-  <h1 class="font-bold text-3xl underline">Today's Todo List</h1>
-</header>
-<button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
-  Logout
-</button>
-<div class="overflow-x-auto w-full flex justify-center">
-  <main class="max-w-2xl mx-auto mt-6 p-6 bg-gray-100 shadow-lg rounded-lg flex flex-col items-center">
-    <!-- Task Input Centered -->
-    <div class="flex gap-2 mb-4 w-full justify-center">
+<div class="flex h-screen bg-gray-100">
+  <!-- Sidebar -->
+  <aside
+    class="w-72 bg-gradient-to-b from-gray-100 to-gray-300 text-black flex flex-col p-5 space-y-6 shadow-lg rounded-lg">
+    <h2 class="text-3xl font-bold text-center tracking-wide">📌 Todo App</h2>
+
+    <nav class="flex flex-col space-y-4">
+      <a class="flex items-center gap-3 px-4 py-3 bg-blue-700 rounded-lg hover:bg-blue-600 transition"
+         routerLink="/home">
+        <i class="fas fa-home"></i> <span>Home</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3 bg-blue-700 rounded-lg hover:bg-blue-600 transition"
+         routerLink="/profile">
+        <i class="fas fa-user"></i> <span>Profile</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-3 bg-blue-700 rounded-lg hover:bg-blue-600 transition"
+         routerLink="/settings">
+        <i class="fas fa-cog"></i> <span>Settings</span>
+      </a>
+    </nav>
+
+    <button (click)="logout()"
+            class="mt-auto bg-red-500 flex items-center justify-center gap-3 py-3 px-4 rounded-lg hover:bg-red-600 transition">
+      <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-5 text-center rounded-xl shadow-md mb-6">
+      <h1 class="text-4xl font-extrabold tracking-wide">Today's Tasks</h1>
+    </header>
+
+    <!-- Task Input -->
+    <div class="flex gap-4 mb-6">
       <input [(ngModel)]="newTask"
-             class="w-3/4 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400 text-center"
-             placeholder="Enter new task here"/>
+             class="flex-1 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm"
+             placeholder="What needs to be done?"/>
       <button (click)="addTask()"
-              class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-        Add
+              class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2 transition">
+        <i class="fas fa-plus"></i> <span>Add Task</span>
       </button>
     </div>
 
-    <!-- Task List Centered -->
-    <div class="overflow-x-auto w-full flex justify-center">
-      <table class="w-full max-w-xl border-collapse border border-gray-300 bg-white table-auto text-center">
-        <thead class="bg-gray-200">
+    <!-- Task List with Glassmorphism -->
+    <div class="bg-white/50 backdrop-blur-lg p-6 rounded-lg shadow-lg border border-gray-200">
+      <table class="w-full border-collapse border border-gray-300 rounded-lg">
+        <thead class="bg-gray-200 text-gray-700">
         <tr>
-          <th class="border border-gray-300 px-4 py-2">Task</th>
-          <th class="border border-gray-300 px-4 py-2">Completed</th>
-          <th class="border border-gray-300 px-4 py-2">Actions</th>
+          <th class="border border-gray-300 px-6 py-3">Task</th>
+          <th class="border border-gray-300 px-6 py-3">Completed</th>
+          <th class="border border-gray-300 px-6 py-3">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <!--        <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100">-->
-        <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100">
-          <!-- Editable Task Field -->
-          <td class="border border-gray-300 px-4 py-2">
+        <tr *ngFor="let todoItem of todoList" class="hover:bg-gray-100 transition">
+          <td class="border border-gray-300 px-6 py-3">
             <input [(ngModel)]="todoItem.task"
                    [readonly]="editingTaskId !== todoItem.id"
-                   class="w-full p-1 border border-gray-300 rounded-md text-center"/>
+                   class="w-full p-2 border border-gray-300 rounded-md bg-transparent focus:ring-1 focus:ring-blue-400"/>
           </td>
-
-          <!-- Completion Checkbox -->
-          <td class="border border-gray-400 px-4 py-2 text-center">
+          <td class="border border-gray-300 px-6 py-3 text-center">
             <input (ngModelChange)="toggleCompletions(todoItem)"
                    [ngModel]="todoItem.completed"
-                   class="h-5 w-5"
+                   class="h-5 w-5 cursor-pointer"
                    type="checkbox"/>
           </td>
-
-          <!-- Action Buttons -->
-          <td class="border border-gray-300 px-4 py-2 flex justify-center gap-2">
-            <div *ngIf="editingTaskId === todoItem.id" class="flex gap-2">
-              <button (click)="saveTask(todoItem)"
-                      class="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">
-                Save
-              </button>
-              <button (click)="cancelEditing()"
-                      class="bg-gray-600 text-white px-3 py-1 rounded-md hover:bg-gray-600">
-                Cancel
-              </button>
-            </div>
-
-            <div *ngIf="editingTaskId !== todoItem.id">
-              <button (click)="startEditingCurrentTask(todoItem)"
-                      class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
-                Edit
-              </button>
-            </div>
-
+          <td class="border border-gray-300 px-6 py-3 flex gap-3 justify-center">
+            <button (click)="startEditingCurrentTask(todoItem)"
+                    *ngIf="editingTaskId !== todoItem.id"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center gap-2">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button (click)="saveTask(todoItem)"
+                    *ngIf="editingTaskId === todoItem.id"
+                    class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex items-center gap-2">
+              <i class="fas fa-save"></i> Save
+            </button>
             <button (click)="softdeleteTask(todoItem)"
                     [disabled]="editingTaskId === todoItem.id"
-                    class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 disabled:opacity-50">
-              Delete
+                    class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition flex items-center gap-2 disabled:opacity-50">
+              <i class="fas fa-trash-alt"></i> Delete
             </button>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
-    <!-- Pagination Controls -->
-    <div class="flex justify-center mt-4 space-x-2">
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-6 space-x-4">
       <button (click)="prevPage()"
               [disabled]="currentPage === 1"
-              class="px-3 py-1 bg-gray-300 text-gray-700 rounded-md disabled:opacity-50">
-        Prev
+              class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
+        <i class="fas fa-chevron-left"></i> Prev
       </button>
 
       <span (click)="goToPage(page)" *ngFor="let page of pages"
             [ngClass]="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-300 text-gray-700': currentPage !== page}"
-            class="cursor-pointer px-3 py-1 rounded-md">
-    {{ page }}
-  </span>
+            class="cursor-pointer px-5 py-2 rounded-lg">
+        {{ page }}
+      </span>
 
       <button (click)="nextPage()"
               [disabled]="currentPage === totalPages"
-              class="px-3 py-1 bg-gray-300 text-gray-700 rounded-md disabled:opacity-50">
-        Next
+              class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
+        Next <i class="fas fa-chevron-right"></i>
       </button>
     </div>
   </main>
-
 </div>
 
 <router-outlet></router-outlet>
