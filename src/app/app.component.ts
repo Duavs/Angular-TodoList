@@ -12,8 +12,9 @@
 // }
 
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
+import {AuthService} from './services/auth.services';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,11 @@ import {RouterOutlet} from '@angular/router';
   styleUrls: ['./app.component.css'],
   imports: [RouterOutlet]  // ✅ Required for routing
 })
-export class AppComponent {
-  title = 'aij-f';
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {
+  }
+
+  ngOnInit() {
+    this.authService.logoutIfExpired();
+  }
 }
