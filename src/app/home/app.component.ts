@@ -187,7 +187,7 @@ export class HomeComponent {
   saveTask(todo: TodoItem): void {
     if (this.editedTask.trim() !== '') {
       this.editingTaskId = todo.id;
-      this.editedTask = todo.task;
+      this.editedTask = todo.task.toUpperCase();
       const updatedTask: TodoItem = {...todo, task: this.editedTask};
       console.log(this.editedTask);
       this.todoService.updateTodo(updatedTask).subscribe({
@@ -226,17 +226,21 @@ export class HomeComponent {
   }
 
   softdeleteTask(todoItem: TodoItem) {
-    todoItem.isDeleted = true;
-    this.todoService.softDeleteTodo(todoItem.id).subscribe({
-      next: () => {
-        this.fetchTodos(); // ⬅ Ensure deleted tasks disappear immediately
-        //  this.showMessage('warn', 'Task Deleted', 'Successfully deleted!');
-      },
-      error: (err) => {
-        console.error('Error deleting task:', err);
-        //   this.showMessage('error', 'Error', 'Failed to delete task');
-      }
-    });
+    if (todoItem.completed) {
+      todoItem.isDeleted = true;
+      this.todoService.softDeleteTodo(todoItem.id).subscribe({
+          next: () => {
+            this.fetchTodos(); // ⬅ Ensure deleted tasks disappear immediately
+            //  this.showMessage('warn', 'Task Deleted', 'Successfully deleted!');
+          },
+          error:
+            (err) => {
+              console.error('Error deleting task:', err);
+              //   this.showMessage('error', 'Error', 'Failed to delete task');
+            }
+        }
+      )
+    }
   }
 
   restoreTask(todoItem: TodoItem) {
