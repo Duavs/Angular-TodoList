@@ -35,7 +35,10 @@ export class HomeComponent {
   totalPages: number = 1;
   pages: number[] = [];
 
-  constructor(private todoService: TodoService, private router: Router, private authService: AuthService) {
+  constructor(private todoService: TodoService,
+              private router: Router,
+              private authService: AuthService
+  ) {
   }
 
   ngOnInit() {
@@ -138,7 +141,7 @@ export class HomeComponent {
     const banneWordsRegex = new RegExp(`\\b(${bannedWords.join('|')})\\b`, 'i');
 
     if (!this.newTask.trim()) {
-      //this.showMessage('error', 'Invalid Input', 'Task cannot be empty');
+      // this.toastr.success('Cannot be empty task');
       return;
     }
 
@@ -168,6 +171,7 @@ export class HomeComponent {
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.newTask = '';
+        // this.toastr.success('Task Added Successfully!');
         this.fetchTodos(); // ⬅ Refresh data after adding
         //this.showMessage('success', 'Task Added', 'Successfully added!');
       },
