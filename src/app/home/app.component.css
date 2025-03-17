@@ -4,3 +4,10 @@
 tbody {
   font-family: 'Tahoma', sans-serif;
 }
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Adjust this to create spacing */
+  margin-top: 5px;
+}

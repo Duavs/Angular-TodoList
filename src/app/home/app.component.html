@@ -91,18 +91,19 @@
     </div>
 
     <!-- Pagination -->
-    <div class="flex justify-center mt-6 space-x-4">
+    <div class="pagination-container flex justify-center mt-6 space-x-4">
       <button (click)="prevPage()"
               [disabled]="currentPage === 1"
               class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
         <i class="fas fa-chevron-left"></i> Prev
       </button>
 
-      <span (click)="goToPage(page)" *ngFor="let page of pages"
+      <span (click)="goToPage(page)"
+            *ngFor="let page of pages"
             [ngClass]="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-300 text-gray-700': currentPage !== page}"
             class="cursor-pointer px-5 py-2 rounded-lg">
-        {{ page }}
-      </span>
+    {{ page }}
+  </span>
 
       <button (click)="nextPage()"
               [disabled]="currentPage === totalPages"
