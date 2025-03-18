@@ -10,6 +10,7 @@ export interface TodoItem {
   task: string;
   completed: boolean;
   isDeleted: boolean;
+  userId?: number;
 }
 
 @Component({
@@ -64,9 +65,10 @@ export class HomeComponent {
   }
 
   fetchTodos() {
+    const userId = Number(this.authService.getUserId());
     this.todoService.getTodos().subscribe({
       next: (todos) => {
-        const activeTodos = todos.filter(todo => !todo.isDeleted);
+        const activeTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId);
 
         // Update total pages
         this.totalPages = Math.max(1, Math.ceil(activeTodos.length / this.itemsPerPage));
@@ -160,12 +162,18 @@ export class HomeComponent {
       //    this.showMessage('error', 'Inappropriate Language', 'Task contains banned words');
       return;
     }
+    const userId = Number(this.authService.getUserId());
+    if (!userId || isNaN(userId)) {
+      console.error('User ID is invalid:', userId);
+      return;
+    }
 
     const newTaskItem: TodoItem = {
       id: 0,
       task: this.newTask.toUpperCase(),
       completed: false,
-      isDeleted: false
+      isDeleted: false,
+      userId: userId
     };
 
     this.todoService.addTodo(newTaskItem).subscribe({
