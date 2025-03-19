@@ -197,25 +197,36 @@ export class HomeComponent {
   }
 
   saveTask(todo: TodoItem): void {
-    if (this.editedTask.trim() !== '') {
-      this.editingTaskId = todo.id;
-      this.editedTask = todo.task.toUpperCase();
-      const updatedTask: TodoItem = {...todo, task: this.editedTask};
-      console.log(this.editedTask);
-      this.todoService.updateTodo(updatedTask).subscribe({
-        next: () => {
-          console.log('Updated task:', updatedTask);
-          this.editingTaskId = null;
-          this.editedTask = '';
-          this.fetchTodos(); // ⬅ Ensure UI updates after editing
-          // this.showMessage('success', 'Task Updated', 'Successfully updated!');
-        },
-        error: (err) => {
-          console.error('Error updating task:', err);
-          //this.showMessage('error', 'Error', 'Failed to update task');
-        }
-      });
+    const lengthRegex = /^.{2,100}$/;
+    this.editedTask = todo.task;
+
+    if (this.editedTask.trim() == '') {
+      alert('Task cannot be empty');
+      this.editingTaskId = null;
+      this.fetchTodos();
+      return;
     }
+    if (!lengthRegex.test(this.editedTask)) {
+      alert('Task cannot be less than 2 characters');
+      this.editingTaskId = null;
+      this.fetchTodos();
+      return;
+    }
+    this.editingTaskId = todo.id;
+    this.editedTask = todo.task.toUpperCase();
+    const updatedTask: TodoItem = {...todo, task: this.editedTask};
+    console.log(updatedTask);
+    this.todoService.updateTodo(updatedTask).subscribe({
+      next: () => {
+        console.log('Updated task:', updatedTask);
+        this.editingTaskId = null;
+        this.editedTask = '';
+        this.fetchTodos();
+      },
+      error: (err) => {
+        console.error('Error adding task:', err);
+      }
+    })
   }
 
   cancelEditing(): void {
