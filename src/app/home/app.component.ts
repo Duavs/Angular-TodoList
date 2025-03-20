@@ -42,6 +42,10 @@ export class HomeComponent {
   ) {
   }
 
+  get username(): string | null {
+    return this.authService.getUsername();
+  }
+
   ngOnInit() {
     console.log('HomeComponent Loaded');
     this.checkAuthenticationf();
@@ -63,6 +67,12 @@ export class HomeComponent {
   isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
+
+
+  // updatePagination() {
+  //   this.totalPages = Math.ceil(this.todoList.length / this.itemsPerPage);
+  //   this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
+  //   this.paginate();
 
   fetchTodos() {
     const userId = Number(this.authService.getUserId());
@@ -95,11 +105,6 @@ export class HomeComponent {
     });
   }
 
-
-  // updatePagination() {
-  //   this.totalPages = Math.ceil(this.todoList.length / this.itemsPerPage);
-  //   this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
-  //   this.paginate();
   // }
   generatePages() {
     this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
@@ -118,7 +123,6 @@ export class HomeComponent {
       this.fetchTodos();
     }
   }
-
 
   // Move to the next page
   nextPage() {
