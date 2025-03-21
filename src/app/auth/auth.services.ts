@@ -3,7 +3,7 @@ import {jwtDecode} from 'jwt-decode';
 
 interface DecodedToken {
   sub: string;
-  username: string;
+  name: string;
   exp?: number;
 }
 
@@ -38,7 +38,6 @@ export class AuthService {
   isAuthenticated(): boolean {
     const token = localStorage.getItem("token");
     if (token) {
-      console.log("isAuthenticated true! here is token: ", token);
       return true;
     } else {
       return this.loggedIn;   // Returns login status
@@ -63,8 +62,7 @@ export class AuthService {
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
-        console.log(`the username is : ${decodedToken.username}`);
-        return decodedToken.username ?? null; // Ensure the key is lowercase
+        return decodedToken.name ?? null; // Ensure the key is lowercase
       } catch (err) {
         console.error("Error decoding token:", err);
         return null;
