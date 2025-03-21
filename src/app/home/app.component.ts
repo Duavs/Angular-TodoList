@@ -44,6 +44,7 @@ export class HomeComponent {
 
   get username(): string | null {
     return this.authService.getUsername();
+
   }
 
   ngOnInit() {
