@@ -63,6 +63,7 @@ export class AuthService {
     if (token) {
       try {
         const decodedToken = jwtDecode<DecodedToken>(token);
+        console.log(`the username is : ${decodedToken.username}`);
         return decodedToken.username ?? null; // Ensure the key is lowercase
       } catch (err) {
         console.error("Error decoding token:", err);
