@@ -28,12 +28,25 @@ import {AuthGuard} from './auth/auth.guard';
 import {HomeComponent} from './home/app.component';
 
 export const serverRoutes: Routes = [
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'login', component: LoginComponent},
-  {path: 'signup', component: SignupComponent},
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: {title: 'Login'}
+  },
+  {
+    path: 'signup',
+    component: SignupComponent,
+    data: {title: 'Signup'}
+  },
   {
     path: 'home',
     component: HomeComponent,
+    data: {title: 'Home'},
     canActivate: [AuthGuard] // ✅ Ensures only authenticated users can access home
   }
 ];
