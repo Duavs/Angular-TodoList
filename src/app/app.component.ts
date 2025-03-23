@@ -21,7 +21,7 @@ import {Title} from '@angular/platform-browser';
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  // styleUrls: ['./app.component.css'],
   imports: [RouterOutlet]  // ✅ Required for routing
 })
 export class AppComponent implements OnInit {
