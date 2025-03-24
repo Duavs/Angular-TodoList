@@ -21,7 +21,6 @@ export interface TodoItem {
   styleUrls: ['./app.component.css']
 })
 
-
 export class HomeComponent {
   title = 'angular-todo';
   todoList: TodoItem[] = [];
