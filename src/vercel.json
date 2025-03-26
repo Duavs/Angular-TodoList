@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "angular-todo/src",
+      "destination": "angular-todo/src/index.html"
+    }
+  ]
+}
