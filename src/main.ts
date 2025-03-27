@@ -3,12 +3,14 @@ import {provideRouter} from '@angular/router';
 import {provideHttpClient} from '@angular/common/http'; // ✅ Import HttpClient
 import {serverRoutes} from './app/app.routes';
 import {AppComponent} from './app/app.component';
+import {MessageService} from 'primeng/api';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(serverRoutes),
     provideHttpClient(), // ✅ Provide HttpClient for API calls
-    Title
+    Title,
+    MessageService
   ]
 });
 
