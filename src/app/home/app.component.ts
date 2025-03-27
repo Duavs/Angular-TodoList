@@ -4,6 +4,7 @@ import {TodoService} from '../services/todo.service';
 import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {AuthService} from '../auth/auth.services';
+import {NotificationService} from '../services/notification.services';
 
 export interface TodoItem {
   id: number;
@@ -37,7 +38,8 @@ export class HomeComponent {
 
   constructor(private todoService: TodoService,
               private router: Router,
-              private authService: AuthService
+              private authService: AuthService,
+              private notificationService: NotificationService
   ) {
   }
 
@@ -183,7 +185,7 @@ export class HomeComponent {
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.newTask = '';
-        // this.toastr.success('Task Added Successfully!');
+        this.notificationService.showSuccess('Success', 'Task added successfully.');
         this.fetchTodos(); // ⬅ Refresh data after adding
         //this.showMessage('success', 'Task Added', 'Successfully added!');
       },
