@@ -5,6 +5,9 @@ import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {AuthService} from '../auth/auth.services';
 import {NotificationService} from '../services/notification.services';
+import {ToastModule} from 'primeng/toast';
+import {MessageModule} from 'primeng/message';
+import {MessageService} from 'primeng/api';
 
 export interface TodoItem {
   id: number;
@@ -17,9 +20,10 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, ToastModule, MessageModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [MessageService],
 })
 
 export class HomeComponent {
