@@ -146,6 +146,9 @@ export class HomeComponent {
     }
   }
 
+  notify(){
+    this.notificationService.showWarning('Warning!', 'Something needs attention.');
+  };
   addTask(): void {
     const lengthRegex = /^.{3,100}$/;
     const allowdCharsRegex = /^[a-zA-Z0-9\s.,!?'-]+$/;
@@ -153,7 +156,8 @@ export class HomeComponent {
     const banneWordsRegex = new RegExp(`\\b(${bannedWords.join('|')})\\b`, 'i');
 
     if (!this.newTask.trim()) {
-      // this.toastr.success('Cannot be empty task');
+      this.notificationService.showWarning("warning", "Cannot save empty task.");
+      console.log(this.notificationService.showWarning);
       return;
     }
 
@@ -177,6 +181,7 @@ export class HomeComponent {
       console.error('User ID is invalid:', userId);
       return;
     }
+
 
     const newTaskItem: TodoItem = {
       id: 0,

@@ -22,6 +22,7 @@ export class NotificationService {
   }
 
   showWarning(summary: string, detail: string) {
+    console.log("Toast should appear:", {severity: 'warn', summary, detail});
     this.messageService.add({severity: 'warn', summary, detail});
   }
 

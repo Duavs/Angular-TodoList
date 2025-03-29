@@ -31,7 +31,7 @@
 
   <!-- Main Content -->
   <main class="flex-1 p-8">
-    <p-toast></p-toast>
+    <p-toast/>
     <!-- Header -->
     <header class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-5 text-center rounded-xl shadow-md mb-6">
       <h1 class="text-4xl font-extrabold tracking-wide">Today's Tasks</h1>
@@ -42,7 +42,7 @@
       <input [(ngModel)]="newTask"
              class="flex-1 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm"
              placeholder="What needs to be done?"/>
-      <button (click)="addTask()"
+      <button (click)="addTask(); notify()"
               class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2 transition">
         <i class="fas fa-plus"></i> <span>Add Task</span>
       </button>
