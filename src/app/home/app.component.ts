@@ -5,9 +5,11 @@ import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {AuthService} from '../auth/auth.services';
 import {NotificationService} from '../services/notification.services';
-import {ToastModule} from 'primeng/toast';
+import {Toast} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
 import {MessageService} from 'primeng/api';
+import {ButtonModule} from 'primeng/button';
+import {RippleModule} from 'primeng/ripple';
 
 export interface TodoItem {
   id: number;
@@ -20,7 +22,7 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, ToastModule, MessageModule],
+  imports: [FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService],
@@ -146,9 +148,10 @@ export class HomeComponent {
     }
   }
 
-  notify(){
+  notify() {
     this.notificationService.showWarning('Warning!', 'Something needs attention.');
   };
+
   addTask(): void {
     const lengthRegex = /^.{3,100}$/;
     const allowdCharsRegex = /^[a-zA-Z0-9\s.,!?'-]+$/;

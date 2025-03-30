@@ -9,8 +9,8 @@ export class NotificationService {
   }
 
   showSuccess(summary: string, detail: string) {
-    this.messageService.add({severity: 'success', summary, detail});
-
+    // this.messageService.add({severity: 'success', summary, detail});
+    this.messageService.add({severity: 'success', summary: 'Success Message', detail: detail, key: 'br', life: 3000});
   }
 
   showError(summary: string, detail: string) {
