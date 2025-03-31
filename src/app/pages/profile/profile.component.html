@@ -1,0 +1,21 @@
+<div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-3xl font-semibold text-center mb-6">Profile</h2>
+
+  <div class="flex flex-col items-center space-y-4">
+    <img alt="Profile Picture" class="w-32 h-32 rounded-full shadow-md" src="assets/profile-placeholder.png">
+
+    <div>
+      <label class="font-semibold">Name:</label>
+      <p class="text-gray-700">{{ username }}</p>
+    </div>
+
+    <div>
+      <label class="font-semibold">Email:</label>
+      <p class="text-gray-700">{{ userEmail }}</p>
+    </div>
+
+    <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+      Edit Profile
+    </button>
+  </div>
+</div>
