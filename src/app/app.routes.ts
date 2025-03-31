@@ -26,6 +26,7 @@ import {LoginComponent} from './login/login.component';
 import {SignupComponent} from './signup/signup.component';
 import {AuthGuard} from './auth/auth.guard';
 import {HomeComponent} from './home/app.component';
+import {ProfileComponent} from './pages/profile/profile.component';
 
 export const serverRoutes: Routes = [
   {
@@ -48,5 +49,9 @@ export const serverRoutes: Routes = [
     component: HomeComponent,
     data: {title: 'Home'},
     canActivate: [AuthGuard] // ✅ Ensures only authenticated users can access home
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   }
 ];
