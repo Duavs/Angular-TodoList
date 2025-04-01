@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {AuthService} from '../../auth/auth.services';
 
 @Component({
   selector: 'app-profile',
@@ -8,4 +9,13 @@ import {Component} from '@angular/core';
 export class ProfileComponent {
   username: string = 'John Doe';
   userEmail: string = 'johndoe@example.com';
+
+  constructor(private authService: AuthService,) {
+  }
+
+  fetchEmail(): void {
+    const userId = Number(this.authService.getUserId());
+
+
+  }
 }

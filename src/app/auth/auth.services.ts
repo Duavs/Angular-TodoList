@@ -27,12 +27,6 @@ export class AuthService {
       this.loggedIn = false;
 
     }
-    //
-    // logOut() {
-    //   localStorage.removeItem("token");
-    //   this.router.navigate(['/login']);
-    // }
-
   }
 
   isAuthenticated(): boolean {
@@ -71,4 +65,7 @@ export class AuthService {
     return null;
   }
 
+  setUserData(userData: DecodedToken): void {
+    localStorage.setItem("token", JSON.stringify(userData));
+  }
 }
