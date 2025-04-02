@@ -13,9 +13,7 @@ export class ProfileComponent {
   constructor(private authService: AuthService,) {
   }
 
-  fetchEmail(): void {
-    const userId = Number(this.authService.getUserId());
-
-
+  get useremail(): string | null {
+    return this.authService.getUserEmail();
   }
 }
