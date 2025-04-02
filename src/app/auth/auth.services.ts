@@ -5,6 +5,7 @@ interface DecodedToken {
   sub: string;
   name: string;
   exp?: number;
+  email: string;
 }
 
 @Injectable({
@@ -14,6 +15,7 @@ interface DecodedToken {
 export class AuthService {
 
   private loggedIn = false; // Tracks login state
+  private token = localStorage.getItem("token");
 
   login(): boolean {
     this.loggedIn = true; // Marks user as logged in
@@ -21,8 +23,8 @@ export class AuthService {
   }
 
   logout(): void {
-    const token = localStorage.getItem("token");
-    if (token) {
+    // const token = localStorage.getItem("token");
+    if (this.token) {
       localStorage.removeItem("token");
       this.loggedIn = false;
 
@@ -30,8 +32,8 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const token = localStorage.getItem("token");
-    if (token) {
+    // const token = localStorage.getItem("token");
+    if (this.token) {
       return true;
     } else {
       return this.loggedIn;   // Returns login status
@@ -39,10 +41,10 @@ export class AuthService {
   }
 
   getUserId(): string | null {
-    const token = localStorage.getItem("token");
-    if (token) {
+    // const token = localStorage.getItem("token");
+    if (this.token) {
       try {
-        const decodedToken = jwtDecode(token);
+        const decodedToken = jwtDecode(this.token);
         return decodedToken.sub ?? null;
       } catch (err) {
         return null;
@@ -52,10 +54,10 @@ export class AuthService {
   }
 
   getUsername(): string | null {
-    const token = localStorage.getItem("token");
-    if (token) {
+    // const token = localStorage.getItem("token");
+    if (this.token) {
       try {
-        const decodedToken = jwtDecode<DecodedToken>(token);
+        const decodedToken = jwtDecode<DecodedToken>(this.token);
         return decodedToken.name ?? null; // Ensure the key is lowercase
       } catch (err) {
         console.error("Error decoding token:", err);
@@ -65,7 +67,16 @@ export class AuthService {
     return null;
   }
 
-  setUserData(userData: DecodedToken): void {
-    localStorage.setItem("token", JSON.stringify(userData));
+  getUserEmail(): string | null {
+    if (this.token) {
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(this.token);
+        return decodedToken.email ?? null;
+      } catch (err) {
+        console.error("Error decoding token:", err);
+        return null;
+      }
+    }
+    return null;
   }
 }
