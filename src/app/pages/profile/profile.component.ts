@@ -10,7 +10,9 @@ import {RouterLink} from '@angular/router';
   ],
   styleUrls: ['./profile.component.css']
 })
+
 export class ProfileComponent {
+  isEditing = false;
 
   constructor(private authService: AuthService,) {
   }
@@ -21,5 +23,9 @@ export class ProfileComponent {
 
   get username(): string | null {
     return this.authService.getUsername();
+  }
+
+  editProfile() {
+    this.isEditing = true;
   }
 }
