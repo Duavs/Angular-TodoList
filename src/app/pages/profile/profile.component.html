@@ -1,4 +1,4 @@
-<div class="flex h-screen bg-neutral-300">
+<div class="flex h-screen">
   <div
     class="w-72 bg-gradient-to-b from-neutral-300 to-blue-100 text-black flex flex-col p-5 space-y-6 shadow-lg rounded-lg">
     <div class="text-center text-lg font-semibold text-gray-700">
@@ -28,7 +28,7 @@
     </button>
   </div>
 
-  <div class="ml-20 content-center w-2xl bg-lime-300  rounded-lg shadow-md">
+  <div class="pt-24 h-screen rounded-lg w-screen">
     <h2 class="text-3xl font-semibold text-center mb-6">Profile</h2>
 
     <div class="flex flex-col items-center space-y-4">
@@ -44,9 +44,18 @@
         <p class="text-gray-700">{{ useremail }}</p>
       </div>
 
-      <div *ngIf="!isEditing">
-
-        <button (click)="editProfile()">Edit Profile</button>
+      <div>
+        <ng-container *ngIf="!isEditing">
+          <button (click)="editProfile()"
+                  class="bg-blue-500 text-white mr-2 px-6 py-2 rounded hover:bg-blue-600 transition">
+            Edit Profile
+          </button>
+        </ng-container>
+        <ng-container *ngIf="isEditing">
+          <button (click)="cancelEditProfile()"
+                  class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition">Cancel
+          </button>
+        </ng-container>
       </div>
 
     </div>

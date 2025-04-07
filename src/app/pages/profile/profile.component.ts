@@ -1,12 +1,14 @@
 import {Component} from '@angular/core';
 import {AuthService} from '../../auth/auth.services';
 import {RouterLink} from '@angular/router';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   imports: [
-    RouterLink
+    RouterLink,
+    NgIf
   ],
   styleUrls: ['./profile.component.css']
 })
@@ -27,5 +29,10 @@ export class ProfileComponent {
 
   editProfile() {
     this.isEditing = true;
+
+  }
+
+  cancelEditProfile() {
+    this.isEditing = false;
   }
 }
