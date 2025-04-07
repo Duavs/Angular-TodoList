@@ -53,8 +53,13 @@
         </ng-container>
         <ng-container *ngIf="isEditing">
           <button (click)="cancelEditProfile()"
-                  class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition">Cancel
+                  class="bg-gray-500 text-white px-6 py-2 mr-2 rounded hover:bg-gray-600 transition">Cancel
           </button>
+          <button (click)="cancelEditProfile()"
+                  class="bg-green-500 text-white px-6 py-2  rounded hover:bg-gray-600 transition">Save
+          </button>
+          <p>Username</p>
+          <input class="border" placeholder="New username" type="text">
         </ng-container>
       </div>
 
