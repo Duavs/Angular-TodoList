@@ -19,7 +19,14 @@ export class AuthService {
   }
 
   // ✅ Sign Up User
-  signupUser(userData: { username: string; email: string; password: string }): Observable<any> {
+  signupUser(userData: {
+    username: string;
+    email: string;
+    password: string;
+    firstname: string;
+    lastname: string;
+    address: string
+  }): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/signup`, userData);
   }
 

@@ -12,16 +12,26 @@ import {AuthService} from '../services/auth.services';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  username = '';
-  email = '';
-  password = '';
-  errorMessage = '';
+  username: string = '';
+  email: string = '';
+  firstname: string = '';
+  lastname: string = '';
+  address: string = '';
+  password: string = '';
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {
   }
 
   signUp() {
-    const userData = {username: this.username, email: this.email, password: this.password};
+    const userData = {
+      username: this.username,
+      email: this.email,
+      password: this.password,
+      firstname: this.firstname,
+      lastname: this.lastname,
+      address: this.address
+    };
 
     this.authService.signupUser(userData).subscribe({
       next: (response) => {
