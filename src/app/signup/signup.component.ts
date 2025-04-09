@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgClass} from '@angular/common';
 import {AuthService} from '../services/auth.services';
 
 
@@ -21,6 +21,14 @@ export class SignupComponent {
   password: string = '';
   errorMessage: string = '';
 
+  usernameTouched = false;
+  emailTouched = false;
+  passwordTouched = false;
+  firstnameTouched = false;
+  lastnameTouched = false;
+  addressTouched = false;
+  protected readonly NgClass = NgClass;
+
   constructor(private authService: AuthService, private router: Router) {
   }
 
@@ -34,17 +42,30 @@ export class SignupComponent {
       address: this.address,
     };
 
+    this.usernameTouched = !this.username;
+    this.emailTouched = !this.email;
+    this.passwordTouched = !this.password;
+    this.firstnameTouched = !this.firstname;
+    this.lastnameTouched = !this.lastname;
+    this.addressTouched = !this.address;
+
+    if (this.usernameTouched || this.emailTouched || this.passwordTouched || this.firstnameTouched || this.lastnameTouched ||
+      this.addressTouched) {
+      this.errorMessage = "Please fill all the fields";
+      alert(this.errorMessage);
+      console.log(this.errorMessage, userData);
+      return;
+    }
+    console.log(
+      "Sign Up Data:",
+      userData
+    )
     this.authService.signupUser(userData).subscribe({
       next: (response) => {
         console.log('Sign Up response:', response);
-        if (!this.address) {
-          this.errorMessage = "Please enter your address";
-          return;
-        }
         if (response) {
           console.log("✅ User registered successfully!");
 
-          // ✅ Navigate to login page after successful sign-up
           this.router.navigate(['/login']).then(success => {
             if (success) {
               console.log("✅ Successfully navigated to Login Page");
