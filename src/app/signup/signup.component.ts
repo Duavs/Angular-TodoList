@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../services/auth.services';
 
+
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -30,13 +31,16 @@ export class SignupComponent {
       password: this.password,
       firstname: this.firstname,
       lastname: this.lastname,
-      address: this.address
+      address: this.address,
     };
 
     this.authService.signupUser(userData).subscribe({
       next: (response) => {
         console.log('Sign Up response:', response);
-
+        if (!this.address) {
+          this.errorMessage = "Please enter your address";
+          return;
+        }
         if (response) {
           console.log("✅ User registered successfully!");
 
