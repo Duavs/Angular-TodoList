@@ -1,6 +1,6 @@
 <div class="flex h-screen">
   <div
-    class="w-72 bg-gradient-to-b from-neutral-300 to-blue-100 text-black flex flex-col p-5 space-y-6 shadow-lg rounded-lg">
+    class="w-72 h-screen bg-gradient-to-b  from-neutral-300 to-blue-100 text-black flex flex-col p-5 space-y-6 shadow-lg rounded-lg">
     <div class="text-center text-lg font-semibold text-gray-700">
       <i class="fas fa-user-circle text-2xl"></i>
       <p>{{ username }} </p>
@@ -36,12 +36,12 @@
 
       <div>
         <label class="font-semibold">Name:</label>
-        <p class="text-gray-700">{{ username }}</p>
+        <p class="text-gray-700">{{ Getusername }}</p>
       </div>
 
       <div>
         <label class="font-semibold">Email:</label>
-        <p class="text-gray-700">{{ useremail }}</p>
+        <p class="text-gray-700">{{ Getuseremail }}</p>
       </div>
 
       <div>
@@ -56,10 +56,10 @@
                   class="bg-gray-500 text-white px-6 py-2 mr-2 rounded hover:bg-gray-600 transition">Cancel
           </button>
           <button (click)="cancelEditProfile()"
-                  class="bg-green-500 text-white px-6 py-2  rounded hover:bg-green-600 transition">Save
+                  class="bg-green-500 text-white px-6 py-2  rounded hover:bg-green-600 transition">Update
           </button>
           <p>Username</p>
-          <input class="border" placeholder="Update username" type="text">
+          <input [(ngModel)]="username" class="border" name="username" placeholder="Update username" type="text">
           <p>Email</p>
           <input class="border" placeholder="Update email" type="text">
           <p>Firstname</p>

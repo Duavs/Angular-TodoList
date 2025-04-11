@@ -19,11 +19,11 @@ export class ProfileComponent {
   constructor(private authService: AuthService,) {
   }
 
-  get useremail(): string | null {
+  get Getuseremail(): string | null {
     return this.authService.getUserEmail();
   }
 
-  get username(): string | null {
+  get Getusername(): string | null {
     return this.authService.getUsername();
   }
 
