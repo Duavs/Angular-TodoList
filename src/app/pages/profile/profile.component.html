@@ -36,7 +36,7 @@
 
       <div>
         <label class="font-semibold">Name:</label>
-        <p class="text-gray-700">{{ Getusername }}</p>
+        <p class="text-gray-700">{{ getusername }}</p>
       </div>
 
       <div>
@@ -59,7 +59,12 @@
                   class="bg-green-500 text-white px-6 py-2  rounded hover:bg-green-600 transition">Update
           </button>
           <p>Username</p>
-          <input [(ngModel)]="username" class="border" name="username" placeholder="Update username" type="text">
+          <input *ngIf="isEditing"
+                 [(ngModel)]="username"
+                 class="border"
+                 name="username"
+                 placeholder="Update username"
+                 type="text">
           <p>Email</p>
           <input class="border" placeholder="Update email" type="text">
           <p>Firstname</p>

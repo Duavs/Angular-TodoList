@@ -14,7 +14,9 @@ import {NgIf} from '@angular/common';
 })
 
 export class ProfileComponent {
+
   isEditing = false;
+  username1: string = this.authService.getUsername() ?? '';
 
   constructor(private authService: AuthService,) {
   }
@@ -23,13 +25,9 @@ export class ProfileComponent {
     return this.authService.getUserEmail();
   }
 
-  get Getusername(): string | null {
-    return this.authService.getUsername();
-  }
-
   editProfile() {
+    this.username1 = this.authService.getUsername() ?? '';
     this.isEditing = true;
-
   }
 
   cancelEditProfile() {
