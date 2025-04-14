@@ -3,7 +3,7 @@
     class="w-72 h-screen bg-gradient-to-b  from-neutral-300 to-blue-100 text-black flex flex-col p-5 space-y-6 shadow-lg rounded-lg">
     <div class="text-center text-lg font-semibold text-gray-700">
       <i class="fas fa-user-circle text-2xl"></i>
-      <p>{{ username }} </p>
+      <p>{{ userName }} </p>
     </div>
     <h2 class="text-3xl font-bold text-center tracking-wide">📌 Todo App</h2>
 
@@ -36,12 +36,12 @@
 
       <div>
         <label class="font-semibold">Name:</label>
-        <p class="text-gray-700">{{ getusername }}</p>
+        <p class="text-gray-700">{{ userName }}</p>
       </div>
 
       <div>
         <label class="font-semibold">Email:</label>
-        <p class="text-gray-700">{{ Getuseremail }}</p>
+        <p class="text-gray-700">{{ userEmail }}</p>
       </div>
 
       <div>
@@ -58,22 +58,30 @@
           <button (click)="cancelEditProfile()"
                   class="bg-green-500 text-white px-6 py-2  rounded hover:bg-green-600 transition">Update
           </button>
-          <p>Username</p>
-          <input *ngIf="isEditing"
-                 [(ngModel)]="username"
-                 class="border"
-                 name="username"
-                 placeholder="Update username"
-                 type="text">
-          <p>Email</p>
-          <input class="border" placeholder="Update email" type="text">
+          <div *ngIf="isEditing">
+            <p>Username</p>
+            <input
+              [(ngModel)]="username"
+              class="border"
+              name="username1"
+              placeholder="Update username"
+              type="text">
+          </div>
+          <div *ngIf="isEditing">
+            <p>Email</p>
+            <input
+              [(ngModel)]="email"
+              class="border"
+              placeholder="Update email"
+              type="text">
+          </div>
+
           <p>Firstname</p>
           <input class="border" placeholder="Update firstname" type="text">
           <p>Lastname</p>
           <input class="border" placeholder="Update lastname" type="text">
           <p>Address</p>
           <input class="border" placeholder="Update address" type="text">
-
         </ng-container>
       </div>
 

@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {jwtDecode} from 'jwt-decode';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 interface DecodedToken {
   sub: string;
@@ -79,4 +82,23 @@ export class AuthService {
     }
     return null;
   }
+
+  getUserFirstName(): string | null {
+    if (this.token) {
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(this.token);
+        return decodedToken.email ?? null;
+      } catch (err) {
+        console.error("Error decoding token:", err);
+        return null;
+      }
+    }
+    return null;
+
+    getUserFirstName():Observable<string> {
+      return this.http.get<{firstName: string}>('/api/users/profile').pipe(
+        map(response => response.firstName)
+      );
+    }
+
 }
