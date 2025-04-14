@@ -39,7 +39,14 @@ export class ProfileComponent {
     this.isEditing = true;
     this.username = this.authService.getUsername() ?? '';
     this.email = this.authService.getUserEmail() ?? '';
-    // this.firstname = this.
+    this.authService.getUserFirstName().subscribe({
+      next: (firstName) => this.firstname = firstName,
+      error: (err) => console.error('Failed to fetch first name:', err)
+    });
+    this.authService.getUserLastName().subscribe({
+      next: (lastName) => this.lastname = lastName,
+      error: (err) => console.error('Failed to fetch last name:', err)
+    });
   }
 
   cancelEditProfile() {
