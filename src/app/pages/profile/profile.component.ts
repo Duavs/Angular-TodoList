@@ -3,9 +3,7 @@ import {AuthService} from '../../auth/auth.services';
 import {RouterLink} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-profile',
