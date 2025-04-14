@@ -75,11 +75,23 @@
               placeholder="Update email"
               type="text">
           </div>
+          <div *ngIf="isEditing">
+            <p>Firstname</p>
+            <input
+              [(ngModel)]="firstname"
+              class="border"
+              placeholder="Update firstname"
+              type="text">
 
-          <p>Firstname</p>
-          <input class="border" placeholder="Update firstname" type="text">
-          <p>Lastname</p>
-          <input class="border" placeholder="Update lastname" type="text">
+          </div>
+          <div *ngIf="isEditing">
+            <p>Lastname</p>
+            <input
+              [(ngModel)]="lastname"
+              class="border"
+              placeholder="Update lastname"
+              type="text">
+          </div>
           <p>Address</p>
           <input class="border" placeholder="Update address" type="text">
         </ng-container>
