@@ -20,6 +20,10 @@ export class AuthService {
   private loggedIn = false; // Tracks login state
   private token = localStorage.getItem("token");
 
+  constructor(private http: HttpClient) {
+  }
+
+
   login(): boolean {
     this.loggedIn = true; // Marks user as logged in
     return true;
@@ -83,22 +87,10 @@ export class AuthService {
     return null;
   }
 
-  getUserFirstName(): string | null {
-    if (this.token) {
-      try {
-        const decodedToken = jwtDecode<DecodedToken>(this.token);
-        return decodedToken.email ?? null;
-      } catch (err) {
-        console.error("Error decoding token:", err);
-        return null;
-      }
-    }
-    return null;
-
-    getUserFirstName():Observable<string> {
-      return this.http.get<{firstName: string}>('/api/users/profile').pipe(
+  getUserFirstName(): Observable<string> {
+    return this.http.get<{ firstName: string }>('/api/users/profile')
+      .pipe(
         map(response => response.firstName)
       );
-    }
-
+  }
 }
