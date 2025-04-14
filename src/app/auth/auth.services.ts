@@ -19,6 +19,8 @@ export class AuthService {
 
   private loggedIn = false; // Tracks login state
   private token = localStorage.getItem("token");
+  private readonly baseUrl: string = 'http://localhost:5248/api/users'; // ✅ Ensure baseUrl is a class property
+
 
   constructor(private http: HttpClient) {
   }
@@ -39,7 +41,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    // const token = localStorage.getItem("token");
     if (this.token) {
       return true;
     } else {
@@ -48,7 +49,7 @@ export class AuthService {
   }
 
   getUserId(): string | null {
-    // const token = localStorage.getItem("token");
+
     if (this.token) {
       try {
         const decodedToken = jwtDecode(this.token);
@@ -88,9 +89,19 @@ export class AuthService {
   }
 
   getUserFirstName(): Observable<string> {
-    return this.http.get<{ firstName: string }>('/api/users/profile')
+    const userId = this.getUserId();
+    return this.http.get<{ firstName: string }>(`${this.baseUrl}/${userId}`)
       .pipe(
         map(response => response.firstName)
       );
   }
+
+  getUserLastName(): Observable<string> {
+    const userId = this.getUserId();
+    return this.http.get<{ lastName: string }>(`${this.baseUrl}/${userId}`)
+      .pipe(
+        map(response => response.lastName)
+      );
+  }
+
 }
