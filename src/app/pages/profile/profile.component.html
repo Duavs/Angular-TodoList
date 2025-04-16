@@ -92,8 +92,14 @@
               placeholder="Update lastname"
               type="text">
           </div>
-          <p>Address</p>
-          <input class="border" placeholder="Update address" type="text">
+          <div *ngIf="isEditing">
+            <p>Address</p>
+            <input
+              [(ngModel)]="Address"
+              class="border"
+              placeholder="Update address"
+              type="text">
+          </div>
         </ng-container>
       </div>
 
