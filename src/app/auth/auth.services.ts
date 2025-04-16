@@ -104,4 +104,12 @@ export class AuthService {
       );
   }
 
+  getUserAddress(): Observable<string> {
+    const userId = this.getUserId();
+    return this.http.get<{ address: string }>(`${this.baseUrl}/${userId}`)
+      .pipe(
+        map(response => response.address)
+      )
+
+  }
 }
