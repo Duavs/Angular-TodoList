@@ -22,7 +22,7 @@ export class ProfileComponent {
   email: string = '';
   firstname: string = '';
   lastname: string = '';
-  address: string = '';
+  Address: string = '';
 
   constructor(private authService: AuthService,) {
   }
@@ -46,6 +46,10 @@ export class ProfileComponent {
     this.authService.getUserLastName().subscribe({
       next: (lastName) => this.lastname = lastName,
       error: (err) => console.error('Failed to fetch last name:', err)
+    });
+    this.authService.getUserAddress().subscribe({
+      next: (address) => this.Address = address,
+      error: (err) => console.error('Failed to fetch address:', err)
     });
   }
 
