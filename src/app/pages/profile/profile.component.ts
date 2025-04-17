@@ -56,4 +56,27 @@ export class ProfileComponent {
   cancelEditProfile() {
     this.isEditing = false;
   }
+
+  updateProfile() {
+    const updatedData = {
+      username: this.username,
+      email: this.email,
+      firstname: this.firstname,
+      lastname: this.lastname,
+      address: this.Address
+    };
+
+    this.authService.updateUserProfile(updatedData).subscribe({
+      ...this.authService,
+      next: (response) => {
+        console.log('✅ Profile updated successfully:', response);
+        alert('Profile has been updated!');
+        this.isEditing = false;
+      },
+      error: (err) => {
+        console.error('❌ Failed to update profile:', err);
+        alert('Failed to update profile. Please try again later.');
+      }
+    });
+  }
 }

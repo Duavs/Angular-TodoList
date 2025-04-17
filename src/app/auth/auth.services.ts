@@ -109,7 +109,11 @@ export class AuthService {
     return this.http.get<{ address: string }>(`${this.baseUrl}/${userId}`)
       .pipe(
         map(response => response.address)
-      )
+      );
+  }
 
+  updateUserProfile(updatedData: any): Observable<any> {
+    const userId = this.getUserId();
+    return this.http.put(`${this.baseUrl}/${userId}`, updatedData);
   }
 }
