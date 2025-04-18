@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {jwtDecode} from 'jwt-decode';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -19,8 +19,7 @@ export class AuthService {
 
   private loggedIn = false; // Tracks login state
   private token = localStorage.getItem("token");
-  private readonly baseUrl: string = 'http://localhost:5248/api/users'; // ✅ Ensure baseUrl is a class property
-
+  private baseUrl: string = 'http://localhost:5248/api/users';
 
   constructor(private http: HttpClient) {
   }
@@ -112,8 +111,26 @@ export class AuthService {
       );
   }
 
-  updateUserProfile(updatedData: any): Observable<any> {
+  updateUserProfile(updatedData: UserUpdate): Observable<any> {
     const userId = this.getUserId();
-    return this.http.put(`${this.baseUrl}/${userId}`, updatedData);
+    return this.http.put(`${this.baseUrl}/${userId}`, updatedData, this.getHeaders());
   }
+
+  private getHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      headers: new HttpHeaders(
+        token ? {'Authorization': `Bearer ${token}`} : {} // Handle null token
+      )
+    };
+  }
+}
+
+export interface UserUpdate {
+  id: number;
+  userName: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
 }
