@@ -24,6 +24,7 @@ export class ProfileComponent {
   lastname: string = '';
   Address: string = '';
 
+
   constructor(private authService: AuthService,) {
   }
 
@@ -59,23 +60,24 @@ export class ProfileComponent {
 
   updateProfile() {
     const updatedData = {
-      username: this.username,
+      id: Number(this.authService.getUserId()), // Convert string ID to number
+      userName: this.username,
       email: this.email,
-      firstname: this.firstname,
-      lastname: this.lastname,
+      firstName: this.firstname,
+      lastName: this.lastname,
       address: this.Address
     };
 
     this.authService.updateUserProfile(updatedData).subscribe({
-      ...this.authService,
-      next: (response) => {
-        console.log('✅ Profile updated successfully:', response);
-        alert('Profile has been updated!');
+      next: () => {
+        // this.toast.success('Profile updated successfully!');
+        console.log('Updated profile  ' + updatedData);
         this.isEditing = false;
       },
       error: (err) => {
-        console.error('❌ Failed to update profile:', err);
-        alert('Failed to update profile. Please try again later.');
+        console.error('❌ Error updating profile:', err);
+        console.log(updatedData);
+        //  this.toast.error('Failed to update profile');
       }
     });
   }
