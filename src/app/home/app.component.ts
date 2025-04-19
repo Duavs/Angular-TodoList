@@ -4,6 +4,7 @@ import {TodoService} from '../services/todo.service';
 import {CommonModule} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {AuthService} from '../auth/auth.services';
+import {ProfileService} from '../services/profile.service';
 import {NotificationService} from '../services/notification.services';
 import {Toast} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
@@ -45,12 +46,13 @@ export class HomeComponent {
   constructor(private todoService: TodoService,
               private router: Router,
               private authService: AuthService,
-              private notificationService: NotificationService
+              private notificationService: NotificationService,
+              private profileService: ProfileService
   ) {
   }
 
   get username(): string | null {
-    return this.authService.getUsername();
+    return this.profileService.getUsername();
 
   }
 
