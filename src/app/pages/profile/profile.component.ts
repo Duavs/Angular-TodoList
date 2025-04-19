@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthService} from '../../auth/auth.services';
+import {ProfileService} from '../../services/profile.service';
 import {RouterLink} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -25,7 +25,7 @@ export class ProfileComponent {
   Address: string = '';
 
 
-  constructor(private authService: AuthService,) {
+  constructor(private authService: ProfileService,) {
   }
 
   get userEmail(): string | null {
@@ -60,7 +60,7 @@ export class ProfileComponent {
 
   updateProfile() {
     const updatedData = {
-      id: Number(this.authService.getUserId()), // Convert string ID to number
+      // id: Number(this.authService.getUserId()), // Convert string ID to number
       userName: this.username,
       email: this.email,
       firstName: this.firstname,
@@ -68,10 +68,11 @@ export class ProfileComponent {
       address: this.Address
     };
 
-    this.authService.updateUserProfile(updatedData).subscribe({
+    this.authService.updateUserProfile(Number(this.authService.getUserId()), updatedData).subscribe({
       next: () => {
         // this.toast.success('Profile updated successfully!');
         console.log('Updated profile  ' + updatedData);
+        console.log(updatedData);
         this.isEditing = false;
       },
       error: (err) => {
