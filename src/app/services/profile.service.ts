@@ -28,19 +28,27 @@ export class ProfileService {
     return null;
   }
 
-  getUsername(): string | null {
-    // const token = localStorage.getItem("token");
-    if (this.token) {
-      try {
-        const decodedToken = jwtDecode<DecodedToken>(this.token);
-        return decodedToken.name ?? null; // Ensure the key is lowercase
-      } catch (err) {
-        console.error("Error decoding token:", err);
-        return null;
-      }
-    }
-    return null;
+  getUsername(): Observable<string> {
+    const userId = this.getUserId();
+    return this.http.get<{ userName: string }>(`${this.apiUrl}/${userId}`)
+      .pipe(
+        map(response => response.userName)
+      );
   }
+
+  // getUsername(): string | null {
+  //   // const token = localStorage.getItem("token");
+  //   if (this.token) {
+  //     try {
+  //       // const decodedToken = jwtDecode<DecodedToken>(this.token);
+  //       // return decodedToken.name ?? null; // Ensure the key is lowercase
+  //     } catch (err) {
+  //       console.error("Error decoding token:", err);
+  //       return null;
+  //     }
+  //   }
+  //   return null;
+  // }
 
   getUserEmail(): string | null {
     if (this.token) {
