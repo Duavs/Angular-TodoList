@@ -25,30 +25,37 @@ export class ProfileComponent {
   Address: string = '';
 
 
-  constructor(private authService: ProfileService,) {
+  constructor(private profileService: ProfileService,) {
   }
 
   get userEmail(): string | null {
-    return this.authService.getUserEmail();
+    return this.profileService.getUserEmail();
   }
 
-  get userName(): string | null {
-    return this.authService.getUsername();
+  userName() {
+    this.profileService.getUsername().subscribe({
+      next: (userName: string) => this.username = userName,
+      error: (err) => console.error('Failed to fetch user name:', err)
+    });
   }
 
   editProfile() {
     this.isEditing = true;
-    this.username = this.authService.getUsername() ?? '';
-    this.email = this.authService.getUserEmail() ?? '';
-    this.authService.getUserFirstName().subscribe({
+    // this.username = this.profileService.getUsername() ?? '';
+    this.profileService.getUsername().subscribe({
+      next: (userName: string) => this.username = userName,
+      error: (err) => console.error('Failed to fetch user name:', err)
+    });
+    this.email = this.profileService.getUserEmail() ?? '';
+    this.profileService.getUserFirstName().subscribe({
       next: (firstName) => this.firstname = firstName,
       error: (err) => console.error('Failed to fetch first name:', err)
     });
-    this.authService.getUserLastName().subscribe({
+    this.profileService.getUserLastName().subscribe({
       next: (lastName) => this.lastname = lastName,
       error: (err) => console.error('Failed to fetch last name:', err)
     });
-    this.authService.getUserAddress().subscribe({
+    this.profileService.getUserAddress().subscribe({
       next: (address) => this.Address = address,
       error: (err) => console.error('Failed to fetch address:', err)
     });
@@ -68,7 +75,7 @@ export class ProfileComponent {
       address: this.Address
     };
 
-    this.authService.updateUserProfile(Number(this.authService.getUserId()), updatedData).subscribe({
+    this.profileService.updateUserProfile(Number(this.profileService.getUserId()), updatedData).subscribe({
       next: () => {
         // this.toast.success('Profile updated successfully!');
         console.log('Updated profile  ' + updatedData);
