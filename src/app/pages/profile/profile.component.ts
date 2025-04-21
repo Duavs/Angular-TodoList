@@ -37,6 +37,7 @@ export class ProfileComponent {
       next: (userName: string) => this.username = userName,
       error: (err) => console.error('Failed to fetch user name:', err)
     });
+    console.log(this.username);
   }
 
   editProfile() {
