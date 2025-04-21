@@ -36,7 +36,7 @@ export class HomeComponent {
   newTask: string = '';
   editingTaskId: number | null = null;
   editedTask: string = '';
-
+  username: string = '';
   //Pagination
   currentPage: number = 1;
   itemsPerPage: number = 5; // Show 5 task per page
@@ -51,8 +51,15 @@ export class HomeComponent {
   ) {
   }
 
-  get username(): string | null {
-    return this.profileService.getUsername();
+  // get username(): string | null {
+  //   return this.profileService.Username();
+  //
+  // }
+  userName() {
+    this.profileService.getUsername().subscribe({
+      next: (userName: string) => this.username = userName,
+      error: (err) => console.error('Failed to fetch user name:', err)
+    });
 
   }
 
