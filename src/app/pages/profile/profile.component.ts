@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProfileService} from '../../services/profile.service';
 import {RouterLink} from '@angular/router';
 import {NgIf} from '@angular/common';
@@ -16,14 +16,13 @@ import {FormsModule} from '@angular/forms';
   styleUrls: ['./profile.component.css']
 })
 
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   isEditing = false;
-  username: string = '';
+  username: string = 'null';
   email: string = '';
   firstname: string = '';
   lastname: string = '';
   Address: string = '';
-
 
   constructor(private profileService: ProfileService,) {
   }
@@ -32,12 +31,31 @@ export class ProfileComponent {
     return this.profileService.getUserEmail();
   }
 
-  userName() {
+  ngOnInit(): void {
+    this.getUserName();
+    this.getFirstName();
+    this.getLastName();
+  }
+
+  getUserName() {
     this.profileService.getUsername().subscribe({
       next: (userName: string) => this.username = userName,
       error: (err) => console.error('Failed to fetch user name:', err)
     });
-    console.log(this.username);
+  }
+
+  getFirstName() {
+    this.profileService.getUserFirstName().subscribe({
+      next: (firstName: string) => this.firstname = firstName,
+      error: (err) => console.error('Failed to fetch first name:', err)
+    })
+  }
+
+  getLastName() {
+    this.profileService.getUserLastName().subscribe({
+      next: (lastName: string) => this.lastname = lastName,
+      error: (err) => console.error('Failed to fetch last name:', err)
+    })
   }
 
   editProfile() {
@@ -90,4 +108,6 @@ export class ProfileComponent {
       }
     });
   }
+
+
 }
