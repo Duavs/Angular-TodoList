@@ -30,9 +30,9 @@ export class ProfileService {
 
   getUsername(): Observable<string> {
     const userId = this.getUserId();
-    return this.http.get<{ userName: string }>(`${this.apiUrl}/${userId}`)
+    return this.http.get<{ username: string }>(`${this.apiUrl}/${userId}`)
       .pipe(
-        map(response => response.userName)
+        map(response => response.username)
       );
   }
 
