@@ -55,12 +55,12 @@ export class HomeComponent {
   //   return this.profileService.Username();
   //
   // }
-  userName() {
+
+  getUserName() {
     this.profileService.getUsername().subscribe({
       next: (userName: string) => this.username = userName,
       error: (err) => console.error('Failed to fetch user name:', err)
     });
-
   }
 
   ngOnInit() {
@@ -68,6 +68,7 @@ export class HomeComponent {
     this.checkAuthenticationf();
     this.isAuthenticated();
     this.fetchTodos();
+    this.getUserName();
   }
 
   checkAuthenticationf() {
