@@ -1,107 +1,88 @@
-<div class="flex h-screen">
-  <div
-    class="w-72 h-screen bg-gradient-to-b  from-neutral-300 to-blue-100 text-black flex flex-col p-5 space-y-6 shadow-lg rounded-lg">
+<div class="flex h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <div class="w-72 bg-gradient-to-b from-neutral-300 to-blue-100 text-black flex flex-col p-5 space-y-6 shadow-lg">
     <div class="text-center text-lg font-semibold text-gray-700">
-      <i class="fas fa-user-circle text-2xl"></i>
-      <p>{{ username }}</p>
+      <i class="fas fa-user-circle text-3xl mb-2"></i>
+      <p>{{ username || 'User' }}</p>
     </div>
     <h2 class="text-3xl font-bold text-center tracking-wide">📌 Todo App</h2>
 
-    <nav class="flex flex-col space-y-4">
-      <a class="flex items-center gap-3 px-4 py-3  rounded-lg hover:bg-blue-400 transition "
-         routerLink="/home">
+    <nav class="flex flex-col space-y-4 mt-6">
+      <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-400 transition" routerLink="/home">
         <i class="fas fa-home"></i> <span>Home</span>
       </a>
-      <a class="flex items-center gap-3 px-4 py-3  rounded-lg hover:bg-blue-400 transition"
-         routerLink="/profile">
+      <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-400 transition" routerLink="/profile">
         <i class="fas fa-user"></i> <span>Profile</span>
       </a>
-      <a class="flex items-center gap-3 px-4 py-3  rounded-lg hover:bg-blue-400 transition"
-         routerLink="/settings">
+      <a class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-400 transition" routerLink="/settings">
         <i class="fas fa-cog"></i> <span>Settings</span>
       </a>
     </nav>
 
-    <button
-      class="mt-auto  flex items-center justify-center gap-3 py-3 px-4 rounded-lg hover:bg-red-400 transition">
+    <button class="mt-auto flex items-center justify-center gap-3 py-3 px-4 rounded-lg hover:bg-red-400 transition">
       <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
     </button>
   </div>
 
-  <div class="pt-24 h-screen rounded-lg w-screen">
-    <h2 class="text-3xl font-semibold text-center mb-6">Profile</h2>
+  <!-- Main Content -->
+  <div class="flex-1 overflow-y-auto px-10 py-16">
+    <h2 class="text-3xl font-semibold text-center mb-8">Profile</h2>
 
-    <div class="flex flex-col items-center space-y-4">
+    <div class="flex flex-col items-center space-y-6">
       <img alt="Profile Picture" class="w-32 h-32 rounded-full shadow-md" src="assets/profile-placeholder.png">
 
-      <div>
-        <label class="font-semibold">Name:</label>
-        <p class="text-gray-700">{{ firstname + ' ' + lastname }}</p>
+      <div class="w-full max-w-lg space-y-4">
+        <div>
+          <label class="font-semibold">Name:</label>
+          <p class="text-gray-700">{{ firstname + ' ' + lastname }}</p>
+        </div>
+
+        <div>
+          <label class="font-semibold">Email:</label>
+          <p class="text-gray-700">{{ userEmail }}</p>
+        </div>
+
+        <div>
+          <ng-container *ngIf="!isEditing">
+            <button (click)="editProfile()" class="bg-blue-500 text-white mr-2 px-6 py-2 rounded hover:bg-blue-600 transition">
+              Edit Profile
+            </button>
+          </ng-container>
+
+          <ng-container *ngIf="isEditing">
+            <div class="space-y-4">
+              <div>
+                <label class="block font-semibold">Username</label>
+                <input [(ngModel)]="username" class="border w-full px-4 py-2 rounded" placeholder="Update username" type="text">
+              </div>
+              <div>
+                <label class="block font-semibold">Email</label>
+                <input [(ngModel)]="email" class="border w-full px-4 py-2 rounded" placeholder="Update email" type="text">
+              </div>
+              <div>
+                <label class="block font-semibold">Firstname</label>
+                <input [(ngModel)]="firstname" class="border w-full px-4 py-2 rounded" placeholder="Update firstname" type="text">
+              </div>
+              <div>
+                <label class="block font-semibold">Lastname</label>
+                <input [(ngModel)]="lastname" class="border w-full px-4 py-2 rounded" placeholder="Update lastname" type="text">
+              </div>
+              <div>
+                <label class="block font-semibold">Address</label>
+                <input [(ngModel)]="Address" class="border w-full px-4 py-2 rounded" placeholder="Update address" type="text">
+              </div>
+              <div class="flex gap-4 mt-4">
+                <button (click)="cancelEditProfile()" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition">
+                  Cancel
+                </button>
+                <button (click)="updateProfile()" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition">
+                  Update
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
-
-      <div>
-        <label class="font-semibold">Email:</label>
-        <p class="text-gray-700">{{ userEmail }}</p>
-      </div>
-
-      <div>
-        <ng-container *ngIf="!isEditing">
-          <button (click)="editProfile()"
-                  class="bg-blue-500 text-white mr-2 px-6 py-2 rounded hover:bg-blue-600 transition">
-            Edit Profile
-          </button>
-        </ng-container>
-        <ng-container *ngIf="isEditing">
-          <button (click)="cancelEditProfile()"
-                  class="bg-gray-500 text-white px-6 py-2 mr-2 rounded hover:bg-gray-600 transition">Cancel
-          </button>
-          <button (click)="updateProfile()"
-                  class="bg-green-500 text-white px-6 py-2  rounded hover:bg-green-600 transition">Update
-          </button>
-          <div *ngIf="isEditing">
-            <p>Username</p>
-            <input
-              [(ngModel)]="username"
-              class="border"
-              placeholder="Update username"
-              type="text">
-          </div>
-          <div *ngIf="isEditing">
-            <p>Email</p>
-            <input
-              [(ngModel)]="email"
-              class="border"
-              placeholder="Update email"
-              type="text">
-          </div>
-          <div *ngIf="isEditing">
-            <p>Firstname</p>
-            <input
-              [(ngModel)]="firstname"
-              class="border"
-              placeholder="Update firstname"
-              type="text">
-
-          </div>
-          <div *ngIf="isEditing">
-            <p>Lastname</p>
-            <input
-              [(ngModel)]="lastname"
-              class="border"
-              placeholder="Update lastname"
-              type="text">
-          </div>
-          <div *ngIf="isEditing">
-            <p>Address</p>
-            <input
-              [(ngModel)]="Address"
-              class="border"
-              placeholder="Update address"
-              type="text">
-          </div>
-        </ng-container>
-      </div>
-
     </div>
   </div>
 </div>
