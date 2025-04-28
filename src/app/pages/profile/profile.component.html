@@ -44,7 +44,8 @@
 
         <div>
           <ng-container *ngIf="!isEditing">
-            <button (click)="editProfile()" class="bg-blue-500 text-white mr-2 px-6 py-2 rounded hover:bg-blue-600 transition">
+            <button (click)="editProfile()"
+                    class="bg-blue-500 text-white mr-2 px-6 py-2 rounded hover:bg-blue-600 transition">
               Edit Profile
             </button>
           </ng-container>
@@ -53,29 +54,36 @@
             <div class="space-y-4">
               <div>
                 <label class="block font-semibold">Username</label>
-                <input [(ngModel)]="username" class="border w-full px-4 py-2 rounded" placeholder="Update username" type="text">
+                <input [(ngModel)]="username" class="border w-full px-4 py-2 rounded" placeholder="Update username"
+                       type="text">
               </div>
               <div>
                 <label class="block font-semibold">Email</label>
-                <input [(ngModel)]="email" class="border w-full px-4 py-2 rounded" placeholder="Update email" type="text">
+                <input [(ngModel)]="email" class="border w-full px-4 py-2 rounded" placeholder="Update email"
+                       type="text">
               </div>
               <div>
                 <label class="block font-semibold">Firstname</label>
-                <input [(ngModel)]="firstname" class="border w-full px-4 py-2 rounded" placeholder="Update firstname" type="text">
+                <input [(ngModel)]="firstname" class="border w-full px-4 py-2 rounded" placeholder="Update firstname"
+                       type="text">
               </div>
               <div>
                 <label class="block font-semibold">Lastname</label>
-                <input [(ngModel)]="lastname" class="border w-full px-4 py-2 rounded" placeholder="Update lastname" type="text">
+                <input [(ngModel)]="lastname" class="border w-full px-4 py-2 rounded" placeholder="Update lastname"
+                       type="text">
               </div>
               <div>
                 <label class="block font-semibold">Address</label>
-                <input [(ngModel)]="Address" class="border w-full px-4 py-2 rounded" placeholder="Update address" type="text">
+                <input [(ngModel)]="address" class="border w-full px-4 py-2 rounded" placeholder="Update address"
+                       type="text">
               </div>
               <div class="flex gap-4 mt-4">
-                <button (click)="cancelEditProfile()" class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition">
+                <button (click)="cancelEditProfile()"
+                        class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition">
                   Cancel
                 </button>
-                <button (click)="updateProfile()" class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition">
+                <button (click)="updateProfile()"
+                        class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition">
                   Update
                 </button>
               </div>
