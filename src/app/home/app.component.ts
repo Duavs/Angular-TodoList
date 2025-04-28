@@ -11,6 +11,7 @@ import {MessageModule} from 'primeng/message';
 import {MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
 import {RippleModule} from 'primeng/ripple';
+import {AiService} from '../services/ai.service'
 
 export interface TodoItem {
   id: number;
@@ -47,7 +48,8 @@ export class HomeComponent {
               private router: Router,
               private authService: AuthService,
               private notificationService: NotificationService,
-              private profileService: ProfileService
+              private profileService: ProfileService,
+              private aiService: AiService
   ) {
   }
 
@@ -55,6 +57,19 @@ export class HomeComponent {
   //   return this.profileService.Username();
   //
   // }
+  suggestTask(): void {
+    const query = this.newTask.trim().toUpperCase() || "task";
+
+    this.aiService.suggestTask(this.newTask).subscribe({
+      next: (suggested) => {
+        this.newTask = suggested; // Pre-fill task input
+        console.log('AI suggested task:', suggested);
+      },
+      error: (err) => {
+        console.error('Failed to fetch suggestion', err);
+      }
+    });
+  }
 
   getUserName() {
     this.profileService.getUsername().subscribe({
