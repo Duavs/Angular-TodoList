@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
   templateUrl: './profile.component.html',
   imports: [
     RouterLink,
@@ -22,14 +23,16 @@ export class ProfileComponent implements OnInit {
   email: string = '';
   firstname: string = '';
   lastname: string = '';
-  Address: string = '';
+  address: string = '';
 
-  constructor(private profileService: ProfileService,) {
+
+  constructor(private profileService: ProfileService) {
   }
 
   get userEmail(): string | null {
     return this.profileService.getUserEmail();
   }
+
 
   ngOnInit(): void {
     this.getUserName();
@@ -75,7 +78,7 @@ export class ProfileComponent implements OnInit {
       error: (err) => console.error('Failed to fetch last name:', err)
     });
     this.profileService.getUserAddress().subscribe({
-      next: (address) => this.Address = address,
+      next: (address) => this.address = address,
       error: (err) => console.error('Failed to fetch address:', err)
     });
   }
@@ -91,7 +94,7 @@ export class ProfileComponent implements OnInit {
       email: this.email,
       firstName: this.firstname,
       lastName: this.lastname,
-      address: this.Address
+      address: this.address
     };
 
     this.profileService.updateUserProfile(Number(this.profileService.getUserId()), updatedData).subscribe({
