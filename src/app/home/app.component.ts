@@ -12,7 +12,7 @@ import {MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
 import {RippleModule} from 'primeng/ripple';
 import {AiService} from '../services/ai.service'
-
+import {AdviceService} from '../services/advice.service';
 export interface TodoItem {
   id: number;
   task: string;
@@ -38,6 +38,7 @@ export class HomeComponent {
   editingTaskId: number | null = null;
   editedTask: string = '';
   username: string = '';
+  advice: string = '';
   //Pagination
   currentPage: number = 1;
   itemsPerPage: number = 5; // Show 5 task per page
@@ -49,14 +50,25 @@ export class HomeComponent {
               private authService: AuthService,
               private notificationService: NotificationService,
               private profileService: ProfileService,
-              private aiService: AiService
-  ) {
-  }
+              private aiService: AiService,
+              private adviceService: AdviceService
+  ) {}
+
 
   // get username(): string | null {
   //   return this.profileService.Username();
   //
   // }
+  fetchAdvice() {
+    this.adviceService.getAdvice().subscribe({
+      next: (advice) =>{
+        this.newTask = advice;
+      },
+      error: (err) => {
+        console.error('Error fetching advice:', err);
+      }
+    })
+  }
   suggestTask(): void {
     const query = this.newTask.trim().toUpperCase() || "task";
 
