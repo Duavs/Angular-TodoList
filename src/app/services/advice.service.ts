@@ -10,9 +10,9 @@ export class AdviceService {
 
   constructor(private http: HttpClient) { }
 
-  getAdvice():Observable<string>{
+  getAdvice(): Observable<string> {
     return this.http.get<{advice: string}>(this.apiUrl).pipe(
-      map(response => response.advice) // Adjust according to the actual response structure)
+      map(response => response.advice)
     );
   }
 }
