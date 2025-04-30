@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,12 @@ export class AiService {
       "Plan tasks for tomorrow"
     ];
     const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-
-    return of(randomSuggestion); // ✅ Simulate async call
+    // Simulate an async call
+    return new Observable<string>(observer => {
+      setTimeout(() => {
+        observer.next(randomSuggestion);
+        observer.complete();
+      }, 1000); // Simulate a 1 second delay
+    });
   }
 }
