@@ -25,11 +25,10 @@ export class LoginComponent {
     this.loginService.loginUser(loginData).subscribe({
       next: (response) => {
         console.log('Login response:', response);
-
+        // ✅ Check if the response contains a token
         if (response.token) {
           localStorage.setItem('token', response.token);
           console.log("Token stored:", response.token);
-
           // ✅ Navigate to `/home` after storing the token
           this.router.navigate(['/home']).then(success => {
             if (success) {
