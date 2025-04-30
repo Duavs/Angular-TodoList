@@ -31,7 +31,7 @@ export interface TodoItem {
 })
 
 export class HomeComponent {
-  title = 'angular-todo';
+  title = 'Todo List';
   todoList: TodoItem[] = [];
   paginatedTodos: TodoItem[] = [];
   newTask: string = '';
@@ -44,6 +44,7 @@ export class HomeComponent {
   itemsPerPage: number = 5; // Show 5 task per page
   totalPages: number = 1;
   pages: number[] = [];
+  private adviceInterval: any;
 
   constructor(private todoService: TodoService,
               private router: Router,
@@ -61,13 +62,13 @@ export class HomeComponent {
   // }
   fetchAdvice() {
     this.adviceService.getAdvice().subscribe({
-      next: (advice) =>{
+      next: (advice) => {
         this.newTask = advice;
       },
       error: (err) => {
         console.error('Error fetching advice:', err);
       }
-    })
+    });
   }
   suggestTask(): void {
     const query = this.newTask.trim().toUpperCase() || "task";
@@ -89,13 +90,25 @@ export class HomeComponent {
       error: (err) => console.error('Failed to fetch user name:', err)
     });
   }
-
+  scheduleAdvice() {
+    this.fetchAdvice(); // First call
+    this.adviceInterval = setTimeout(() => {
+      this.scheduleAdvice(); // Recursively schedule next fetch
+    }, 10000);
+  }
   ngOnInit() {
     console.log('HomeComponent Loaded');
     this.checkAuthenticationf();
     this.isAuthenticated();
     this.fetchTodos();
     this.getUserName();
+    this.fetchAdvice();
+    this.scheduleAdvice();
+  }
+  ngOnDestroy() {
+    if (this.adviceInterval) {
+      clearTimeout(this.adviceInterval); // use clearTimeout instead
+    }
   }
 
   checkAuthenticationf() {
