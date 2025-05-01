@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  darkMode: 'class', // Enables dark mode (toggle with a class)
+// tailwind.config.js
+module.exports = {
+  darkMode: 'class', // or 'media'
   content: [
-    "./src/**/*.{html,ts}" // Ensure Tailwind scans Angular components
+    "./src/**/*.{html,ts}"
   ],
   theme: {
     extend: {},
   },
   plugins: [],
-};
+}
