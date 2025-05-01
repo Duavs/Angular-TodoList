@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TodoService} from '../services/todo.service';
 import {CommonModule} from '@angular/common';
@@ -30,7 +30,7 @@ export interface TodoItem {
   providers: [MessageService],
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked{
   title = 'Todo List';
   todoList: TodoItem[] = [];
   paginatedTodos: TodoItem[] = [];
@@ -54,8 +54,6 @@ export class HomeComponent {
               private aiService: AiService,
               private adviceService: AdviceService
   ) {}
-
-
   // get username(): string | null {
   //   return this.profileService.Username();
   //
@@ -100,10 +98,15 @@ export class HomeComponent {
     console.log('HomeComponent Loaded');
     this.checkAuthenticationf();
     this.isAuthenticated();
-    this.fetchTodos();
     this.getUserName();
-    this.fetchAdvice();
+  }
+  ngAfterViewInit() {
+    this.notificationService.showInfo('Welcome!', 'You can add, edit, or delete tasks.');
     this.scheduleAdvice();
+    this.fetchTodos();
+  }
+  ngAfterViewChecked() {
+    console.log('HomeComponent Loaded');
   }
   ngOnDestroy() {
     if (this.adviceInterval) {
