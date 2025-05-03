@@ -3,8 +3,8 @@ import {ProfileService} from '../../services/profile.service';
 import {RouterLink} from '@angular/router';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-
-
+import {AuthService} from '../../auth/auth.services';
+import {Router, RouterModule} from '@angular/router';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -26,9 +26,14 @@ export class ProfileComponent implements OnInit {
   address: string = '';
 
 
-  constructor(private profileService: ProfileService) {
+  constructor(private profileService: ProfileService,
+              private router: Router,
+              private authService: AuthService) {
   }
-
+  logout() {
+    this.authService.logout(); // Clear login state
+    this.router.navigate(['/login']); // Redirect to login page
+  }
   get userEmail(): string | null {
     return this.profileService.getUserEmail();
   }
