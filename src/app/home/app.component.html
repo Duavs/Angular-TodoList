@@ -51,7 +51,7 @@
                 class="bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 flex items-center gap-2 transition ">
           <i class="fas fa-robot"></i> <span>Suggest Task</span>
         </button>
-        <button (click)="fetchAdvice()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <button (click)="fetchAdvice()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
           Get Random Advice
         </button>
         <p class="mt-4 text-lg font-medium text-gray-200 transition-opacity duration-700 ease-in-out"
@@ -109,7 +109,7 @@
       </div>
 
       <!-- Pagination -->
-      <div class="pagination-container flex justify-center mt-6 space-x-4">
+      <div class="pagination-container flex justify-center space-x-4 pt-2">
         <button (click)="prevPage()"
                 [disabled]="currentPage === 1"
                 class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
