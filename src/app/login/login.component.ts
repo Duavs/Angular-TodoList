@@ -24,18 +24,11 @@ export class LoginComponent {
 
     this.loginService.loginUser(loginData).subscribe({
       next: (response) => {
-        console.log('Login response:', response);
-        // ✅ Check if the response contains a token
+        // Check if the response contains a token
         if (response.token) {
           localStorage.setItem('token', response.token);
-          console.log("Token stored:", response.token);
-          // ✅ Navigate to `/home` after storing the token
+          // Navigate to `/home` after storing the token
           this.router.navigate(['/home']).then(success => {
-            if (success) {
-              console.log("✅ Successfully navigated to Home Page");
-            } else {
-              console.log("⚠️ Navigation to Home Page failed!");
-            }
           }).catch(err => {
             console.error("🚨 Navigation error:", err);
           });
@@ -45,7 +38,7 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        console.error('❌ Login failed:', err);
+        console.error('❌ Login failed:', err.status);
         this.errorMessage = 'Invalid email or password.';
       }
     });
