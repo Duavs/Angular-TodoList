@@ -52,7 +52,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
               private notificationService: NotificationService,
               private profileService: ProfileService,
               private aiService: AiService,
-              private adviceService: AdviceService
+              private adviceService: AdviceService,
+              private messageService: MessageService
   ) {}
   // get username(): string | null {
   //   return this.profileService.Username();
@@ -101,7 +102,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.getUserName();
   }
   ngAfterViewInit() {
-    this.notificationService.showInfo('Welcome!', 'You can add, edit, or delete tasks.');
+    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000 });
     this.scheduleAdvice();
     this.fetchTodos();
   }
@@ -250,6 +251,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.newTask = '';
+        this.messageService.add({ severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000 });
         this.notificationService.showSuccess('Success', 'Task added successfully.');
         this.fetchTodos(); // ⬅ Refresh data after adding
         //this.showMessage('success', 'Task Added', 'Successfully added!');
