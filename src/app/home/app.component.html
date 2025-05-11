@@ -1,36 +1,33 @@
-<div class="min-h-screen bg-gradient-to-tr from-blue-100 via-indigo-200 to-blue-300 p-8">
-  <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-6">
+<div>
+  <div class="flex flex-1">
     <!-- Sidebar -->
-    <div class="bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-lg space-y-6 h-full flex flex-col">
-      <div class="text-center text-lg font-semibold text-gray-700">
-        <i class="fas fa-user-circle text-2xl"></i>
-        <p>{{ username }} </p>
+    <div class="bg-gradient-to-b from-gray-800 to-gray-900 text-white p-6 r shadow-xl space-y-6 h-full min-h-screen flex flex-col">
+      <div class="text-center text-lg font-semibold">
+        <i class="fas fa-user-circle text-3xl mb-2"></i>
+        <p>{{ username }}</p>
       </div>
-      <h2 class="text-3xl font-bold text-center tracking-wide">📌 Todo App</h2>
+      <h2 class="text-2xl font-semibold tracking-wide text-center">📌 Enterprise Todo</h2>
 
-      <nav class="flex flex-col space-y-4">
-        <a class="flex items-center gap-3 px-4 py-3  rounded-lg hover:bg-blue-400 transition "
-           routerLink="/home">
+      <nav class="flex flex-col space-y-2">
+        <a class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition" routerLink="/home">
           <i class="fas fa-home"></i> <span>Home</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3  rounded-lg hover:bg-blue-400 transition"
-           routerLink="/profile">
+        <a class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition" routerLink="/profile">
           <i class="fas fa-user"></i> <span>Profile</span>
         </a>
-        <a class="flex items-center gap-3 px-4 py-3  rounded-lg hover:bg-blue-400 transition"
-           routerLink="/settings">
+        <a class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition" routerLink="/settings">
           <i class="fas fa-cog"></i> <span>Settings</span>
         </a>
       </nav>
 
       <button (click)="logout()"
-              class="mt-auto  flex items-center justify-center gap-3 py-3 px-4 rounded-lg hover:bg-red-400 transition">
+              class="mt-auto flex items-center justify-center gap-3 py-2 px-4 bg-red-600 hover:bg-red-700 rounded-lg transition">
         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
       </button>
     </div>
 
     <!-- Main Content -->
-    <main class="md:col-span-3 bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-lg">
+    <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
       <p-toast/>
       <!-- Header -->
       <header class="bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-6 text-center rounded-xl shadow-md mb-8">
