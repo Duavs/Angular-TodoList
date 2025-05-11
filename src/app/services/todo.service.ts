@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 export interface TodoItem {
   id: number;
   task: string;
+  taskDetail: string;
   completed: boolean;
   isDeleted: boolean;
   userId?: number;
