@@ -16,6 +16,7 @@ import {AdviceService} from '../services/advice.service';
 export interface TodoItem {
   id: number;
   task: string;
+  taskDetail: string;
   completed: boolean;
   isDeleted: boolean;
   userId?: number;
@@ -35,6 +36,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   todoList: TodoItem[] = [];
   paginatedTodos: TodoItem[] = [];
   newTask: string = '';
+  taskDetail: string ='';
   editingTaskId: number | null = null;
   editedTask: string = '';
   username: string = '';
@@ -243,6 +245,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     const newTaskItem: TodoItem = {
       id: 0,
       task: this.newTask.toUpperCase(),
+      taskDetail: this.taskDetail?.trim() || '',
       completed: false,
       isDeleted: false,
       userId: userId
