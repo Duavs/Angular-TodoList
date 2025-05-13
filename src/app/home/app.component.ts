@@ -13,6 +13,7 @@ import {ButtonModule} from 'primeng/button';
 import {RippleModule} from 'primeng/ripple';
 import {AiService} from '../services/ai.service'
 import {AdviceService} from '../services/advice.service';
+import {SidebarComponent} from '../shared/sidebar/sidebar.component';
 export interface TodoItem {
   id: number;
   task: string;
@@ -25,7 +26,7 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule],
+  imports: [FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService],
