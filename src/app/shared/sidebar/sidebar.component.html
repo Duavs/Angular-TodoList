@@ -1,1 +1,25 @@
-<p>sidebar works!</p>
+<!-- Sidebar -->
+<div class="bg-gradient-to-b from-gray-800 to-gray-900 text-white p-6 r shadow-xl space-y-6 h-full min-h-screen flex flex-col">
+  <div class="text-center text-lg font-semibold">
+    <i class="fas fa-user-circle text-3xl mb-2"></i>
+    <p>{{ username }}</p>
+  </div>
+  <h2 class="text-2xl font-semibold tracking-wide text-center">📌 Enterprise Todo</h2>
+
+  <nav class="flex flex-col space-y-2">
+    <a class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition" routerLink="/home">
+      <i class="fas fa-home"></i> <span>Home</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition" routerLink="/profile">
+      <i class="fas fa-user"></i> <span>Profile</span>
+    </a>
+    <a class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-700 transition" routerLink="/settings">
+      <i class="fas fa-cog"></i> <span>Settings</span>
+    </a>
+  </nav>
+
+  <button (click)="logout()"
+          class="mt-auto flex items-center justify-center gap-3 py-2 px-4 bg-red-600 hover:bg-red-700 rounded-lg transition">
+    <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+  </button>
+</div>
