@@ -61,7 +61,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(serverRoutes),
     provideHttpClient(), // ✅ Provide HttpClient for API calls
-    Title,
+    // Title,
     MessageService,
     provideAnimationsAsync(),
     providePrimeNG({
