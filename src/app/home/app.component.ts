@@ -14,6 +14,11 @@ import {RippleModule} from 'primeng/ripple';
 import {AiService} from '../services/ai.service'
 import {AdviceService} from '../services/advice.service';
 import {SidebarComponent} from '../shared/sidebar/sidebar.component';
+import {Dialog} from 'primeng/dialog';
+import {InputText} from 'primeng/inputtext';
+import {Textarea} from 'primeng/textarea';
+import {Calendar} from 'primeng/calendar';
+import {FloatLabel} from 'primeng/floatlabel';
 export interface TodoItem {
   id: number;
   task: string;
@@ -26,7 +31,7 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent],
+  imports: [FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService],
@@ -48,6 +53,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   totalPages: number = 1;
   pages: number[] = [];
   private adviceInterval: any;
+  //modal
+  newTaskModalVisible =  false;
 
   constructor(private todoService: TodoService,
               private router: Router,
@@ -106,7 +113,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   }
   ngAfterViewInit() {
     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000 });
-    this.scheduleAdvice();
+    // this.scheduleAdvice();
     this.fetchTodos();
   }
   ngAfterViewChecked() {
@@ -141,6 +148,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
 
   fetchTodos() {
     const userId = Number(this.authService.getUserId());
+    console.log(userId);
     this.todoService.getTodos().subscribe({
       next: (todos) => {
         const activeTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId);
@@ -355,5 +363,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
         //  this.showMessage('error', 'Error', 'Failed to restore task');
       }
     });
+  }
+
+
+  openNewTaskModal() {
+    this.newTaskModalVisible = true;
   }
 }
