@@ -25,6 +25,8 @@ export interface TodoItem {
   taskDetail: string;
   completed: boolean;
   isDeleted: boolean;
+  startDate: Date;
+  endDate: Date;
   userId?: number;
 }
 
@@ -55,7 +57,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   private adviceInterval: any;
   //modal
   newTaskModalVisible =  false;
-
+  startDate: any;
+  endDate: any;
   constructor(private todoService: TodoService,
               private router: Router,
               private authService: AuthService,
@@ -250,16 +253,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       return;
     }
 
-
     const newTaskItem: TodoItem = {
       id: 0,
       task: this.newTask.toUpperCase(),
       taskDetail: this.taskDetail?.trim() || '',
       completed: false,
+      startDate: this.startDate || new Date(),
+      endDate: this.endDate || new Date(),
       isDeleted: false,
       userId: userId
     };
-
+    console.log(newTaskItem);
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.newTask = '';
