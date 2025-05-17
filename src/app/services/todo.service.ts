@@ -8,6 +8,8 @@ export interface TodoItem {
   taskDetail: string;
   completed: boolean;
   isDeleted: boolean;
+  startDate: Date;
+  endDate: Date;
   userId?: number;
 }
 
