@@ -123,7 +123,7 @@
           <div class="flex">
             <div class="field">
               <p-floatlabel variant="on">
-                <p-calendar id="taskStartDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md" [style]="{maxWidth: '100%'}"></p-calendar>
+                <p-calendar [(ngModel)]="startDate" id="taskStartDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md" [style]="{maxWidth: '100%'}"></p-calendar>
                 <label for="newTaskInput">Start Date</label>
               </p-floatlabel>
 
@@ -132,7 +132,7 @@
           <div class="flex">
             <div class="field">
               <p-floatlabel variant="on">
-                <p-calendar id="taskEndDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md min-w-2.5 min-h-0.5"></p-calendar>
+                <p-calendar [(ngModel)]="endDate" id="taskEndDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md min-w-2.5 min-h-0.5"></p-calendar>
                 <label for="taskEndDate">End Date</label>
               </p-floatlabel>
             </div>
