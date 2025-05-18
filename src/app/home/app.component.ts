@@ -19,6 +19,7 @@ import {InputText} from 'primeng/inputtext';
 import {Textarea} from 'primeng/textarea';
 import {Calendar} from 'primeng/calendar';
 import {FloatLabel} from 'primeng/floatlabel';
+import { DragDropModule } from 'primeng/dragdrop';
 export interface TodoItem {
   id: number;
   task: string;
