@@ -11,3 +11,21 @@ tbody {
   gap: 10px; /* Adjust this to create spacing */
   margin-top: 5px;
 }
+
+
+::ng-deep .p-datepicker {
+  font-size: 0.75rem;         /* Shrinks text */
+  width: 200px !important;    /* Controls overall width */
+}
+
+::ng-deep .p-datepicker table td {
+  padding: 0.25rem !important; /* Reduces cell spacing */
+}
+
+::ng-deep .p-datepicker .p-datepicker-header {
+  padding: 0.5rem !important; /* Shrinks header space */
+}
+
+::ng-deep .p-datepicker .p-datepicker-title {
+  font-size: 0.8rem !important;
+}
