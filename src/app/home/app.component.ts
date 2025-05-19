@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   advice: string = '';
   //Pagination
   currentPage: number = 1;
-  itemsPerPage: number = 5; // Show 5 task per page
+  itemsPerPage: number = 8; // Show 5 task per page
   totalPages: number = 1;
   pages: number[] = [];
   private adviceInterval: any;
@@ -114,6 +114,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.checkAuthenticationf();
     this.isAuthenticated();
     this.getUserName();
+
   }
   ngAfterViewInit() {
     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000 });
@@ -267,6 +268,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     console.log(newTaskItem);
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
+        this.todoList.unshift(newTaskItem);
         this.newTask = '';
         this.messageService.add({ severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000 });
         this.notificationService.showSuccess('Success', 'Task added successfully.');
