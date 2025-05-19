@@ -3,23 +3,23 @@
     <app-sidebar></app-sidebar>
 
     <!-- Main Content -->
-    <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto border border-amber-800 border-dashed">
+    <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
       <p-toast/>
-      <div class="flex gap-4 mb-6 border border-red-500 border-dashed">
+      <div class="flex gap-4 mb-6">
         <button (click)="openNewTaskModal()"
                 class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2 transition"
                 pRipple>
           New Task
         </button>
       </div>
-      <div class="flex gap-4 mb-6 border border-red-500 border-dashed min-h-screen">
+      <div class="flex gap-4 mb-6 min-h-screen">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
 
           <ng-container *ngFor="let todoItem of todoList">
             <div class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between max-h-[260px] min-h-[260px] transition"
                  [ngClass]="{'hover:bg-gray-100': !todoItem.completed, 'bg-green-200 opacity-75': todoItem.completed}">
                 <div class="mb-3 font-semibold text-lg bg-green-300 rounded p-2">{{ todoItem.task.length > 17 ? (todoItem.task | slice:0:18) + '...' : todoItem.task}}</div>
-                <div>
+                <div class="flex items-center gap-2 mb-4">
                   <p class="text-sm text-gray-600">Start Date: {{ todoItem.startDate | date }}</p>
                   <p class="text-sm text-gray-600">End Date: {{ todoItem.endDate | date }}</p>
                 </div>
@@ -34,8 +34,24 @@
               </div>
             </ng-container>
           </div>
-
-
+      </div>
+      <div class="pagination-container flex justify-center space-x-4 pt-6">
+        <button (click)="prevPage()"
+                [disabled]="currentPage === 1"
+                class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
+          <i class="pi pi-chevron-left"></i> Prev
+        </button>
+        <span (click)="goToPage(page)"
+              *ngFor="let page of pages"
+              [ngClass]="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-300 text-gray-700': currentPage !== page}"
+              class="cursor-pointer px-5 py-2 rounded-lg">
+          {{ page }}
+        </span>
+        <button (click)="nextPage()"
+                [disabled]="currentPage === totalPages"
+                class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
+          Next <i class="pi pi-chevron-right"></i>
+        </button>
       </div>
       <!-- Header -->
 <!--      <header class="bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-6 text-center rounded-xl shadow-md mb-8">-->
@@ -134,12 +150,12 @@
 <!--          Next <i class="fas fa-chevron-right"></i>-->
 <!--        </button>-->
 <!--      </div>-->
-      <p-dialog header="Add your new task" [(visible)]="newTaskModalVisible" [modal]="true" [style]="{width: '81vw', height: '74vh'}" [closable]="false">
+      <p-dialog header="Add your new task" [(visible)]="newTaskModalVisible" [modal]="true" [style]="{width: '41vw', height: '61vh', marginTop: '-31vh', color: 'green'}" [closable]="false" >
        <div class="p-fluid flex flex-wrap gap-5 justify-around bg-gray-100 p-6 rounded-lg shadow-md mb-4 overflow-visible">
           <div class="flex">
             <div class="field">
               <p-floatlabel variant="on">
-                <input id="newTaskInput" type="text" pInputText [(ngModel)]="newTask" [style]="{width: '65vw'}"/>
+                <input id="newTaskInput" type="text" pInputText [(ngModel)]="newTask" [style]="{width: '28vw'}"/>
                 <label for="newTaskInput">Enter task title</label>
               </p-floatlabel>
 
@@ -148,7 +164,7 @@
           <div class="flex">
             <div class="field">
               <p-floatlabel variant="on">
-                <p-calendar [(ngModel)]="startDate" id="taskStartDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md" [style]="{maxWidth: '100%'}"></p-calendar>
+                <p-calendar [(ngModel)]="startDate" id="taskStartDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md" [style]="{width: '10vw'}" ></p-calendar>
                 <label for="newTaskInput">Start Date</label>
               </p-floatlabel>
 
@@ -157,7 +173,7 @@
           <div class="flex">
             <div class="field">
               <p-floatlabel variant="on">
-                <p-calendar [(ngModel)]="endDate" id="taskEndDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md min-w-2.5 min-h-0.5"></p-calendar>
+                <p-calendar [(ngModel)]="endDate" id="taskEndDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-xs min-w-2.5 min-h-0.5" [style]="{width: '10vw'}"></p-calendar>
                 <label for="taskEndDate">End Date</label>
               </p-floatlabel>
             </div>
@@ -166,13 +182,13 @@
         </div>
         <div class="field">
           <p-floatlabel variant="on">
-            <textarea id="newTaskDetailInput" rows="5" pInputTextarea [(ngModel)]="taskDetail" name="taskDetails" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+            <textarea id="newTaskDetailInput" rows="7" pInputTextarea [(ngModel)]="taskDetail" name="taskDetails" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
             <label for="newTaskDetailInput">Enter task details</label>
           </p-floatlabel>
         </div>
 
         <div class="flex justify-end gap-3 pt-4 border-t mt-6">
-          <button pButton type="button" label="Cancel" class="p-button-text" (click)="newTaskModalVisible = false"></button>
+          <button pButton type="button" label="Cancel" class="p-button-text text-gray-600 hover:text-red-600 transition" (click)="newTaskModalVisible = false"></button>
           <button pButton type="button" label="Save Task" class="p-button-success" (click)="addTask(); newTaskModalVisible = false"></button>
         </div>
       </p-dialog>
