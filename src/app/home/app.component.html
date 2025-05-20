@@ -1,7 +1,7 @@
 <div>
   <div class="flex flex-1">
     <app-sidebar></app-sidebar>
-
+    <p-confirmPopup></p-confirmPopup>
     <!-- Main Content -->
     <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
       <p-toast/>
@@ -25,11 +25,11 @@
                 </div>
                 <div class="flex items-center gap-2 mb-4">
                   <label class="text-sm">Completed:</label>
-                  <input type="checkbox" [(ngModel)]="todoItem.completed" class="h-4 w-4 cursor-pointer" />
+                  <input type="checkbox" [(ngModel)]="todoItem.completed" (ngModelChange)="toggleCompletions(todoItem)"  class="h-4 w-4 cursor-pointer" />
                 </div>
                 <div class="mt-auto flex justify-between">
                   <p-button icon="pi pi-search" [rounded]="true" severity="info" label="View"></p-button>
-                  <p-button icon="pi pi-times" [rounded]="true" severity="danger" label="Delete"></p-button>
+                  <p-button (click)="softdeleteTask($event, todoItem)"  icon="pi pi-times" [rounded]="true" severity="danger" label="Delete" [outlined]="true"></p-button>
                 </div>
               </div>
             </ng-container>
