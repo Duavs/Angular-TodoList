@@ -8,7 +8,7 @@ import {ProfileService} from '../services/profile.service';
 import {NotificationService} from '../services/notification.services';
 import {Toast} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
-import {MessageService} from 'primeng/api';
+import {MessageService, ConfirmationService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
 import {RippleModule} from 'primeng/ripple';
 import {AiService} from '../services/ai.service'
@@ -19,7 +19,9 @@ import {InputText} from 'primeng/inputtext';
 import {Textarea} from 'primeng/textarea';
 import {Calendar} from 'primeng/calendar';
 import {FloatLabel} from 'primeng/floatlabel';
-import { DragDropModule } from 'primeng/dragdrop';
+import { PaginatorModule } from 'primeng/paginator';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+
 export interface TodoItem {
   id: number;
   task: string;
@@ -34,10 +36,10 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel],
+  imports: [ConfirmPopupModule, FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel, PaginatorModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked{
@@ -52,7 +54,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   advice: string = '';
   //Pagination
   currentPage: number = 1;
-  itemsPerPage: number = 12; // Show 5 task per page
+  itemsPerPage: number = 12;
   totalPages: number = 1;
   pages: number[] = [];
   private adviceInterval: any;
@@ -67,7 +69,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
               private profileService: ProfileService,
               private aiService: AiService,
               private adviceService: AdviceService,
-              private messageService: MessageService
+              private messageService: MessageService,
+              private confirmationService: ConfirmationService
   ) {}
   // get username(): string | null {
   //   return this.profileService.Username();
@@ -122,7 +125,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.fetchTodos();
   }
   ngAfterViewChecked() {
-    console.log('HomeComponent Loaded');
+
   }
   ngOnDestroy() {
     if (this.adviceInterval) {
@@ -153,7 +156,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
 
   fetchTodos() {
     const userId = Number(this.authService.getUserId());
-    console.log(userId);
     this.todoService.getTodos().subscribe({
       next: (todos) => {
         const activeTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId);
@@ -214,6 +216,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
+      console.log('Current Page:', this.currentPage);
       this.fetchTodos();
     }
   }
@@ -340,23 +343,33 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     });
   }
 
-  softdeleteTask(todoItem: TodoItem) {
-    if (todoItem.completed) {
-      todoItem.isDeleted = true;
-      this.todoService.softDeleteTodo(todoItem.id).subscribe({
-          next: () => {
-            this.fetchTodos(); // ⬅ Ensure deleted tasks disappear immediately
-            //  this.showMessage('warn', 'Task Deleted', 'Successfully deleted!');
+  softdeleteTask(event: Event, todoItem: TodoItem) {
+      if(event.type == 'click') {
+
+        this.confirmationService.confirm({
+          target: event.target as HTMLElement,
+          message: 'Do you want to delete this record?',
+          icon: 'pi pi-info-circle',
+          acceptButtonStyleClass: 'p-button-danger p-button-sm',
+          accept: () => {
+            this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000});
+            todoItem.isDeleted = true;
+            this.todoService.softDeleteTodo(todoItem.id).subscribe({
+              next: () => {
+                this.fetchTodos();
+              },
+              error: (err) => {
+                console.error('Error deleting task:', err);
+                //   this.showMessage('error', 'Error', 'Failed to delete task');
+              }
+            })
           },
-          error:
-            (err) => {
-              console.error('Error deleting task:', err);
-              //   this.showMessage('error', 'Error', 'Failed to delete task');
-            }
-        }
-      )
+          reject: () => {
+            this.messageService.add({severity: 'information', summary:'', detail: 'Task is retained', life: 3000});
+          }
+        });
+      }
     }
-  }
 
   restoreTask(todoItem: TodoItem) {
     todoItem.isDeleted = false;
@@ -372,8 +385,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     });
   }
 
-
   openNewTaskModal() {
     this.newTaskModalVisible = true;
   }
+
 }
