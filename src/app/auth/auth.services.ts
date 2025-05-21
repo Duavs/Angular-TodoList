@@ -17,7 +17,7 @@ export class AuthService {
 
   private loggedIn = false; // Tracks login state
   private token = localStorage.getItem("token");
-  private baseUrl: string = 'http://localhost:5248/api/users';
+
 
   constructor(private http: HttpClient) {
   }
