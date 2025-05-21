@@ -1,8 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../services/auth.services';
+import {Title} from '@angular/platform-browser';
+import {Init} from 'node:v8';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +13,18 @@ import {AuthService} from '../services/auth.services';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email = '';
   password = '';
   errorMessage = '';
-
-  constructor(private loginService: AuthService, private router: Router) {
+  title = 'Login';
+  constructor(private loginService: AuthService,
+              private router: Router,
+              private titleService: Title) {
   }
-
+  ngOnInit() {
+    this.titleService.setTitle(this.title);
+  }
   login() {
     const loginData = {email: this.email, password: this.password};
 
