@@ -18,9 +18,10 @@ import {Dialog} from 'primeng/dialog';
 import {InputText} from 'primeng/inputtext';
 import {Textarea} from 'primeng/textarea';
 import {Calendar} from 'primeng/calendar';
+import {Skeleton} from 'primeng/skeleton';
 import {FloatLabel} from 'primeng/floatlabel';
 import { PaginatorModule } from 'primeng/paginator';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
 import { Title } from '@angular/platform-browser';
 export interface TodoItem {
   id: number;
@@ -36,7 +37,7 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ConfirmPopupModule, FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel, PaginatorModule],
+  imports: [Skeleton, FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel, PaginatorModule, ConfirmPopup],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService, ConfirmationService],
@@ -119,6 +120,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.checkAuthentication();
     this.isAuthenticated();
     this.getUserName();
+    console.log(this.todoList.length);
   }
 
   ngAfterViewInit() {
