@@ -21,7 +21,7 @@ import {Calendar} from 'primeng/calendar';
 import {FloatLabel} from 'primeng/floatlabel';
 import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
-
+import { Title } from '@angular/platform-browser';
 export interface TodoItem {
   id: number;
   task: string;
@@ -43,7 +43,7 @@ export interface TodoItem {
 })
 
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked{
-  title = 'Todo List';
+  title = 'Home';
   todoList: TodoItem[] = [];
   paginatedTodos: TodoItem[] = [];
   newTask: string = '';
@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   newTaskModalVisible =  false;
   startDate: any;
   endDate: any;
+  minDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   constructor(private todoService: TodoService,
               private router: Router,
               private authService: AuthService,
@@ -70,7 +71,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
               private aiService: AiService,
               private adviceService: AdviceService,
               private messageService: MessageService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private titleService: Title
   ) {}
   // get username(): string | null {
   //   return this.profileService.Username();
@@ -113,12 +115,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     }, 10000);
   }
   ngOnInit() {
-    console.log('HomeComponent Loaded');
-    this.checkAuthenticationf();
+    this.titleService.setTitle(this.title);
+    this.checkAuthentication();
     this.isAuthenticated();
     this.getUserName();
-
   }
+
   ngAfterViewInit() {
     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000 });
     // this.scheduleAdvice();
@@ -133,7 +135,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     }
   }
 
-  checkAuthenticationf() {
+  checkAuthentication() {
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/login']);
     }
@@ -331,6 +333,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
 
   toggleCompletions(todoItem: TodoItem) {
     todoItem.completed = !todoItem.completed;
+    console.log(todoItem.completed);
     this.todoService.updateTodo(todoItem).subscribe({
       next: () => {
         console.log('clicked checkbox');
