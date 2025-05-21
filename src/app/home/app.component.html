@@ -5,7 +5,8 @@
     <!-- Main Content -->
     <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
       <p-toast/>
-      <div class="flex gap-4 mb-6">
+      <div class="flex gap-4 mb-6 border-2">
+
         <button (click)="openNewTaskModal()"
                 class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2 transition"
                 pRipple>
@@ -17,7 +18,7 @@
 
           <ng-container *ngFor="let todoItem of todoList">
             <div class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between max-h-[260px] min-h-[260px] transition"
-                 [ngClass]="{'hover:bg-gray-100': !todoItem.completed, 'bg-green-200 opacity-75': todoItem.completed}">
+                 [ngClass]="{'opacity-40': todoItem.completed, 'hover:bg-gray-100': !todoItem.completed}">
                 <div class="mb-3 font-semibold text-lg bg-green-300 rounded p-2">{{ todoItem.task.length > 17 ? (todoItem.task | slice:0:18) + '...' : todoItem.task}}</div>
                 <div class="flex items-center gap-2 mb-4">
                   <p class="text-sm text-gray-600">Start Date: {{ todoItem.startDate | date }}</p>
@@ -25,7 +26,7 @@
                 </div>
                 <div class="flex items-center gap-2 mb-4">
                   <label class="text-sm">Completed:</label>
-                  <input type="checkbox" [(ngModel)]="todoItem.completed" (ngModelChange)="toggleCompletions(todoItem)"  class="h-4 w-4 cursor-pointer" />
+                  <input type="checkbox"  (ngModelChange)="toggleCompletions(todoItem)" [(ngModel)]="todoItem.completed" class="h-4 w-4 cursor-pointer" />
                 </div>
                 <div class="mt-auto flex justify-between">
                   <p-button icon="pi pi-search" [rounded]="true" severity="info" label="View"></p-button>
@@ -150,8 +151,8 @@
 <!--          Next <i class="fas fa-chevron-right"></i>-->
 <!--        </button>-->
 <!--      </div>-->
-      <p-dialog header="Add your new task" [(visible)]="newTaskModalVisible" [modal]="true" [style]="{width: '41vw', height: '61vh', marginTop: '-31vh', color: 'green'}" [closable]="false" >
-       <div class="p-fluid flex flex-wrap gap-5 justify-around bg-gray-100 p-6 rounded-lg shadow-md mb-4 overflow-visible">
+      <p-dialog header="Add your new task" [(visible)]="newTaskModalVisible" [modal]="true" [style]="{ marginTop: ' -51vh', color: 'green'}" [closable]="false" class="overflow-visible" >
+       <div class="p-fluid flex flex-wrap gap-5 justify-around bg-gray-100 p-6 rounded-lg shadow-md mb-4">
           <div class="flex">
             <div class="field">
               <p-floatlabel variant="on">
@@ -162,18 +163,31 @@
             </div>
           </div>
           <div class="flex">
-            <div class="field">
+            <div class="">
               <p-floatlabel variant="on">
-                <p-calendar [(ngModel)]="startDate" id="taskStartDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-md" [style]="{width: '10vw'}" ></p-calendar>
+                <p-calendar [(ngModel)]="startDate"
+                            id="taskStartDate"
+                            dateFormat="yy-mm-dd"
+                            showIcon="true"
+                            class="rounded-md"
+                            inputId="buttondisplay"
+                            [minDate]="minDate"
+                            [style]="{width: '10vw'}" ></p-calendar>
                 <label for="newTaskInput">Start Date</label>
               </p-floatlabel>
 
             </div>
           </div>
           <div class="flex">
-            <div class="field">
+            <div class="">
               <p-floatlabel variant="on">
-                <p-calendar [(ngModel)]="endDate" id="taskEndDate" dateFormat="yy-mm-dd" showIcon="true" class="rounded-xs min-w-2.5 min-h-0.5" [style]="{width: '10vw'}"></p-calendar>
+                <p-calendar [(ngModel)]="endDate"
+                            id="taskEndDate"
+                            dateFormat="yy-mm-dd"
+                            showIcon="true"
+                            [minDate]="minDate"
+                            class="rounded-md"
+                            [style]="{width: '10vw'}"></p-calendar>
                 <label for="taskEndDate">End Date</label>
               </p-floatlabel>
             </div>
