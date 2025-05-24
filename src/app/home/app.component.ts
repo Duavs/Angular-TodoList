@@ -64,6 +64,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   startDate: any;
   endDate: any;
   minDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
+  //search
+  searchQuery: string = '';
   constructor(private todoService: TodoService,
               private router: Router,
               private authService: AuthService,
@@ -392,6 +395,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
 
   openNewTaskModal() {
     this.newTaskModalVisible = true;
+  }
+
+  get filteredTodoList() {
+    const result = !this.searchQuery.trim()
+      ? this.todoList
+      : this.todoList.filter(todo =>
+        todo.task.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    console.log('Filtered Todos:', result);
+    return result;
   }
 
 }
