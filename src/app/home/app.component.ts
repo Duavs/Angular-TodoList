@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   title = 'Home';
   todoList: TodoItem[] = [];
   paginatedTodos: TodoItem[] = [];
+  allTodos: TodoItem[] = [];
   newTask: string = '';
   taskDetail: string ='';
   editingTaskId: number | null = null;
@@ -166,7 +167,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.todoService.getTodos().subscribe({
       next: (todos) => {
         const activeTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId);
-
+        this.allTodos = activeTodos;
         // Update total pages
         this.totalPages = Math.max(1, Math.ceil(activeTodos.length / this.itemsPerPage));
 
@@ -400,7 +401,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   get filteredTodoList() {
     const result = !this.searchQuery.trim()
       ? this.todoList
-      : this.todoList.filter(todo =>
+      : this.allTodos.filter(todo =>
         todo.task.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     console.log('Filtered Todos:', result);
