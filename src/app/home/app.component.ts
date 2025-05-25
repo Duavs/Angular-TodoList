@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TodoService} from '../services/todo.service';
 import {CommonModule} from '@angular/common';
@@ -23,6 +23,8 @@ import {FloatLabel} from 'primeng/floatlabel';
 import { PaginatorModule } from 'primeng/paginator';
 import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
 import { Title } from '@angular/platform-browser';
+import {DropdownModule} from 'primeng/dropdown';
+
 export interface TodoItem {
   id: number;
   task: string;
@@ -37,7 +39,7 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Skeleton, FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel, PaginatorModule, ConfirmPopup],
+  imports: [Skeleton, FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel, PaginatorModule, ConfirmPopup, DropdownModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService, ConfirmationService],
@@ -61,13 +63,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   pages: number[] = [];
   private adviceInterval: any;
   //modal
+  // Helper method
   newTaskModalVisible =  false;
-  startDate: any;
-  endDate: any;
+  startDate: Date = new Date();
+  endDate: Date = new Date();
   minDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 
   //search
   searchQuery: string = '';
+  //filter
+  filterOptions = [
+    {label: 'All', value: 'all'},
+    {label: 'Start Date', value: 'startDate'},
+    {label: 'Personal', value: 'p-task'},
+    {label: 'Work', value: 'w-task'},
+  ];
+  selectedFilter: string = 'All';
   constructor(private todoService: TodoService,
               private router: Router,
               private authService: AuthService,
@@ -124,7 +135,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.checkAuthentication();
     this.isAuthenticated();
     this.getUserName();
-    console.log(this.todoList.length);
+    // console.log(this.todoList.length);
   }
 
   ngAfterViewInit() {
@@ -184,8 +195,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
         const endIndex = startIndex + this.itemsPerPage;
         this.todoList = activeTodos.slice(startIndex, endIndex);
 
-        console.log("Current Page:", this.currentPage);
-        console.log("Fetched Todos:", this.todoList);
+        // console.log("Current Page:", this.currentPage);
+        // console.log("Fetched Todos:", this.todoList);
       },
       error: (err) => {
         console.error('Error fetching todos:', err);
@@ -232,6 +243,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   notify() {
     this.notificationService.showWarning('Warning!', 'Something needs attention.');
   };
+  formatDate(date: Date): Date {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  };
 
   addTask(): void {
     const lengthRegex = /^.{3,100}$/;
@@ -271,12 +287,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       task: this.newTask.toUpperCase(),
       taskDetail: this.taskDetail?.trim() || '',
       completed: false,
-      startDate: this.startDate || new Date(),
-      endDate: this.endDate || new Date(),
+      startDate: this.formatDate(new Date(this.startDate)),
+      endDate: this.formatDate(new Date(this.endDate)),
       isDeleted: false,
       userId: userId
     };
-    console.log(newTaskItem);
+    console.log(this.startDate, this.endDate);
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.todoList.unshift(newTaskItem);
@@ -404,8 +420,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       : this.allTodos.filter(todo =>
         todo.task.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
-    console.log('Filtered Todos:', result);
+    // console.log('Filtered Todos:', result);
     return result;
+  }
+  onFilterChange(event: any) {
+    const selectedValue = event.value;
+    console.log('Selected Filter:', selectedValue);
+    if (selectedValue === 'startDate') {
+      this.sortTodosByDate(this.todoList);
+    } else if (selectedValue === 'all') {
+      this.fetchTodos(); // reset or fetch all again
+    }
+
+  }
+  sortTodosByDate(todos: TodoItem[]): TodoItem[] {
+   // return todos.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+  return console.log('Sorting by date is not implemented yet'), todos;
   }
 
 }
