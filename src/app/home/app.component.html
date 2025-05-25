@@ -6,7 +6,7 @@
     <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
       <p-toast/>
       <div class="flex justify-between items-center gap-4 mb-6 w-full">
-        <p-floatlabel variant="on">
+        <p-floatlabel  variant="on">
           <input id="searchInput"
                  type="text"
                  pInputText [(ngModel)]="searchQuery"
@@ -14,6 +14,16 @@
                  style="border-radius: 20px;"/>
           <label for="searchInput">Search Tasks</label>
         </p-floatlabel>
+          <p-dropdown class="w-48"
+                      id="filterSelect"
+                      [style]="{borderRadius: '20px'}"
+                      [options]="filterOptions"
+                      placeholder="Filter by"
+                      styleClass="{height: '2.5rem', width: '10rem'}"
+                      [(ngModel)]="selectedFilter"
+                      (onChange)="onFilterChange($event)"
+                      >
+          </p-dropdown>
         <button class="bg-sky-700 text-white px-6 py-3 rounded-lg hover:bg-sky-800 flex items-center gap-2 transition justify-end"
                 pRipple>
           Personal Tasks
