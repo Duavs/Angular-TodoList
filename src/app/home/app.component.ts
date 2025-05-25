@@ -63,12 +63,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   pages: number[] = [];
   private adviceInterval: any;
   //modal
-  // Helper method
   newTaskModalVisible =  false;
-  startDate: Date = new Date();
-  endDate: Date = new Date();
+  // startDate: Date = new Date();
+  // endDate: Date = new Date();
   minDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-
+  taskStartDate: any;
+  taskEndDate: any;
   //search
   searchQuery: string = '';
   //filter
@@ -243,12 +243,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   notify() {
     this.notificationService.showWarning('Warning!', 'Something needs attention.');
   };
-  formatDate(date: Date): Date {
-    const d = new Date(date);
-    d.setHours(0, 0, 0, 0);
-    return d;
-  };
-
+formatLocalDate(date: Date): Date {
+    const normalized = new Date(date);
+    normalized.setDate(normalized.getDate() + 1); // Add 1 day
+    normalized.setHours(0, 0, 0, 0); // Normalize time to midnight
+    return normalized;
+  }
   addTask(): void {
     const lengthRegex = /^.{3,100}$/;
     const allowdCharsRegex = /^[a-zA-Z0-9\s.,!?'-]+$/;
@@ -287,12 +287,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       task: this.newTask.toUpperCase(),
       taskDetail: this.taskDetail?.trim() || '',
       completed: false,
-      startDate: this.formatDate(new Date(this.startDate)),
-      endDate: this.formatDate(new Date(this.endDate)),
+      startDate: this.formatLocalDate(this.taskStartDate),
+      endDate: this.formatLocalDate(this.taskEndDate),
       isDeleted: false,
       userId: userId
     };
-    console.log(this.startDate, this.endDate);
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.todoList.unshift(newTaskItem);
@@ -434,8 +433,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
 
   }
   sortTodosByDate(todos: TodoItem[]): TodoItem[] {
-   // return todos.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
-  return console.log('Sorting by date is not implemented yet'), todos;
+    return todos.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+
   }
 
 }
