@@ -5,18 +5,27 @@
     <!-- Main Content -->
     <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
       <p-toast/>
-      <div class="flex gap-4 mb-6">
+      <div class="flex justify-between items-center gap-4 mb-6 w-full">
         <p-floatlabel variant="on">
           <input id="searchInput"
                  type="text"
                  pInputText [(ngModel)]="searchQuery"
-                 class="p-2 border border-gray-300 rounded-md"
-                 width="68vw"/>
-          <label for="searchInput">Search Task</label>
+                 class="w-xl"
+                 style="border-radius: 20px;"/>
+          <label for="searchInput">Search Tasks</label>
         </p-floatlabel>
-        <button (click)="openNewTaskModal()"
-                class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2 transition"
+        <button class="bg-sky-700 text-white px-6 py-3 rounded-lg hover:bg-sky-800 flex items-center gap-2 transition justify-end"
                 pRipple>
+          Personal Tasks
+        </button>
+        <button class="bg-yellow-700 text-white px-6 py-3 rounded-lg hover:bg-yellow-800 flex items-center gap-2 transition justify-end"
+                pRipple>
+          Work Tasks
+        </button>
+        <button (click)="openNewTaskModal()"
+                class="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2 transition justify-end"
+                pRipple
+                >
           New Task
         </button>
       </div>
