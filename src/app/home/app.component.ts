@@ -167,7 +167,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.todoService.getTodos().subscribe({
       next: (todos) => {
         const activeTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId);
-        this.allTodos = activeTodos;
+        this.allTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId && !todo.completed);
         // Update total pages
         this.totalPages = Math.max(1, Math.ceil(activeTodos.length / this.itemsPerPage));
 
