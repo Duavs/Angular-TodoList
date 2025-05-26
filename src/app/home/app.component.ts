@@ -45,13 +45,13 @@ export interface TodoItem {
   providers: [MessageService, ConfirmationService],
 })
 
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked{
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked {
   title = 'Home';
   todoList: TodoItem[] = [];
   paginatedTodos: TodoItem[] = [];
   allTodos: TodoItem[] = [];
   newTask: string = '';
-  taskDetail: string ='';
+  taskDetail: string = '';
   editingTaskId: number | null = null;
   editedTask: string = '';
   username: string = '';
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   pages: number[] = [];
   private adviceInterval: any;
   //modal
-  newTaskModalVisible =  false;
+  newTaskModalVisible = false;
   // startDate: Date = new Date();
   // endDate: Date = new Date();
   minDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
@@ -73,12 +73,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   searchQuery: string = '';
   //filter
   filterOptions = [
-    {label: 'All', value: 'all'},
+    {label: 'Default', value: 'all'},
+    {label: 'Completed', value: 'completed'},
     {label: 'Start Date', value: 'startDate'},
     {label: 'Personal', value: 'p-task'},
     {label: 'Work', value: 'w-task'},
   ];
   selectedFilter: string = 'All';
+
   constructor(private todoService: TodoService,
               private router: Router,
               private authService: AuthService,
@@ -89,7 +91,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
               private messageService: MessageService,
               private confirmationService: ConfirmationService,
               private titleService: Title
-  ) {}
+  ) {
+  }
+
   // get username(): string | null {
   //   return this.profileService.Username();
   //
@@ -104,6 +108,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       }
     });
   }
+
   suggestTask(): void {
     const query = this.newTask.trim().toUpperCase() || "task";
 
@@ -124,12 +129,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       error: (err) => console.error('Failed to fetch user name:', err)
     });
   }
+
   scheduleAdvice() {
     this.fetchAdvice(); // First call
     this.adviceInterval = setTimeout(() => {
       this.scheduleAdvice(); // Recursively schedule next fetch
     }, 10000);
   }
+
   ngOnInit() {
     this.titleService.setTitle(this.title);
     this.checkAuthentication();
@@ -139,13 +146,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   }
 
   ngAfterViewInit() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000 });
+    this.messageService.add({severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000});
     // this.scheduleAdvice();
     this.fetchTodos();
+    this.onFilterChange(this.selectedFilter); // Initialize with 'All' filter
   }
+
   ngAfterViewChecked() {
 
   }
+
   ngOnDestroy() {
     if (this.adviceInterval) {
       clearTimeout(this.adviceInterval); // use clearTimeout instead
@@ -243,12 +253,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   notify() {
     this.notificationService.showWarning('Warning!', 'Something needs attention.');
   };
-formatLocalDate(date: Date): Date {
+
+  formatLocalDate(date: Date): Date {
     const normalized = new Date(date);
     normalized.setDate(normalized.getDate() + 1); // Add 1 day
     normalized.setHours(0, 0, 0, 0); // Normalize time to midnight
     return normalized;
   }
+
   addTask(): void {
     const lengthRegex = /^.{3,100}$/;
     const allowdCharsRegex = /^[a-zA-Z0-9\s.,!?'-]+$/;
@@ -296,7 +308,7 @@ formatLocalDate(date: Date): Date {
       next: () => {
         this.todoList.unshift(newTaskItem);
         this.newTask = '';
-        this.messageService.add({ severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000 });
+        this.messageService.add({severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000});
         this.notificationService.showSuccess('Success', 'Task added successfully.');
         this.fetchTodos(); // ⬅ Refresh data after adding
         //this.showMessage('success', 'Task Added', 'Successfully added!');
@@ -368,32 +380,32 @@ formatLocalDate(date: Date): Date {
   }
 
   softdeleteTask(event: Event, todoItem: TodoItem) {
-      if(event.type == 'click') {
+    if (event.type == 'click') {
 
-        this.confirmationService.confirm({
-          target: event.target as HTMLElement,
-          message: 'Do you want to delete this record?',
-          icon: 'pi pi-info-circle',
-          acceptButtonStyleClass: 'p-button-danger p-button-sm',
-          accept: () => {
-            this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000});
-            todoItem.isDeleted = true;
-            this.todoService.softDeleteTodo(todoItem.id).subscribe({
-              next: () => {
-                this.fetchTodos();
-              },
-              error: (err) => {
-                console.error('Error deleting task:', err);
-                //   this.showMessage('error', 'Error', 'Failed to delete task');
-              }
-            })
-          },
-          reject: () => {
-            this.messageService.add({severity: 'information', summary:'', detail: 'Task is retained', life: 3000});
-          }
-        });
-      }
+      this.confirmationService.confirm({
+        target: event.target as HTMLElement,
+        message: 'Do you want to delete this record?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-sm',
+        accept: () => {
+          this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000});
+          todoItem.isDeleted = true;
+          this.todoService.softDeleteTodo(todoItem.id).subscribe({
+            next: () => {
+              this.fetchTodos();
+            },
+            error: (err) => {
+              console.error('Error deleting task:', err);
+              //   this.showMessage('error', 'Error', 'Failed to delete task');
+            }
+          })
+        },
+        reject: () => {
+          this.messageService.add({severity: 'information', summary: '', detail: 'Task is retained', life: 3000});
+        }
+      });
     }
+  }
 
   restoreTask(todoItem: TodoItem) {
     todoItem.isDeleted = false;
@@ -422,19 +434,26 @@ formatLocalDate(date: Date): Date {
     // console.log('Filtered Todos:', result);
     return result;
   }
+
   onFilterChange(event: any) {
     const selectedValue = event.value;
     console.log('Selected Filter:', selectedValue);
     if (selectedValue === 'startDate') {
-      this.sortTodosByDate(this.todoList);
-    } else if (selectedValue === 'all') {
+      this.sortByStartDate(this.todoList);
+    } else if (selectedValue === 'completed') {
+      this.sortByDateCompletion(this.todoList);
+    }
+    else if (selectedValue === 'all') {
       this.fetchTodos(); // reset or fetch all again
     }
 
   }
-  sortTodosByDate(todos: TodoItem[]): TodoItem[] {
-    return todos.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
+  sortByStartDate(todos: TodoItem[]): TodoItem[] {
+    return todos.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
   }
 
+  sortByDateCompletion(todos: TodoItem[]): TodoItem[] {
+    return todos.sort((a, b) => Number(a.completed) - Number(b.completed));
+  }
 }
