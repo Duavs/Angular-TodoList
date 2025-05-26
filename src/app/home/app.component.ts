@@ -20,9 +20,9 @@ import {Textarea} from 'primeng/textarea';
 import {Calendar} from 'primeng/calendar';
 import {Skeleton} from 'primeng/skeleton';
 import {FloatLabel} from 'primeng/floatlabel';
-import { PaginatorModule } from 'primeng/paginator';
+import {PaginatorModule} from 'primeng/paginator';
 import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
-import { Title } from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 import {DropdownModule} from 'primeng/dropdown';
 
 export interface TodoItem {
@@ -74,12 +74,26 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   //filter
   filterOptions = [
     {label: 'Default', value: 'all'},
-    {label: 'Completed', value: 'completed'},
+    {label: 'Ongoing', value: 'ongoing'},
     {label: 'Start Date', value: 'startDate'},
     {label: 'Personal', value: 'p-task'},
     {label: 'Work', value: 'w-task'},
   ];
   selectedFilter: string = 'All';
+  //tagged as work or personal
+  taskTagOptions = [
+    {label: 'Personal', value: 'p-task'},
+    {label: 'Work', value: 'w-task'},
+  ];
+  selectedTaskTag: string = '';
+  //task priority
+  taskPriorityOptions = [
+    {label: 'Low', value: 'low'},
+    {label: 'Normal', value: 'normal'},
+    {label: 'High', value: 'high'},
+    {label: 'Urgent', value: 'urgent', styleClass: 'urgent-task'},
+  ];
+  selectedTaskPriority: string = 'clear';
 
   constructor(private todoService: TodoService,
               private router: Router,
@@ -149,11 +163,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.messageService.add({severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000});
     // this.scheduleAdvice();
     this.fetchTodos();
-    this.onFilterChange(this.selectedFilter); // Initialize with 'All' filter
+    // Initialize with 'All' filter
   }
 
   ngAfterViewChecked() {
-
+    this.onFilterChange({value: this.selectedFilter});
   }
 
   ngOnDestroy() {
@@ -436,17 +450,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   }
 
   onFilterChange(event: any) {
-    const selectedValue = event.value;
-    console.log('Selected Filter:', selectedValue);
-    if (selectedValue === 'startDate') {
-      this.sortByStartDate(this.todoList);
-    } else if (selectedValue === 'completed') {
-      this.sortByDateCompletion(this.todoList);
-    }
-    else if (selectedValue === 'all') {
-      this.fetchTodos(); // reset or fetch all again
-    }
+    const selectedValue = event.value; // Get the selected filter value from the dropdown event
 
+    if (selectedValue === 'startDate') {
+      // Sort the todo list by start date in ascending order
+      this.sortByStartDate(this.todoList);
+    } else if (selectedValue === 'ongoing') {
+      // Sort the todo list by completion status (incomplete first)
+      this.sortByDateCompletion(this.todoList);
+    } else if (selectedValue === 'all') {
+      // Reset and re-fetch all todos from the backend
+      this.fetchTodos();
+    }
   }
 
   sortByStartDate(todos: TodoItem[]): TodoItem[] {
@@ -456,4 +471,5 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   sortByDateCompletion(todos: TodoItem[]): TodoItem[] {
     return todos.sort((a, b) => Number(a.completed) - Number(b.completed));
   }
+
 }
