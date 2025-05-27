@@ -5,7 +5,7 @@
     <!-- Main Content -->
     <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
       <p-toast/>
-      <div class="flex justify-between items-center gap-4 mb-6 w-full">
+      <div class="flex justify-between items-center gap-3 mb-6 w-full">
         <p-floatlabel variant="on">
           <input id="searchInput"
                  type="text"
@@ -14,11 +14,12 @@
                  style="border-radius: 20px;"/>
           <label for="searchInput">Search Tasks</label>
         </p-floatlabel>
+        <label>Sort by</label>
         <p-dropdown class="w-48"
                     id="filterSelect"
                     [style]="{borderRadius: '20px'}"
                     [options]="filterOptions"
-                    placeholder="Filter by"
+                    placeholder="Default"
                     styleClass="{height: '2.5rem', width: '10rem'}"
                     [(ngModel)]="selectedFilter"
                     (onChange)="onFilterChange($event)"
@@ -73,24 +74,24 @@
         </div>
       </div>
       <div class="pagination-container flex justify-center space-x-4 pt-6">
-        <button (click)="prevPage(); onFilterChange($event)"
+        <p-button (click)="prevPage(); onFilterChange($event)"
                 [disabled]="currentPage === 1"
-                class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
+                class="px-5 py-2 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2">
           <i class="pi pi-chevron-left"></i> Prev
-        </button>
+        </p-button>
         <span (click)="goToPage(page)"
               *ngFor="let page of pages"
-              [ngClass]="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-300 text-gray-700': currentPage !== page}"
+              [ngClass]="{'text-black': currentPage === page, 'text-gray-700': currentPage !== page}"
               class="cursor-pointer px-5 py-2 rounded-lg">
           {{ page }}
         </span>
 
-        <button (click)="nextPage(); onFilterChange($event)"
+        <p-button (click)="nextPage(); onFilterChange($event)"
                 [disabled]="currentPage === totalPages"
-                class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2"
+                class="px-5 py-2text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2"
         >
           Next <i class="pi pi-chevron-right"></i>
-        </button>
+        </p-button>
       </div>
       <!-- Header -->
       <!--      <header class="bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-6 text-center rounded-xl shadow-md mb-8">-->
@@ -235,6 +236,10 @@
                       styleClass="{height: '2.5rem', width: '10rem'}"
                       [(ngModel)]="selectedTaskTag"
                       (onChange)="onFilterChange($event)"
+                      [ngStyle]="{
+                     'background-color': selectedTaskTag === 'p-task' ? '#87EDC7' :
+                                        selectedTaskTag === 'w-task' ? '#C787ED' : '#e5e7eb'
+                                   }"
           >
           </p-dropdown>
           <p-dropdown class="w-48"
@@ -245,12 +250,12 @@
                       styleClass="{height: '2.5rem', width: '10rem'}"
                       [(ngModel)]="selectedTaskPriority"
                       (onChange)="onFilterChange($event)"
-                      [ngClass]="{
-                      'bg-gray-200': selectedTaskPriority === 'low',
-                      'bg-green-300': selectedTaskPriority == 'normal',
-                      'bg-red-300': selectedTaskPriority === 'high',
-                      'bg-red-600': selectedTaskPriority === 'urgent'
-                      }"
+                      [ngStyle]="{
+                     'background-color': selectedTaskPriority === 'low' ? '#f5fed9' :
+                                        selectedTaskPriority === 'normal' ? '#53AD52' :
+                                        selectedTaskPriority === 'high' ? '#fca5a5' :
+                                        selectedTaskPriority === 'urgent' ? '#dc2626' :
+                                        '#e5e7eb'}"
           >
           </p-dropdown>
 
