@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {jwtDecode} from 'jwt-decode';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { jwtDecode } from 'jwt-decode';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,12 @@ import {jwtDecode} from 'jwt-decode';
 
 export class ProfileService {
   private apiUrl = 'http://localhost:5248/api/users'; // adjust if needed
-  private token = localStorage.getItem("token");
+  private token: string | null = null;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.token = localStorage.getItem("token");
+    }
   }
 
   getUserId(): string | null {
@@ -88,7 +92,10 @@ export class ProfileService {
   }
 
   getUserProfile(): Observable<any> {
-    const token = localStorage.getItem('token');
+    let token: string | null = null;
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     const headers = new HttpHeaders(token ? {'Authorization': `Bearer ${token}`} : {});
     return this.http.get(`${this.apiUrl}/profile`, {headers});
   }
@@ -101,7 +108,10 @@ export class ProfileService {
   }
 
   private getHeaders() {
-    const token = localStorage.getItem('token');
+    let token: string | null = null;
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     return {
       headers: new HttpHeaders(
         token ? {'Authorization': `Bearer ${token}`} : {} // Handle null token
