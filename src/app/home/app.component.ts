@@ -199,7 +199,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
 
   fetchTodos() {
     const userId = Number(this.authService.getUserId());
-    this.todoService.getTodos().subscribe({
+     console.log(' ID:', userId);
+    this.todoService.getTodosWithAuth().subscribe({
       next: (todos) => {
         const activeTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId);
         this.allTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId && !todo.completed);
