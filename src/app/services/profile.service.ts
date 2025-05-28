@@ -4,13 +4,16 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ProfileService {
-  private apiUrl = 'http://localhost:5248/api/users'; // adjust if needed
+  // private apiUrl = 'http://localhost:5248/api/users'; // adjust if needed
+  private apiUrl = `${environment.apiUrl}/users`;
   private token: string | null = null;
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
