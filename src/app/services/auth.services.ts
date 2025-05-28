@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment'; // add this at the
 })
 export class AuthService {
   // private readonly baseUrl: string = 'http://localhost:5248/api/users'; // ✅ Ensure baseUrl is a class property
-  private readonly baseUrl: string = `${environment.apiUrl}/users`;
+  private readonly baseUrl: string = `${environment.apiUrl}/api/users`;
   constructor(private http: HttpClient, private router: Router) {
   }
 
