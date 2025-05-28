@@ -20,11 +20,16 @@ export interface TodoItem {
 })
 export class TodoService {
   // private apiUrl = 'http://localhost:5248/api/todos';
-  private apiUrl = `${environment.apiUrl}/todos`;
+  private apiUrl = `${environment.apiUrl}/api/todos`;
 
   constructor(private http: HttpClient) {
   }
-
+  getTodosWithAuth(): Observable<TodoItem[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    return this.http.get<TodoItem[]>(`${this.apiUrl}?isDeleted=false`, { headers });
+  }
   /** ✅ Fetch Only Active Todos (Not Deleted) */
   getTodos(): Observable<TodoItem[]> {
     return this.http.get<TodoItem[]>(`${this.apiUrl}?isDeleted=false`, this.getHeaders());
