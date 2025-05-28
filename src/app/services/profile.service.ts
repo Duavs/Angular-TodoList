@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 
 export class ProfileService {
   // private apiUrl = 'http://localhost:5248/api/users'; // adjust if needed
-  private apiUrl = `${environment.apiUrl}/users`;
+  private apiUrl = `${environment.apiUrl}/api/users`;
   private token: string | null = null;
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
