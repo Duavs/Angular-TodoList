@@ -4,13 +4,16 @@ import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {jwtDecode} from 'jwt-decode';
 import {Token} from '@angular/compiler';
+import { environment } from '../../environments/environment'; // add this at the top
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly baseUrl: string = 'http://localhost:5248/api/users'; // ✅ Ensure baseUrl is a class property
-
+  // private readonly baseUrl: string = 'http://localhost:5248/api/users'; // ✅ Ensure baseUrl is a class property
+  private readonly baseUrl: string = `${environment.apiUrl}/users`;
   constructor(private http: HttpClient, private router: Router) {
   }
 
