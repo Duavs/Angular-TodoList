@@ -27,16 +27,17 @@ export class LoginComponent implements OnInit {
   }
   login() {
     const loginData = {email: this.email, password: this.password};
-
+    console.log( loginData);
     this.loginService.loginUser(loginData).subscribe({
       next: (response) => {
         // Check if the response contains a token
         if (response.token) {
           localStorage.setItem('token', response.token);
+          console.log("✅ Login successful, token stored:", response.token);
           // Navigate to `/home` after storing the token
           this.router.navigate(['/home']).then(success => {
           }).catch(err => {
-            console.error("🚨 Navigation error:", err);
+            console.error("🚨 Navigation error:", err.message);
           });
         } else {
           console.warn("⚠️ No token received, login might have failed!");
@@ -44,7 +45,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('❌ Login failed:', err.status);
+        console.error('❌ Login failed:', err.status, err.message);
         this.errorMessage = 'Invalid email or password.';
       }
     });
