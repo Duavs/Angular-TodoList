@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 export interface TodoItem {
   id: number;
@@ -17,7 +19,8 @@ export interface TodoItem {
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:5248/api/todos';
+  // private apiUrl = 'http://localhost:5248/api/todos';
+  private apiUrl = `${environment.apiUrl}/todos`;
 
   constructor(private http: HttpClient) {
   }
