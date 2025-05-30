@@ -35,7 +35,11 @@ export class SidebarComponent implements OnInit {
   }
   logout(){
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
+    const userId = Number(this.authService.getUserId());
+    console.log(' ID:', userId);
     }
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
