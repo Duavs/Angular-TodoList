@@ -24,6 +24,7 @@ import {PaginatorModule} from 'primeng/paginator';
 import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
 import {Title} from '@angular/platform-browser';
 import {DropdownModule} from 'primeng/dropdown';
+import {ThisReceiver} from '@angular/compiler';
 
 export interface TodoItem {
   id: number;
@@ -34,6 +35,9 @@ export interface TodoItem {
   startDate: Date;
   endDate: Date;
   userId?: number;
+  taskTypeId?: number;
+  taskSeverityId?: number;
+  taskStatusId?: number;
 }
 
 @Component({
@@ -81,11 +85,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   ];
   selectedFilter: string = 'All';
   //tagged as work or personal
-  taskTagOptions = [
+  taskTypeTagOptions = [
     {label: 'Personal', value: 'p-task'},
     {label: 'Work', value: 'w-task'},
   ];
-  selectedTaskTag: string = '';
+  selectedTaskTypeTag: string = '';
   //task priority
   taskPriorityOptions = [
     {label: 'Low', value: 'low'},
@@ -111,7 +115,34 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   // get username(): string | null {
   //   return this.profileService.Username();
   //
-  // }
+
+  ngOnInit() {
+    this.titleService.setTitle(this.title);
+    this.checkAuthentication();
+    this.isAuthenticated();
+    this.getUserName();
+    this.fetchTodos();
+    // console.log(this.todoList.length);
+  }
+
+  ngAfterViewInit() {
+    this.messageService.add({severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000});
+    // this.scheduleAdvice();
+    this.fetchTodos();
+
+    // Initialize with 'All' filter
+  }
+
+  ngAfterViewChecked() {
+    this.onFilterChange({value: this.selectedFilter});
+  }
+
+  ngOnDestroy() {
+    if (this.adviceInterval) {
+      clearTimeout(this.adviceInterval); // use clearTimeout instead
+    }
+  }
+
   fetchAdvice() {
     this.adviceService.getAdvice().subscribe({
       next: (advice) => {
@@ -151,30 +182,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     }, 10000);
   }
 
-  ngOnInit() {
-    this.titleService.setTitle(this.title);
-    this.checkAuthentication();
-    this.isAuthenticated();
-    this.getUserName();
-    // console.log(this.todoList.length);
-  }
-
-  ngAfterViewInit() {
-    this.messageService.add({severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000});
-    // this.scheduleAdvice();
-    this.fetchTodos();
-    // Initialize with 'All' filter
-  }
-
-  ngAfterViewChecked() {
-    this.onFilterChange({value: this.selectedFilter});
-  }
-
-  ngOnDestroy() {
-    if (this.adviceInterval) {
-      clearTimeout(this.adviceInterval); // use clearTimeout instead
-    }
-  }
 
   checkAuthentication() {
     if (!localStorage.getItem('token')) {
@@ -200,10 +207,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   fetchTodos() {
     const userId = Number(this.authService.getUserId());
      console.log(' ID:', userId);
-    this.todoService.getTodosWithAuth().subscribe({
+    this.todoService.getTodos().subscribe({
       next: (todos) => {
         const activeTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId);
         this.allTodos = todos.filter(todo => !todo.isDeleted && todo.userId == userId && !todo.completed);
+        console.log("Active todo ", activeTodos);
         // Update total pages
         this.totalPages = Math.max(1, Math.ceil(activeTodos.length / this.itemsPerPage));
 
@@ -269,11 +277,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.notificationService.showWarning('Warning!', 'Something needs attention.');
   };
 
-  formatLocalDate(date: Date): Date {
-    const normalized = new Date(date);
-    normalized.setDate(normalized.getDate() + 1); // Add 1 day
-    normalized.setHours(0, 0, 0, 0); // Normalize time to midnight
-    return normalized;
+  // formatLocalDate(date: Date): Date {
+  //   const normalized = new Date(date);
+  //   normalized.setDate(normalized.getDate() + 1); // Add 1 day
+  //   normalized.setHours(0, 0, 0, 0); // Normalize time to midnight
+  //   return normalized;
+  // }
+
+  formatDateTime(date: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
   }
 
   addTask(): void {
@@ -308,17 +321,28 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       console.error('User ID is invalid:', userId);
       return;
     }
+    console.log("Not formatted: ", this.taskStartDate);
+    console.log("Not formatted: ", this.taskEndDate);
+    console.log("formatted: ", this.formatDateTime(this.taskStartDate));
+    console.log("formatted: ", this.formatDateTime(this.taskEndDate));
+    this.taskStartDate = this.formatDateTime(this.taskStartDate);
+    this.taskEndDate = this.formatDateTime(this.taskEndDate);
 
     const newTaskItem: TodoItem = {
       id: 0,
       task: this.newTask.toUpperCase(),
-      taskDetail: this.taskDetail?.trim() || '',
       completed: false,
-      startDate: this.formatLocalDate(this.taskStartDate),
-      endDate: this.formatLocalDate(this.taskEndDate),
+      // createdAt: new Date(),
       isDeleted: false,
-      userId: userId
+      userId: userId,
+      taskDetail: this.taskDetail?.trim() || '',
+      startDate: this.taskStartDate,
+      endDate: this.taskEndDate,
+      taskTypeId: this.selectedTaskTypeTag === "p-task" ? 1 : 2,
+      taskSeverityId: {low:1, normal:2, high:3, urgent:4}[this.selectedTaskPriority] ?? 2,
+      taskStatusId: this.selectedTaskPriority === "ongoing" ? 1 : 1
     };
+    console.log(newTaskItem);
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.todoList.unshift(newTaskItem);
@@ -329,7 +353,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
         //this.showMessage('success', 'Task Added', 'Successfully added!');
       },
       error: (err) => {
-        console.error('Error adding task:', err);
+        console.error('❌ Failed to add new task. Please verify the API endpoint and request body.');
+        console.error('Task Data Sent:', newTaskItem);
+        console.error('Server Error:', err);
         //  this.showMessage('error', 'Error', 'Failed to add task');
       }
     });
