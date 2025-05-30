@@ -207,6 +207,7 @@
             <p-calendar [(ngModel)]="taskStartDate"
                         id="taskStartDate"
                         dateFormat="yy-mm-dd"
+                        [showTime]="false"
                         showIcon="true"
                         class="rounded-md"
                         inputId="buttondisplay"
@@ -220,6 +221,7 @@
             <p-calendar [(ngModel)]="taskEndDate"
                         id="taskEndDate"
                         dateFormat="yy-mm-dd"
+                        [showTime]="false"
                         showIcon="true"
                         [minDate]="minDate"
                         class="rounded-md"
@@ -231,14 +233,14 @@
           <p-dropdown class="w-48"
                       id="filterSelect"
                       [style]="{borderRadius: '20px'}"
-                      [options]="taskTagOptions"
+                      [options]="taskTypeTagOptions"
                       placeholder="Tagged as"
                       styleClass="{height: '2.5rem', width: '10rem'}"
-                      [(ngModel)]="selectedTaskTag"
+                      [(ngModel)]="selectedTaskTypeTag"
                       (onChange)="onFilterChange($event)"
                       [ngStyle]="{
-                     'background-color': selectedTaskTag === 'p-task' ? '#87EDC7' :
-                                        selectedTaskTag === 'w-task' ? '#C787ED' : '#e5e7eb'
+                     'background-color': selectedTaskTypeTag === 'p-task' ? '#87EDC7' :
+                                        selectedTaskTypeTag === 'w-task' ? '#C787ED' : '#e5e7eb'
                                    }"
           >
           </p-dropdown>
