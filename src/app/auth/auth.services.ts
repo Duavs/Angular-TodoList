@@ -7,6 +7,9 @@ interface DecodedToken {
   name: string;
   exp?: number;
   email: string;
+  aud?: string;
+  iss?: string;
+  jti?: string;
 }
 
 @Injectable({
@@ -37,18 +40,16 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    if (this.token) {
-      return true;
-    } else {
-      return this.loggedIn;   // Returns login status
-    }
+    const token = localStorage.getItem("token");
+    return !!token || this.loggedIn; // Returns true if token exists or fallback to loggedIn flag
   }
 
   getUserId(): string | null {
 
     if (this.token) {
       try {
-        const decodedToken = jwtDecode(this.token);
+        const decodedToken: DecodedToken = jwtDecode(this.token);
+        console.log("decodedToken", decodedToken);
         return decodedToken.sub ?? null;
       } catch (err) {
         return null;
