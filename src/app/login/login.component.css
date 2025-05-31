@@ -8,3 +8,7 @@
 h2, p, label, input, button{
   font-family: 'DM Sans', sans-serif;
 }
+
+.noAccount{
+  font-size: 0.8rem;
+}
