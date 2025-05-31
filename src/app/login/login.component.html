@@ -1,41 +1,50 @@
 
 <div class="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition duration-300">
-  <div class="w-full max-w-md bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">
-    <h2 class="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white">Welcome Back</h2>
-    <p class="text-center text-gray-600 dark:text-gray-300 mb-6">Please login to your account</p>
+  <div class="flex flex-1/2  w-full max-w-5xl bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">
+    <div class="flex-1 justify-center items-center mb-6 pr-20 pl-10 ">
+      <img alt="Login illustration" class="w-full h-auto border-2" src="assets/illustrations/login/loginFemale.svg" class="login-illustration"/>
+    </div>
 
-    <form (submit)="login(); $event.preventDefault()" class="space-y-5">
-      <div>
-        <label class="block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2">Email</label>
-        <input [(ngModel)]="email"
-               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-               name="email"
-               placeholder="Enter your email"
-               required
-               type="email">
-      </div>
+    <div class="w-px bg-gray-300 dark:bg-gray-700 mx-4"></div>
 
-      <div>
-        <label class="block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2">Password</label>
-        <input [(ngModel)]="password"
-               class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white"
-               name="password"
-               placeholder="Enter your password"
-               required
-               type="password">
-      </div>
+    <div class="flex-1/2 flex flex-col justify-center items-center">
+      <h2 class="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white">Welcome Back</h2>
+      <p class="text-center text-gray-600 dark:text-gray-300 mb-6">Please login to your account</p>
 
-      <button type="submit"
-              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-200">
-        Sign In
-      </button>
-    </form>
+      <form (submit)="login(); $event.preventDefault()" class="space-y-5">
+        <div>
+          <label class="block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2">Email</label>
+          <input [(ngModel)]="email"
+                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                 name="email"
+                 placeholder="Enter your email"
+                 required
+                 type="email">
+        </div>
 
-    <p *ngIf="errorMessage" class="text-red-500 text-sm mt-4 text-center">{{ errorMessage }}</p>
+        <div>
+          <label class="block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2">Password</label>
+          <input [(ngModel)]="password"
+                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-white"
+                 name="password"
+                 placeholder="Enter your password"
+                 required
+                 type="password">
+        </div>
 
-    <p class="mt-6 text-center text-gray-600 dark:text-gray-400">
-      Don't have an account?
-      <a [routerLink]="'/signup'" class="text-blue-600 hover:underline dark:text-blue-400">Create one</a>
-    </p>
+        <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-200">
+          Sign In
+        </button>
+      </form>
+
+      <p *ngIf="errorMessage" class="text-red-500 text-sm mt-4 text-center">{{ errorMessage }}</p>
+
+      <p class="mt-6 text-center text-gray-600 dark:text-gray-400">
+        Don't have an account?
+        <a [routerLink]="'/signup'" class="text-blue-600 hover:underline dark:text-blue-400">Create one</a>
+      </p>
+    </div>
+
   </div>
 </div>
