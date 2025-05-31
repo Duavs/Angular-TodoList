@@ -1,1 +1,10 @@
-/*ghi*/
+.login-illustration {
+  width: 30vw;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+h2, p, label, input, button{
+  font-family: 'DM Sans', sans-serif;
+}
