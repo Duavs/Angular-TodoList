@@ -1,11 +1,11 @@
-<div>
-  <div class="flex flex-1">
-    <app-sidebar></app-sidebar>
+<div class="flex min-h-screen">
+    <app-sidebar class="h-full"></app-sidebar>
     <p-confirmPopup></p-confirmPopup>
     <!-- Main Content -->
-    <main class="flex-1 bg-white/80 backdrop-blur-md p-8 shadow-lg h-full min-h-screen overflow-y-auto">
+  <main class="flex-1 bg-gray-200 text-black p-6 shadow-xl flex flex-col">
       <p-toast/>
-      <div class="flex justify-between items-center gap-3 mb-6 w-full">
+    <ng-container *ngIf="filteredTodoList.length != 0">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 w-full p-6 bg-gradient-to-br from-white to-[E5EEF8] rounded-xl shadow-lg border border-gray-300">
         <p-floatlabel variant="on">
           <input id="searchInput"
                  type="text"
@@ -14,48 +14,57 @@
                  style="border-radius: 20px;"/>
           <label for="searchInput">Search Tasks</label>
         </p-floatlabel>
-        <label>Sort by</label>
-        <p-dropdown class="w-48"
-                    id="filterSelect"
-                    [style]="{borderRadius: '20px'}"
-                    [options]="filterOptions"
-                    placeholder="Default"
-                    styleClass="{height: '2.5rem', width: '10rem'}"
-                    [(ngModel)]="selectedFilter"
-                    (onChange)="onFilterChange($event)"
-        >
-        </p-dropdown>
+        <div class="flex items-center gap-2">
+          <label class="text-sm font-medium text-gray-700">Sort by:</label>
+          <p-dropdown class="w-48"
+                      id="filterSelect"
+                      [style]="{borderRadius: '20px'}"
+                      [options]="filterOptions"
+                      placeholder="Default"
+                      [styleClass]="'h-10 w-40'"
+                      [(ngModel)]="selectedFilter"
+                      (onChange)="onFilterChange($event)">
+          </p-dropdown>
+        </div>
         <button (click)="openNewTaskModal()"
-                class="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-600 flex items-center gap-2 transition justify-end"
-                pRipple
-        >
-          Add Task
+                class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md shadow-sm transition-all duration-200 flex items-center gap-2"
+                pRipple>
+          <i></i> Add Task
         </button>
       </div>
-      <div class="flex gap-4 mb-6 min-h-screen">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
-<!--          <ng-container *ngIf="filteredTodoList.length == 0">-->
-<!--            <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8]">-->
-<!--              <div-->
-<!--                class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between max-h-[260px] min-h-[260px] transition">-->
-<!--                <p-skeleton width="100%" height="150px"/>-->
-<!--                <div class="flex justify-between">-->
-<!--                  <p-skeleton width="4rem" height="2rem" class="pr-2"/>-->
-<!--                  <p-skeleton width="4rem" height="2rem" class="pr-2"/>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </ng-container>-->
-<!--          </ng-container>-->
+    </ng-container>
+
+    <!--          <ng-container *ngIf="filteredTodoList.length == 0">-->
+    <!--            <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8]">-->
+    <!--              <div-->
+    <!--                class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between max-h-[260px] min-h-[260px] transition">-->
+    <!--                <p-skeleton width="100%" height="150px"/>-->
+    <!--                <div class="flex justify-between">-->
+    <!--                  <p-skeleton width="4rem" height="2rem" class="pr-2"/>-->
+    <!--                  <p-skeleton width="4rem" height="2rem" class="pr-2"/>-->
+    <!--                </div>-->
+    <!--              </div>-->
+    <!--            </ng-container>-->
+    <!--          </ng-container>-->
+
+
+      <div class="flex flex-col gap-6 mb-6 px-4 sm:px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
             <ng-container *ngIf="filteredTodoList.length == 0">
-              <div class="col-span-4 text-center text-gray-500">
-                <img alt="Login illustration" class=" border-2" src="assets/illustrations/dashboard/empty-todos.svg" class="no-todos"/>
+              <div class="col-span-4 text-center text-gray-500 max-w-xl mx-auto">
+                <img alt="Login illustration" src="assets/illustrations/dashboard/empty-todos.svg" class="no-todos"/>
                 <p>How about adding your To-dos today.</p>
+              <label (click)="openNewTaskModal()"
+                        class="mt-3 max-w-[8vw] bg-[#6176E5] hover:bg-[#1E2938] text-white px-6 py-1 rounded-md shadow-sm transition-all duration-200 flex items-center gap-2 justify-center mx-auto"
+                        pRipple>
+                   Add Task
+                </label>
               </div>
             </ng-container>
             <ng-container *ngFor="let todoItem of filteredTodoList">
 
             <div
-              class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between max-h-[260px] min-h-[260px] transition"
+              class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between min-h-[230px] transition"
               [ngClass]="{'opacity-40': todoItem.completed, 'hover:bg-gray-100': !todoItem.completed}">
               <div
                 class="mb-3 font-semibold text-lg bg-green-300 rounded p-2">{{ todoItem.task.length > 17 ? (todoItem.task | slice:0:18) + '...' : todoItem.task }}
@@ -77,7 +86,7 @@
           </ng-container>
         </div>
       </div>
-      <div *ngIf="filteredTodoList.length > 8" class="pagination-container flex justify-center space-x-4 pt-6">
+     <div *ngIf="filteredTodoList.length > 7" class="pagination-container mt-auto flex justify-center">
         <p-button (click)="prevPage(); onFilterChange($event)"
                 [disabled]="currentPage === 1"
                 class="px-5 py-2 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2 preview-page-button">
@@ -195,7 +204,7 @@
       <!--        </button>-->
       <!--      </div>-->
       <p-dialog header="Add your new task" [(visible)]="newTaskModalVisible" [modal]="true"
-                [style]="{ marginTop: ' -51vh', color: 'green'}" [closable]="false" class="overflow-visible">
+                [style]="{ marginTop: '-5vh', color: '#101828'}" [closable]="false" class="overflow-visible">
         <div class="p-fluid flex flex-wrap gap-4  bg-gray-100 p-6 rounded-lg shadow-md mb-4">
           <div class="flex">
             <div class="field">
@@ -278,12 +287,11 @@
           <!--          <button pButton type="button" label="Cancel" class="p-button-text text-gray-600 hover:text-red-600 transition" (click)="newTaskModalVisible = false"></button>-->
           <p-button (click)="newTaskModalVisible = false" [rounded]="true" severity="danger" label="Cancel"
                     [outlined]="true"></p-button>
-          <p-button label="Save Task" severity="success" [rounded]="true"
+          <p-button label="Save Task" severity="success" [style]="{backgroundColor:'#15A900'}" [rounded]="true"
                     (click)="addTask(); newTaskModalVisible = false"></p-button>
         </div>
       </p-dialog>
     </main>
-  </div>
 </div>
 
 <router-outlet></router-outlet>
