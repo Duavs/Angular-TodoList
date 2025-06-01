@@ -5,10 +5,21 @@
   display: block;
   margin: 0 auto;
 }
+
+@media (max-width: 639px) {
+  .login-illustration {
+    display: none;
+  }
+}
+
 h2, p, label, input, button{
   font-family: 'DM Sans', sans-serif;
 }
 
 .noAccount{
   font-size: 0.8rem;
+}
+
+h2.login-heading{
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
 }
