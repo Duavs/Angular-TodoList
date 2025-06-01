@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   advice: string = '';
   //Pagination
   currentPage: number = 1;
-  itemsPerPage: number = 12;
+  itemsPerPage: number = 8;
   totalPages: number = 1;
   pages: number[] = [];
   private adviceInterval: any;
