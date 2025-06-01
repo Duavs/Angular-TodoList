@@ -1,14 +1,14 @@
 
 <div class="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 via-white to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition duration-300">
   <div class="flex flex-1/2  w-full max-w-5xl bg-white dark:bg-gray-900 p-8 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">
-    <div class="flex-1 justify-center items-center mb-6 pr-20 pl-10 ">
-      <img alt="Login illustration" class="w-full h-auto border-2" src="assets/illustrations/login/loginFemale.svg" class="login-illustration"/>
+    <div class="hidden sm:flex flex-1 justify-center items-center mb-6 pr-20 pl-10">
+      <img alt="Login illustration" class="w-full h-auto login-illustration hidden sm:block" src="assets/illustrations/login/loginFemale.svg"/>
     </div>
 
-    <div class="w-px bg-gray-300 dark:bg-gray-700 mx-4"></div>
+    <div class="w-px bg-gray-300 dark:bg-gray-700 mx-4 hidden sm:block"></div>
 
     <div class="flex-1/2 flex flex-col justify-center items-center">
-      <h2 class="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white">Welcome Back</h2>
+      <h2 class="login-heading font-bold text-center mb-6 text-gray-800 dark:text-white">Welcome Back</h2>
       <p class="text-center text-gray-600 dark:text-gray-300 mb-6">Please login to your account</p>
 
       <form (submit)="login(); $event.preventDefault()" class="space-y-5">
