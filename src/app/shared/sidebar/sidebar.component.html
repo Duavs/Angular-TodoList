@@ -1,10 +1,10 @@
-<div class="bg-gray-900 text-white p-6 shadow-xl space-y-8 h-full min-h-screen flex flex-col border-r border-gray-800 min-w-[250px]">
+<div class="bg-gray-900 text-white p-6 shadow-xl space-y-8 min-h-screen flex flex-col border-r border-gray-800 min-w-[250px]">
   <div class="text-center text-2xl font-extrabold tracking-wider uppercase">
     {{ username }}
   </div>
   <nav class="flex flex-col space-y-2">
     <a class="flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 hover:text-amber-400 transition duration-300"
-       routerLink="/home" routerLinkActive="text-amber-400" [routerLinkActiveOptions]="{ exact: true }">
+       routerLink="/home" routerLinkActive="text-[#FCFF35]" [routerLinkActiveOptions]="{ exact: true }">
       <i class="fas fa-home text-lg"></i>
       <span class="text-sm font-semibold">Dashboard</span>
     </a>
@@ -28,7 +28,7 @@
     </a>
   </nav>
   <button (click)="logout()"
-          class="mt-auto flex items-center justify-center gap-2 py-3 px-4 bg-red-600 hover:bg-red-700 text-white rounded-md font-semibold shadow transition duration-300">
+          class="mt-auto flex items-center justify-center gap-2 py-3 px-4 bg-[#9D321B] hover:bg-red-700 text-white rounded-md font-semibold shadow transition duration-300">
     <i class="fas fa-sign-out-alt text-lg"></i>
     <span class="text-sm">Logout</span>
   </button>
