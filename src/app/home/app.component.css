@@ -7,6 +7,15 @@
   margin: 0 auto;
 }
 
+.no-search-result-svg{
+  width: 30vw;
+  padding-top: 1em;
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 body, html {
   margin: 0;
   padding: 0;
