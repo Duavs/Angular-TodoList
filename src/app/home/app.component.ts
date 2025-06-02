@@ -321,10 +321,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       console.error('User ID is invalid:', userId);
       return;
     }
-    console.log("Not formatted: ", this.taskStartDate);
-    console.log("Not formatted: ", this.taskEndDate);
-    console.log("formatted: ", this.formatDateTime(this.taskStartDate));
-    console.log("formatted: ", this.formatDateTime(this.taskEndDate));
     this.taskStartDate = this.formatDateTime(this.taskStartDate);
     this.taskEndDate = this.formatDateTime(this.taskEndDate);
 
@@ -347,6 +343,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       next: () => {
         this.todoList.unshift(newTaskItem);
         this.newTask = '';
+        this.taskDetail = '';
+        this.selectedTaskTypeTag = 'Tagged as';
+        this.selectedTaskPriority = 'clear';
         this.messageService.add({severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000});
         this.notificationService.showSuccess('Success', 'Task added successfully.');
         this.fetchTodos(); // ⬅ Refresh data after adding
