@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     this.isAuthenticated();
     this.getUserName();
     this.fetchTodos();
-    // console.log(this.todoList.length);
+     console.log(this.todoList.length);
   }
 
   ngAfterViewInit() {
