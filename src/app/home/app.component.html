@@ -4,7 +4,7 @@
     <!-- Main Content -->
   <main class="flex-1 bg-gray-200 text-black p-6 shadow-xl flex flex-col">
       <p-toast/>
-    <ng-container *ngIf="filteredTodoList.length != 0">
+    <ng-container *ngIf="todoList.length != 0">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 w-full p-6 bg-gradient-to-br from-white to-[E5EEF8] rounded-xl shadow-lg border border-gray-300">
         <p-floatlabel variant="on">
           <input id="searchInput"
@@ -33,7 +33,6 @@
         </button>
       </div>
     </ng-container>
-
     <!--          <ng-container *ngIf="filteredTodoList.length == 0">-->
     <!--            <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8]">-->
     <!--              <div-->
@@ -50,7 +49,7 @@
 
       <div class="flex flex-col gap-6 mb-6 px-4 sm:px-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
-            <ng-container *ngIf="filteredTodoList.length == 0">
+            <ng-container *ngIf="todoList.length == 0">
               <div class="col-span-4 text-center text-gray-500 max-w-xl mx-auto">
                 <img alt="Login illustration" src="assets/illustrations/dashboard/empty-todos.svg" class="no-todos"/>
                 <p>How about adding your To-dos today.</p>
@@ -61,7 +60,13 @@
                 </label>
               </div>
             </ng-container>
-            <ng-container *ngFor="let todoItem of filteredTodoList">
+         <ng-container *ngIf="todoList.length > 0 && filteredTodoList.length === 0">
+           <div class="col-span-4 text-center text-gray-500 max-w-xl mx-auto">
+             <img alt="No search result" src="assets/illustrations/dashboard/empty-search-todo.svg" class="no-search-result-svg"/>
+             <p>No matching tasks found.</p>
+           </div>
+         </ng-container>
+         <ng-container *ngFor="let todoItem of filteredTodoList" >
 
             <div
               class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between min-h-[230px] transition"
