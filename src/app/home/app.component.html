@@ -71,8 +71,10 @@
             <div
               class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between min-h-[230px] transition"
               [ngClass]="{'opacity-40': todoItem.completed, 'hover:bg-gray-100': !todoItem.completed}">
-              <div
-                class="mb-3 font-semibold text-lg bg-green-300 rounded p-2">{{ todoItem.task.length > 17 ? (todoItem.task | slice:0:18) + '...' : todoItem.task }}
+              <div class="mb-3 font-semibold text-lg bg-green-300 rounded p-2">
+                <span [pTooltip]="todoItem.task" tooltipPosition = "top">
+                   {{ todoItem.task | truncate: 7 }}
+                </span>
               </div>
               <div class="flex items-center gap-2 mb-4">
                 <p class="text-sm text-gray-600">Start Date: {{ todoItem.startDate | date }}</p>
