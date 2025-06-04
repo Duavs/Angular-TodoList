@@ -24,7 +24,8 @@ import {PaginatorModule} from 'primeng/paginator';
 import {ConfirmPopup, ConfirmPopupModule} from 'primeng/confirmpopup';
 import {Title} from '@angular/platform-browser';
 import {DropdownModule} from 'primeng/dropdown';
-import {ThisReceiver} from '@angular/compiler';
+import {TruncatePipe} from '../pipes/truncate.pipe';
+import {Tooltip} from 'primeng/tooltip';
 
 export interface TodoItem {
   id: number;
@@ -43,7 +44,7 @@ export interface TodoItem {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Skeleton, FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel, PaginatorModule, ConfirmPopup, DropdownModule],
+  imports: [TruncatePipe, Skeleton, FormsModule, CommonModule, RouterModule, Toast, MessageModule, ButtonModule, RippleModule, SidebarComponent, Dialog, InputText, Textarea, Calendar, FloatLabel, PaginatorModule, ConfirmPopup, DropdownModule, Tooltip],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [MessageService, ConfirmationService],
