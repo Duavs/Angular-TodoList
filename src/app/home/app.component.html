@@ -72,8 +72,8 @@
               class="bg-white p-4 rounded shadow border border-gray-300 flex flex-col justify-between min-h-[230px] transition"
               [ngClass]="{'opacity-40': todoItem.completed, 'hover:bg-gray-100': !todoItem.completed}">
               <div class="mb-3 font-semibold text-lg bg-green-300 rounded p-2">
-                <span [pTooltip]="todoItem.task" tooltipPosition = "top">
-                   {{ todoItem.task | truncate: 7 }}
+                <span [pTooltip]="todoItem.task" tooltipPosition = "bottom">
+                   {{ todoItem.task | truncate: 28 }}
                 </span>
               </div>
               <div class="flex items-center gap-2 mb-4">
@@ -86,7 +86,13 @@
                        class="h-4 w-4 cursor-pointer"/>
               </div>
               <div class="mt-auto flex justify-end gap-2">
-                <p-button icon="pi pi-eye" [rounded]="true" severity="info" class="cursor-pointer" label="view"></p-button>
+                <p-button icon="pi pi-eye"
+                          [rounded]="true"
+                          severity="info"
+                          class="cursor-pointer"
+                          label="view"
+                          (click)="openViewTaskModal(todoItem)">
+                </p-button>
                 <i (click)="softdeleteTask($event, todoItem)" class="cursor-pointer pi pi-trash" style="font-size: 1.1rem; color: red; margin-left: 5px; margin-top: 15px;" ></i>
               </div>
             </div>
@@ -298,6 +304,20 @@
                     (click)="addTask(); newTaskModalVisible = false"></p-button>
         </div>
       </p-dialog>
+
+    <p-dialog header = "Task Details"
+              [(visible)]="viewTaskModalVisible"
+              [modal]="true"
+              [style]="{ width: '40vw'}"
+              [closable]="true">
+      <div *ngIf="selectedTask">
+        <h3 class="text-lg font-bold mb-2">{{ selectedTask.task}}</h3>
+        <p><strong>Start:</strong> {{selectedTask.startDate | date}}</p>
+        <p><strong>End:</strong> {{selectedTask.endDate | date}}</p>
+        <p class="mt-4"><strong>Details:</strong></p>
+        <p>{{selectedTask.taskDetail}}</p>
+      </div>
+    </p-dialog>
     </main>
 </div>
 
