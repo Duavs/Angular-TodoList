@@ -69,8 +69,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   private adviceInterval: any;
   //modal
   newTaskModalVisible = false;
-  // startDate: Date = new Date();
-  // endDate: Date = new Date();
+  viewTaskModalVisible = false;
+  selectedTask: TodoItem | null = null;
   minDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
   taskStartDate: any;
   taskEndDate: any;
@@ -499,4 +499,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     return todos.sort((a, b) => Number(a.completed) - Number(b.completed));
   }
 
+  openViewTaskModal(todo: TodoItem) {
+    this.selectedTask = todo;
+    this.viewTaskModalVisible = true;
+  }
 }
