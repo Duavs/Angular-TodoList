@@ -312,6 +312,21 @@
               [closable]="true">
       <div *ngIf="selectedTask">
         <h3 class="text-lg font-bold mb-2">{{ selectedTask.task}}</h3>
+       <h3 class="text-lg font-bold mb-2">
+         Type:
+         {{
+           selectedTask.taskTypeId === 1 ? 'Personal' :
+           selectedTask.taskTypeId === 2 ? 'Work' : 'Other'
+         }}
+       </h3>
+        <h3 class="text-lg font-bold mb-2">
+          Priority:
+          {{
+            selectedTask.taskTypeId === 1? 'Low' :
+            selectedTask.taskTypeId === 2 ? 'Normal' :
+            selectedTask.taskTypeId === 3 ? 'High' :
+            selectedTask.taskTypeId === 4 ? 'Urgent' : 'None'
+          }}</h3>
         <p><strong>Start:</strong> {{selectedTask.startDate | date}}</p>
         <p><strong>End:</strong> {{selectedTask.endDate | date}}</p>
         <p class="mt-4"><strong>Details:</strong></p>
