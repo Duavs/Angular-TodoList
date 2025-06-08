@@ -361,44 +361,58 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     });
   }
 
+  updateTask(task: TodoItem): void {
+    if(!this.selectedTask) return;
+    const lengthRegex = /^.{3,100}$/;
+    const allowedCharsRegex = /^[a-zA-Z0-9\s.,!?'-]+$/;
+    const bannedWords = ['stupid', 'idiot', 'dumb', 'fuck', 'motherfucker', 'porn', 'pussy', 'dick', 'F.U', 'FU'];
+    const bannedWordsRegex = new RegExp(`\\b(${bannedWords.join('|')})\\b`, 'i');
+
+    if(!this.newTask.trim()){
+      this.notificationService.showWarning('warning', 'Cannot save empty task.');
+      return;
+    }
+    if(!lengthRegex.test(this.newTask)) return;
+    if(!allowedCharsRegex.test(this.newTask)) return;
+    if (bannedWordsRegex.test(this.newTask)) return;
+
+    const userId = Number(this.authService.getUserId());
+    if( !userId || isNaN(userId)) return;
+
+    this.taskStartDate = this.formatDateTime(this.taskStartDate);
+    this.taskEndDate = this.formatDateTime(this.taskEndDate);
+
+    const updatedTask: TodoItem = {
+      ...this.selectedTask,
+      task: this.newTask.toUpperCase(),
+      taskDetail: this.taskDetail?.trim() || '',
+      startDate: this.taskStartDate,
+      endDate: this.taskEndDate,
+      taskTypeId: this.selectedTaskTypeTag === "p-task" ? 1 : 2,
+      taskSeverityId: {low: 1, normal: 2, high: 3, urgent: 4}[this.selectedTaskPriority] ?? 2,
+      taskStatusId: this.selectedTaskPriority === "ongoing" ? 1 : 1,
+    };
+    this.todoService.updateTodo(updatedTask).subscribe({
+      next: () =>{
+        this.selectedTask = null;
+        this.newTask = '';
+        this.taskDetail = '';
+        this.selectedTaskTypeTag = 'Tagged as';
+        this.selectedTaskPriority = 'clear';
+        this.notificationService.showSuccess('Success', 'Task updated successfully.');
+        this.fetchTodos();
+      },
+      error: (err) =>{
+        console.error('Error updating task:', err);
+    }
+    })
+  }
   startEditingCurrentTask(todo: TodoItem): void {
     this.editingTaskId = todo.id;
     this.editedTask = todo.task;
     console.log(this.editedTask);
   }
 
-  saveTask(todo: TodoItem): void {
-    const lengthRegex = /^.{2,100}$/;
-    this.editedTask = todo.task;
-
-    if (this.editedTask.trim() == '') {
-      alert('Task cannot be empty');
-      this.editingTaskId = null;
-      this.fetchTodos();
-      return;
-    }
-    if (!lengthRegex.test(this.editedTask)) {
-      alert('Task cannot be less than 2 characters');
-      this.editingTaskId = null;
-      this.fetchTodos();
-      return;
-    }
-    this.editingTaskId = todo.id;
-    this.editedTask = todo.task.toUpperCase();
-    const updatedTask: TodoItem = {...todo, task: this.editedTask};
-    console.log(updatedTask);
-    this.todoService.updateTodo(updatedTask).subscribe({
-      next: () => {
-        console.log('Updated task:', updatedTask);
-        this.editingTaskId = null;
-        this.editedTask = '';
-        this.fetchTodos();
-      },
-      error: (err) => {
-        console.error('Error adding task:', err);
-      }
-    })
-  }
 
   cancelEditing(): void {
     this.editingTaskId = null;
