@@ -85,14 +85,14 @@
                 <input type="checkbox" (ngModelChange)="toggleCompletions(todoItem)" [(ngModel)]="todoItem.completed"
                        class="h-4 w-4 cursor-pointer"/>
               </div>
-              <div class="mt-auto flex justify-end gap-2">
-                <p-button icon="pi pi-eye"
-                          [rounded]="true"
-                          severity="info"
-                          class="cursor-pointer"
-                          label="view"
-                          (click)="openViewTaskModal(todoItem)">
-                </p-button>
+<div class="mt-auto flex justify-end gap-2">
+  <p-button icon="pi pi-eye"
+            [rounded]="true"
+            severity="info"
+            class="cursor-pointer"
+            label="View"
+            (click)="openNewTaskModal()">
+  </p-button>
                 <i (click)="softdeleteTask($event, todoItem)" class="cursor-pointer pi pi-trash" style="font-size: 1.1rem; color: red; margin-left: 5px; margin-top: 15px;" ></i>
               </div>
             </div>
@@ -300,8 +300,14 @@
           <!--          <button pButton type="button" label="Cancel" class="p-button-text text-gray-600 hover:text-red-600 transition" (click)="newTaskModalVisible = false"></button>-->
           <p-button (click)="newTaskModalVisible = false" [rounded]="true" severity="danger" label="Cancel"
                     [outlined]="true"></p-button>
-          <p-button label="Save Task" severity="success" [style]="{backgroundColor:'#15A900'}" [rounded]="true"
-                    (click)="addTask(); newTaskModalVisible = false"></p-button>
+<!--          <p-button label="Save Task" severity="success" [style]="{backgroundColor:'#15A900'}" [rounded]="true"-->
+<!--                    (click)="addTask(); newTaskModalVisible = false"></p-button>-->
+          <p-button [label]="selectedTask ? 'Update' : 'Save'"
+                    severity="success"
+                    [style]="{backgroundColor: '#15A900'}"
+                    [rounded]="true"
+                    (click)="selectedTask ? updateTask(selectedTask) : addTask();
+                    "></p-button>
         </div>
       </p-dialog>
 
@@ -331,6 +337,7 @@
         <p><strong>End:</strong> {{selectedTask.endDate | date}}</p>
         <p class="mt-4"><strong>Details:</strong></p>
         <p>{{selectedTask.taskDetail}}</p>
+        <p-button>Update</p-button>
       </div>
     </p-dialog>
     </main>
