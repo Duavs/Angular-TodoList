@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {Router, RouterLink} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {AuthService} from '../services/auth.services';
 import {Title} from '@angular/platform-browser';
-import {Init} from 'node:v8';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +14,9 @@ import {Init} from 'node:v8';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  email = '';
-  password = '';
-  errorMessage = '';
+  email = signal('');
+  password = signal('');
+  errorMessage = signal('');
   title = 'Login';
   constructor(private loginService: AuthService,
               private router: Router,
@@ -25,31 +25,21 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle(this.title);
   }
-  login() {
-    const loginData = {email: this.email, password: this.password};
-    console.log( loginData);
-    this.loginService.loginUser(loginData).subscribe({
-      next: (response) => {
-        // Check if the response contains a token
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-          console.log("✅ Login successful, token stored:", response.token);
-          // Navigate to `/home` after storing the token
-          this.router.navigate(['/home']).then(success => {
-          }).catch(err => {
-            console.error("🚨 Navigation error:", err.message);
-          });
-        } else {
-          console.warn("⚠️ No token received, login might have failed!");
-          this.errorMessage = "Login failed. Please try again.";
-        }
-      },
-      error: (err) => {
-        console.error('❌ Login failed:', err.status, err.message);
-        this.errorMessage = 'Invalid email or password.';
+  async login() {
+    const loginData = { email: this.email(), password: this.password() };
+    try {
+      const response = await firstValueFrom(this.loginService.loginUser(loginData));
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        console.log("✅ Login successful, token stored:", response.token);
+        await this.router.navigate(['/home']);
+      } else {
+        console.warn("⚠️ No token received, login might have failed!");
+        this.errorMessage.set("Login failed. Please try again.");
       }
-    });
+    } catch (err: any) {
+      console.error('❌ Login failed:', err?.status, err?.message);
+      this.errorMessage.set('Invalid email or password.');
+    }
   }
 }
-
-
