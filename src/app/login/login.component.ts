@@ -38,8 +38,11 @@ export class LoginComponent implements OnInit {
         this.errorMessage.set("Login failed. Please try again.");
       }
     } catch (err: any) {
-      console.error('❌ Login failed:', err?.status, err?.message);
-      this.errorMessage.set('Invalid email or password.');
+      console.error('❌ Login failed:', err?.status ?? 'unknown', err?.message ?? 'Unknown error');
+      const message = err?.status === 400 || err.status === 401
+        ? 'Invalid email or password.'
+        : 'Too many login attempts. Please try again after 1 minute.';
+      this.errorMessage.set(message);
     }
   }
 }
