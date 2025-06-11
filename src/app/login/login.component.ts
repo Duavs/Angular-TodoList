@@ -38,11 +38,18 @@ export class LoginComponent implements OnInit {
         this.errorMessage.set("Login failed. Please try again.");
       }
     } catch (err: any) {
-      console.error('❌ Login failed:', err?.status ?? 'unknown', err?.message ?? 'Unknown error');
-      const message = err?.status === 400 || err.status === 401
-        ? 'Invalid email or password.'
-        : 'Too many login attempts. Please try again after 1 minute.';
+      const errorMessage: Record<number, string> ={
+        400: 'Bad Request: Please check your input.',
+        401: 'Unauthorized: Invalid email or password.',
+        403: 'Forbidden: You do not have permission to access this resource.',
+        404: 'Not Found: The requested resource could not be found.',
+        500: 'Internal Server Error: Please try again later.'
+      };
+      const message = errorMessage[err.status] || 'Something went wrong. Please try again later.'
       this.errorMessage.set(message);
+      setTimeout(() => {
+        this.errorMessage.set('');
+      }, 3000);
     }
   }
 }
