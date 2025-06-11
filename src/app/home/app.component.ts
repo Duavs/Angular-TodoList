@@ -360,9 +360,26 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       }
     });
   }
+  prepareTaskForEdit(todo: TodoItem): void {
+    console.log('Preparing task for edit:', todo);
+    this.selectedTask = todo;
+    this.newTask = todo.task;
+    this.taskDetail = todo.taskDetail;
+    this.taskStartDate = new Date(todo.startDate);
+    this.taskEndDate = new Date(todo.endDate);
+    this.selectedTaskTypeTag = todo.taskTypeId === 1 ? 'p-task' : 'w-task';
+    this.selectedTaskPriority = {
+      'low': 'low',
+      'normal': 'normal',
+      'high': 'high',
+      'urgent': 'urgent'
+    }[todo.taskSeverityId ?? 2] || 'normal';
 
+    this.newTaskModalVisible = true;
+  };
   updateTask(task: TodoItem): void {
     if(!this.selectedTask) return;
+    console.log(this.selectedTask);
     const lengthRegex = /^.{3,100}$/;
     const allowedCharsRegex = /^[a-zA-Z0-9\s.,!?'-]+$/;
     const bannedWords = ['stupid', 'idiot', 'dumb', 'fuck', 'motherfucker', 'porn', 'pussy', 'dick', 'F.U', 'FU'];
@@ -399,6 +416,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
         this.taskDetail = '';
         this.selectedTaskTypeTag = 'Tagged as';
         this.selectedTaskPriority = 'clear';
+        this.messageService.add({severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000});
         this.notificationService.showSuccess('Success', 'Task updated successfully.');
         this.fetchTodos();
       },
@@ -407,6 +425,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
     }
     })
   }
+  clearForm(): void {
+    this.newTask = '';
+    this.taskDetail = '';
+    this.taskStartDate = new Date();
+    this.taskEndDate = new Date();
+    this.selectedTaskPriority = 'clear';
+    this.selectedTaskTypeTag = '';
+    this.selectedTask = null;
+    this.newTaskModalVisible = false;
+  };
   startEditingCurrentTask(todo: TodoItem): void {
     this.editingTaskId = todo.id;
     this.editedTask = todo.task;
