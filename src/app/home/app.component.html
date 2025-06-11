@@ -91,7 +91,7 @@
             severity="info"
             class="cursor-pointer"
             label="View"
-            (click)="openNewTaskModal()">
+            (click)="prepareTaskForEdit(todoItem)">
   </p-button>
                 <i (click)="softdeleteTask($event, todoItem)" class="cursor-pointer pi pi-trash" style="font-size: 1.1rem; color: red; margin-left: 5px; margin-top: 15px;" ></i>
               </div>
@@ -216,7 +216,7 @@
       <!--          Next <i class="fas fa-chevron-right"></i>-->
       <!--        </button>-->
       <!--      </div>-->
-      <p-dialog header="Add your new task" [(visible)]="newTaskModalVisible" [modal]="true"
+      <p-dialog [header]="selectedTask ? 'Update your task' : 'Add your new task'" [(visible)]="newTaskModalVisible" [modal]="true"
                 [style]="{ marginTop: '-5vh', color: '#101828'}" [closable]="false" class="overflow-visible">
         <div class="p-fluid flex flex-wrap gap-4  bg-gray-100 p-6 rounded-lg shadow-md mb-4">
           <div class="flex">
@@ -298,7 +298,7 @@
         </div>
         <div class="flex justify-end gap-3 pt-4 border-t mt-6">
           <!--          <button pButton type="button" label="Cancel" class="p-button-text text-gray-600 hover:text-red-600 transition" (click)="newTaskModalVisible = false"></button>-->
-          <p-button (click)="newTaskModalVisible = false" [rounded]="true" severity="danger" label="Cancel"
+          <p-button (click)="newTaskModalVisible = false; clearForm()"  [rounded]="true" severity="danger" label="Cancel"
                     [outlined]="true"></p-button>
 <!--          <p-button label="Save Task" severity="success" [style]="{backgroundColor:'#15A900'}" [rounded]="true"-->
 <!--                    (click)="addTask(); newTaskModalVisible = false"></p-button>-->
