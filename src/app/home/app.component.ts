@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
   }
 
   ngAfterViewInit() {
-    this.messageService.add({severity: 'info', summary: 'Info', detail: 'Welcome Back!', life: 2000});
+    this.messageService.add({severity: 'info', summary: '', detail: 'Welcome Back!', life: 2000});
     // this.scheduleAdvice();
     this.fetchTodos();
 
@@ -339,7 +339,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
       taskSeverityId: {low:1, normal:2, high:3, urgent:4}[this.selectedTaskPriority] ?? 2,
       taskStatusId: this.selectedTaskPriority === "ongoing" ? 1 : 1
     };
-    console.log(newTaskItem);
+
     this.todoService.addTodo(newTaskItem).subscribe({
       next: () => {
         this.todoList.unshift(newTaskItem);
@@ -347,9 +347,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
         this.taskDetail = '';
         this.selectedTaskTypeTag = 'Tagged as';
         this.selectedTaskPriority = 'clear';
-        this.messageService.add({severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000});
+        this.messageService.add({severity: 'success', summary: '', detail: 'Task added successfully.', life: 3000});
         this.notificationService.showSuccess('Success', 'Task added successfully.');
         this.fetchTodos(); // ⬅ Refresh data after adding
+        this.newTaskModalVisible = false;
         //this.showMessage('success', 'Task Added', 'Successfully added!');
       },
       error: (err) => {
@@ -416,9 +417,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterVie
         this.taskDetail = '';
         this.selectedTaskTypeTag = 'Tagged as';
         this.selectedTaskPriority = 'clear';
-        this.messageService.add({severity: 'success', summary: 'Info', detail: 'Message Content', life: 3000});
-        this.notificationService.showSuccess('Success', 'Task updated successfully.');
+        this.messageService.add({severity: 'success', summary: '', detail: 'Task updated successfully', life: 3000});
+        // this.notificationService.showSuccess('Success', 'Task updated successfully.');
         this.fetchTodos();
+        this.newTaskModalVisible = false;
       },
       error: (err) =>{
         console.error('Error updating task:', err);
