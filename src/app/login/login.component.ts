@@ -31,10 +31,10 @@ export class LoginComponent implements OnInit {
       const response = await firstValueFrom(this.loginService.loginUser(loginData));
       if (response.token) {
         localStorage.setItem('token', response.token);
-        console.log("✅ Login successful, token stored:", response.token);
+
         await this.router.navigate(['/home']);
       } else {
-        console.warn("⚠️ No token received, login might have failed!");
+
         this.errorMessage.set("Login failed. Please try again.");
       }
     } catch (err: any) {
