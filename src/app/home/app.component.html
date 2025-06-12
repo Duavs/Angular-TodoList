@@ -5,7 +5,7 @@
   <main class="flex-1 bg-gray-200 text-black p-6 shadow-xl flex flex-col">
       <p-toast/>
     <ng-container *ngIf="todoList.length != 0">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 w-full p-6 bg-gradient-to-br from-white to-[E5EEF8] rounded-xl shadow-lg border border-gray-300">
+      <div class=" flex flex-col md:flex-row md:items-center justify-between mb-2 w-full p-5 bg-gradient-to-br from-white to-[E5EEF8] rounded-xl shadow-lg border border-gray-300">
         <p-floatlabel variant="on">
           <input id="searchInput"
                  type="text"
@@ -47,7 +47,7 @@
     <!--          </ng-container>-->
 
 
-      <div class="flex flex-col gap-6 mb-6 px-4 sm:px-6">
+      <div class="flex flex-col">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
             <ng-container *ngIf="todoList.length == 0">
               <div class="col-span-4 text-center text-gray-500 max-w-xl mx-auto">
@@ -99,7 +99,7 @@
           </ng-container>
         </div>
       </div>
-     <div *ngIf="filteredTodoList.length > 7" class="pagination-container mt-auto flex justify-center">
+     <div *ngIf="filteredTodoList.length != 0" class="pagination-container mt-auto flex justify-center">
         <p-button (click)="prevPage(); onFilterChange($event)"
                 [disabled]="currentPage === 1"
                 class="px-5 py-2 text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2 preview-page-button">
@@ -114,8 +114,7 @@
 
         <p-button (click)="nextPage(); onFilterChange($event)"
                 [disabled]="currentPage === totalPages"
-                class="px-5 py-2text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2 next-page-button"
-        >
+                class="px-5 py-2text-gray-700 rounded-lg disabled:opacity-50 flex items-center gap-2 next-page-button">
           Next <i class="pi pi-chevron-right"></i>
         </p-button>
       </div>
